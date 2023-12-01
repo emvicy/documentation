@@ -7,6 +7,7 @@
   - [`\MVC\Event::processBindConfigStack()` - Bind to Events via config Stack](#processBindConfigStack)
 - [`\MVC\Event::delete()`](#event-delete) 
 - [Emvicy Standard Events](#EmvicyStandardEvents)
+  - [Database Events](#database_events)
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -218,3 +219,24 @@ _Example: delete *all* Events_
 | mvc.view.echoOut.on                                   | `\MVC\View::__construct`                                     |                                                                                                         |                                                                 |
 | mvc.view.render.off                                   | `\MVC\View::__construct`                                     |                                                                                                         |                                                                 |
 | mvc.view.render.on                                    | `\MVC\View::__construct`                                     |                                                                                                         |                                                                 |
+
+<a id="database_events"></a>  
+### Database Events
+
+| Event Name                          | `Event::bind` perforemd in           | `Event::run` located in               | value passed                                        |
+|-------------------------------------|--------------------------------------|---------------------------------------|-----------------------------------------------------|
+| mvc.db.model.db.construct.saveCache | `modules/{module}/etc/event/db.php`  | `\MVC\DB\Model\Db::__construct`       |                                                     |
+| mvc.db.model.db.create.before       | `modules/{module}/etc/event/db.php`  | `\MVC\DB\Model\Db::create`            | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
+| mvc.db.model.db.create.sql          | `modules/{module}/etc/event/db.php`  | `\MVC\DB\Model\Db::create`            |                                                     |
+| mvc.db.model.db.create.after        |                                      | `\MVC\DB\Model\Db::create`            | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
+| mvc.db.model.db.createTable.before  |                                      | `\MVC\DB\Model\Db::create`            | `\MVC\DataType\DTValue $oDTValue`                   |
+| mvc.db.model.db.createTable.sql     | `modules/{module}/etc/event/db.php`  | `\MVC\DB\Model\Db::create`            |                                                     |
+| mvc.db.model.db.insert.sql          | `modules/{module}/etc/event/db.php`  | `\MVC\DB\Model\Db::synchronizeFields` |                                                     |
+| mvc.db.model.db.retrieve.before     |                                      | `\MVC\DB\Model\Db::create`            | `\MVC\DataType\DTValue $oDTValue`                   |
+| mvc.db.model.db.retrieve.sql        | `modules/{module}/etc/event/db.php`  | `\MVC\DB\Model\Db::create`            |                                                     |
+| mvc.db.model.db.retrieve.after      |                                      | `\MVC\DB\Model\Db::create`            | `\MVC\DataType\DTValue $oDTValue`                   |
+| mvc.db.model.db.count.sql           |                                      | `\MVC\DB\Model\Db::create`            |                                                     |
+| mvc.db.model.db.update.before       | `modules/{module}/etc/event/db.php`  | `\MVC\DB\Model\Db::create`            |                                                     |
+| mvc.db.model.db.update.sql          | `modules/{module}/etc/event/db.php`  | `\MVC\DB\Model\Db::create`            |                                                     |
+| mvc.db.model.db.delete.before       |                                      | `\MVC\DB\Model\Db::create`            | `\MVC\DataType\DTArrayObject $oDTArrayObject`       |
+| mvc.db.model.db.delete.sql          | `modules/{module}/etc/event/db.php`  | `\MVC\DB\Model\Db::create`            |                                                     |

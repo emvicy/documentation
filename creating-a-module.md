@@ -12,13 +12,11 @@
 
 There is a distinction between `primary` and `secondary` modules.
 
-You create a module by using `emvicy.php` on CLI. The creation of the necessary environment config file (e.g. 'develop.php') during this module creation process depends on which `MVC_ENV` is set in `/.env` (see [/3.4.x/configuration#Environment](/3.4.x/configuration#Environment)).
+You create a module by using `emvicy.php` on CLI. The creation of the necessary environment config file (e.g. 'develop.php') during this module creation process depends on which `MVC_ENV` is set in `/.env` (see [/1.x/configuration#Environment](/1.x/configuration#Environment)).
 
 **Primary module**    
 You develop your application in a `primary` module.
-That `primary` module is also stored by name in the globally available config `$aConfig['MVC_MODULE_CURRENT_NAME']` and is also available via `Config::get_MVC_MODULE_CURRENT_NAME()`.
-
-Only the configurations from this module are loaded automatically.
+That `primary` module is also stored by name in the globally available config `$aConfig['MVC_MODULE_PRIMARY_NAME']` and is also available via `Config::get_MVC_MODULE_PRIMARY_NAME()`.
 
 The `primary` module is the leading, tone-setting module.
 You don't need to write secondary modules if you don't need one. Develop your application in a `primary` module.
@@ -26,14 +24,16 @@ You don't need to write secondary modules if you don't need one. Develop your ap
 **Secondary module**  
 But sometimes there are parts of code you want to reuse in other software projects.
 For such a case `secondary` modules are suitable. Code written here should be reused in other Emvicy software projects if necessary.
-For this version of Emvicy there are already some secondary, public Emvicy modules out there for reuse.
 
+<!--
+For this version of Emvicy there are already some secondary, public Emvicy modules out there for reuse.
 Public available modules:  
 - <a href="https://github.com/gueff/Emvicy_module_DB" target="_blank">`https://github.com/gueff/Emvicy_module_DB`</a>
 - <a href="https://github.com/gueff/Emvicy_module_OpenApi" target="_blank">`https://github.com/gueff/Emvicy_module_OpenApi`</a>
 - <a href="https://github.com/gueff/Emvicy_module_Idolon" target="_blank">`https://github.com/gueff/Emvicy_module_Idolon`</a>
 - <a href="https://github.com/gueff/Emvicy_module_Email" target="_blank">`https://github.com/gueff/Emvicy_module_Email`</a>
 - <a href="https://github.com/gueff/Emvicy_module_Captcha" target="_blank">`https://github.com/gueff/Emvicy_module_Captcha`</a>
+-->
 
 ---
 
@@ -67,7 +67,7 @@ php emvicy.php s
 
 Call http://127.0.0.1:1969/ and you will see your created module frontend
 
-![Emvicy Creating a Module](/doc/3.4.x/getting-started/mymvc-creating-a-module.png)
+![Emvicy Creating a Module](/doc/1.x/getting-started/emvicy-creating-a-module.png)
 
 ---
 

@@ -13,6 +13,7 @@
     "Events":"events.md",
     "Logging":"logging.md",
     "Policy":"policy.md",
+    "Database ⛁":"database.md",
     "CLI Wrapping":"cli-wrapping.md"
   },
   "DataType": {

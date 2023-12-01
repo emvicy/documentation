@@ -21,15 +21,37 @@
 <a id="Environment"></a>
 ## Environment `/.env`
 
-<a id="MVC_ENV"></a>
-**MVC_ENV**  
-In the root folder of your Emvicy copy you will find an `.env` file. There the variable `MVC_ENV` declares what Environment is valid for Emvicy.  
-You can name the value as you like - But common values are: `develop`, `test`, `production` or `live`.  
+In the root folder of your Emvicy copy you will find an `.env` file.
 
 ~~~bash
+#-----------------------------------------------------
+# My Application
+
 # Environment
-MVC_ENV=production
+MVC_ENV=develop
+
+
+#-----------------------------------------------------
+# DB
+db.type=mysql
+db.host=127.0.0.1
+db.port=3306
+db.dbname=Emvicy1x
+db.username=root
+db.password=
+db.charset=utf8
+db.collation=utf8_unicode_ci
+db.prefix=
 ~~~
+
+<a id="MVC_ENV"></a>
+**MVC_ENV**  
+There the variable `MVC_ENV` declares what Environment is valid for Emvicy. You can name the value as you like - But common values are: `develop`, `test`, `production` or `live`.  
+
+**Database Settings**  
+If you want to use a Database, edit the settings for your Database in the `/.env` file as well.  
+See also Chapter [Database](/1.x/database)
+
 
 <a id="custom-env-variables"></a>
 **Custom .env variables**  
@@ -167,7 +189,7 @@ $aModule = \MVC\Registry::get('MODULE');
 /**
  * @package Emvicy
  * @copyright ueffing.net
- * @author Guido K.B.W. Üffing <mymvc@ueffing.net>
+ * @author Guido K.B.W. Üffing <emvicy@ueffing.net>
  * @license GNU GENERAL PUBLIC LICENSE Version 3. See application/doc/COPYING
  *
  * these configs here can be extended and overwritten by:
@@ -185,7 +207,7 @@ MVC_RUNTIME_SETTINGS: {
 
     // enable exit on "kill" command and CLI break (CTRL-C)
     // This command needs the pcntl extension to run.
-    // do not provide if php's builtin webserver is running (using e.g. php Emvicy.phar)
+    // do not provide if php's builtin webserver is running (using e.g. php emvicy.php)
     if (true === isset($_SERVER['HTTP_HOST']) && '127.0.0.1:1969' !== $_SERVER['HTTP_HOST'])
     {
         (function_exists('pcntl_async_signals')) ? pcntl_async_signals(true) : false;
@@ -281,14 +303,22 @@ MVC_APPLICATION_SETTINGS_I: {
 
     /**
      * Log
+     * consider a logrotate mechanism for these logfiles as they may grow quickly
      */
-    $aConfig['MVC_LOG_FILE_DIR'] = $aConfig['MVC_APPLICATION_PATH'] . '/log/';
+    $aConfig['MVC_LOG_FILE_DIR'] = $aConfig['MVC_APPLICATION_PATH'] . '/log/';          # trailing slash required
     $aConfig['MVC_LOG_FILE_DEFAULT'] = $aConfig['MVC_LOG_FILE_DIR'] . 'default.log';
     $aConfig['MVC_LOG_FILE_ERROR'] = $aConfig['MVC_LOG_FILE_DIR'] . 'error.log';
     $aConfig['MVC_LOG_FILE_WARNING'] = $aConfig['MVC_LOG_FILE_DIR'] . 'warning.log';
     $aConfig['MVC_LOG_FILE_NOTICE'] = $aConfig['MVC_LOG_FILE_DIR'] . 'notice.log';
     $aConfig['MVC_LOG_FILE_POLICY'] = $aConfig['MVC_LOG_FILE_DIR'] . 'policy.log';
     $aConfig['MVC_LOG_FILE_EVENT'] = $aConfig['MVC_LOG_FILE_DIR'] . 'event.log';
+    $aConfig['MVC_LOG_FILE_REQUEST'] = $aConfig['MVC_LOG_FILE_DIR'] . 'request.log';
+    $aConfig['MVC_LOG_FILE_SQL'] = $aConfig['MVC_LOG_FILE_DIR'] . 'sql.log';
+
+    // 1) make sure write access is given to the folder
+    // as long as the db user is going to write and not the webserver user
+    // 2) consider a logrotate mechanism for this logfile as it may grow quickly
+    $aConfig['MVC_LOG_FILE_DB_DIR'] = '/tmp/';
 
     // control log details
     $aConfig['MVC_LOG_DETAIL'] = [
@@ -306,6 +336,12 @@ MVC_APPLICATION_SETTINGS_I: {
     // force linebreaks in logfiles no matter what
     $aConfig['MVC_LOG_FORCE_LINEBREAK'] = false;
 
+    // logging request into request.log
+    $aConfig['MVC_LOG_REQUEST'] = false;
+
+    // logging of SQL Statements
+    $aConfig['MVC_LOG_SQL'] = false;
+    
     /**
      * Caching
      */
@@ -341,7 +377,7 @@ MVC_APPLICATION_SETTINGS_I: {
         'auto_start' => 0,
         'save_path' => $aConfig['MVC_SESSION_PATH'],
         'cookie_secure' => $aConfig['MVC_SECURE_REQUEST'],
-        'name' => 'Emvicy' . (($aConfig['MVC_SECURE_REQUEST']) ? '_secure' : ''),
+        'name' => 'Emvicy' . (($aConfig['MVC_SECURE_REQUEST']) ? '_secure' : ''), // @see /public/.htaccess
         'save_handler' => 'files',
         'cookie_lifetime' => 0,
 
@@ -453,7 +489,7 @@ MVC_MISC: {
 /**
  * @package Emvicy
  * @copyright ueffing.net
- * @author Guido K.B.W. Üffing <mymvc@ueffing.net>
+ * @author Guido K.B.W. Üffing <emvicy@ueffing.net>
  * @license GNU GENERAL PUBLIC LICENSE Version 3. See application/doc/COPYING
  *
  * these configs here do extend and overwrite:
@@ -462,7 +498,7 @@ MVC_MISC: {
 
 //-------------------------------------------------------------------------------------
 // Module
-MVC_ROUTING_FALLBACK
+
 
 //-------------------------------------------------------------------------------------
 // MVC
@@ -484,36 +520,49 @@ $aConfig['MVC_SMARTY_PLUGINS_DIR'][] = realpath(__DIR__ . '/../../') . '/etc/sma
 /**
  * @package Emvicy
  * @copyright ueffing.net
- * @author Guido K.B.W. Üffing <mymvc@ueffing.net>
+ * @author Guido K.B.W. Üffing <emvicy@ueffing.net>
  * @license GNU GENERAL PUBLIC LICENSE Version 3. See application/doc/COPYING
  *
  * these configs here do extend and overwrite:
- * `/modules/Foo/etc/config/_mvc.php` (exists if module `Foo` is a primary module)
+ * `/modules/Foo/etc/config/_mvc.php`
  */
 
-//-------------------------------------------------------------------------------------
-// MVC
+//######################################################################################################################
+// Emvicy
 
+declare(strict_types=1);  // @see https://www.php.net/manual/en/language.types.declarations.php#language.types.declarations.strict
 error_reporting(E_ALL);
 date_default_timezone_set('Europe/Berlin');
 
-// Log autoloader actions
-$aConfig['MVC_LOG_AUTOLOADER'] = true;
+// consider a logrotate mechanism for these logfiles as they may grow quickly
+$aConfig['MVC_LOG_SQL'] = false;            // consider to set to true for develop environments only: logging request into MVC_LOG_FILE_SQL
+$aConfig['MVC_LOG_REQUEST'] = false;        // consider to set to true for develop environments only: logging request into MVC_LOG_FILE_REQUEST
+$aConfig['MVC_EVENT_LOG_RUN'] = false;      // consider to set to true for develop environments only: logging of each simple "RUN" event into MVC_LOG_FILE_EVENT
+$aConfig['MVC_LOG_AUTOLOADER'] = false;     // consider to set to true for develop environments only: Log autoloader actions
+$aConfig['MVC_INFOTOOL_ENABLE'] = true;     // consider to set to true for develop environments only: show InfoTool bar
+$aConfig['MVC_LOG_FORCE_LINEBREAK'] = true; // consider to set to true for develop environments only: force linebreaks in logfiles no matter what, improves readabilty of logs but blows up
 
-// show InfoTool bar
-$aConfig['MVC_INFOTOOL_ENABLE'] = true;
 
-// force linebreaks in logfiles no matter what
-$aConfig['MVC_LOG_FORCE_LINEBREAK'] = true;
-
-//-------------------------------------------------------------------------------------
+//######################################################################################################################
 // Module Foo
 
 $aConfig['MODULE']['Foo'] = array();
 
+// ...your config goes here...
 
-//-------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+// DB
+// watch database log; e.g.:      cd /tmp; tail -f Foo*.log
 
-include '_session.php';
-include '_csp.php';
+require realpath(__DIR__) . '/_db.php';
+// consider a logrotate mechanism for this logfile as it may grow quickly
+$aConfig['MODULE']['Foo']['DB']['logging']['general_log'] = 'ON'; // consider to set it to ON for develop or test environments only
+
+
+//######################################################################################################################
+// common settings
+
+require realpath(__DIR__) . '/_datatype.php';
+require realpath(__DIR__) . '/_session.php';
+require realpath(__DIR__) . '/_csp.php';
 ~~~
