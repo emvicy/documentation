@@ -1,0 +1,22 @@
+{
+  "Getting started": {
+    "Introduction": "introduction.md",
+    "Installation": "installation.md",
+    "Creating a Module":"creating-a-module.md",
+    "Configuration":"configuration.md",
+    "Directory Structure":"directory-structure.md",
+    "Frontend":"frontend.md"
+  },
+  "Basics": {
+    "Routing":"routing.md",
+    "Request":"request.md",
+    "Events":"events.md",
+    "Logging":"logging.md",
+    "Policy":"policy.md",
+    "CLI Wrapping":"cli-wrapping.md"
+  },
+  "DataType": {
+    "Generating Classes": "generating-datatype-classes.md",
+    "myMVC DataType Classes": "datatype-classes.md"
+  }
+}
