@@ -10,9 +10,9 @@
 <a id="Template-Engine-Smarty"></a>
 ## Template Engine Smarty
 
-- myMVC makes use of the robust Template Engine `Smarty` Version 4. 
+- Emvicy makes use of the robust Template Engine `Smarty` Version 4. 
 - All Templates you define in your module's template folder.
-- myMVC provides a standard set of template files if you create your module via `emvicy.php` (see: [Creating a Module](/3.4.x/creating-a-module)). 
+- Emvicy provides a standard set of template files if you create your module via `emvicy.php` (see: [Creating a Module](/3.4.x/creating-a-module)). 
 - See the directory structure of the standard set of templates: [/3.4.x/directory-structure#modules-moduleName-templates](/3.4.x/directory-structure#modules-moduleName-templates)
 
 _Smarty_  
@@ -38,7 +38,7 @@ In your template you can access that assigned variable this way:
 
 **autoAssign variables** 
 
-If you created your module via myMVC.phar (see: [Creating a Module](/3.4.x/creating-a-module)) or you added additional 
+If you created your module via Emvicy.phar (see: [Creating a Module](/3.4.x/creating-a-module)) or you added additional 
 context information to your route by yourself, you can easily auto assign all [additional route infos](/3.4.x/routing#adding-additional-context-information-to-route): 
 
 _autoAssign variables to template (assuming module is `Foo`)_  
@@ -88,7 +88,7 @@ Event::run('mvc.view.echoOut.on');
 <a id="Accessing-Class-methods-and-objects-in-smarty-template"></a>
 ## Accessing Class methods and objects in smarty template
 
-You can access any myMVC Class directly in the templates.
+You can access any Emvicy Class directly in the templates.
 
 _Examples_  
 ~~~php

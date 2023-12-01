@@ -17,7 +17,7 @@
 ## Enabling Policy Rules
 
 Policies are bonded to a any/certain Controller::method.  
-And they are executed after all Routes are initialized by myMVC.
+And they are executed after all Routes are initialized by Emvicy.
 
 _Path to module's policy configuration files_
 ~~~
@@ -173,7 +173,7 @@ _Example: file `module/Foo/Policy/Index.php`_
 /**
  * Index.php
  *
- * @package myMVC
+ * @package Emvicy
  * @copyright ueffing.net
  * @author Guido K.B.W. Üffing <info@ueffing.net>
  * @license GNU GENERAL PUBLIC LICENSE Version 3. See application/doc/COPYING

@@ -84,7 +84,7 @@ array(10) {
   ["Referer"]=>string(44) "http://mymvcdoku.ueffing.local/3.4.x/request"
   ["Accept-Encoding"]=>string(13) "gzip, deflate"
   ["Accept-Language"]=>string(35) "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7"
-  ["Cookie"]=>string(58) "myMVC_cookieConsent=true; myMVC=0j6eatdmvbq8tqsnsoeph6kipd"
+  ["Cookie"]=>string(58) "Emvicy_cookieConsent=true; Emvicy=0j6eatdmvbq8tqsnsoeph6kipd"
 }
 ~~~
 

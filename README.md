@@ -1,9 +1,10 @@
 
-myMVC Documentation
+Emvicy Documentation
 
-Documentation for PHP myMVC Framework by gueff
+Documentation for PHP Emvicy Framework by gueff
 
 - github
-  - https://github.com/gueff/myMVC_docs/
-  - https://github.com/gueff/myMVC/
-- Documentation: https://mymvc.ueffing.net
+  - https://github.com/emvicy/documentation
+  - https://github.com/emvicy/Emvicy
+- Documentation: https://emvicy.ueffing.net
+

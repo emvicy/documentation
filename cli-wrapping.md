@@ -8,7 +8,7 @@
 <a id="Requesting-a-route"></a>
 **Requesting a route**
 
-myMVC serves simple CLI Requests.
+Emvicy serves simple CLI Requests.
 
 You can easily run any existing route via commandline;
 

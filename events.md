@@ -6,7 +6,7 @@
 - [`\MVC\Event::bind()`](#event-bind)
   - [`\MVC\Event::processBindConfigStack()` - Bind to Events via config Stack](#processBindConfigStack)
 - [`\MVC\Event::delete()`](#event-delete) 
-- [myMVC Standard Events](#myMVCStandardEvents)
+- [Emvicy Standard Events](#EmvicyStandardEvents)
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -18,7 +18,7 @@ _Location where to write Event Listeners_
 module/{module}/etc/config/event/
 ~~~
 
-Listeners written here are executed right after all Configurations have been loaded. No essential classes of myMVC have been loaded or processed at this point yet.
+Listeners written here are executed right after all Configurations have been loaded. No essential classes of Emvicy have been loaded or processed at this point yet.
 
 So this is the perfect place to influence the behavior of the starting application.
 
@@ -175,8 +175,8 @@ _Example: delete *all* Events_
 
 ------------------------------------------------------------------------------------------------------------------------
 
-<a id="myMVCStandardEvents"></a>
-## myMVC Standard Events 
+<a id="EmvicyStandardEvents"></a>
+## Emvicy Standard Events 
 
 | Event Name                                            | `Event::bind` perforemd in                                   | `Event::run` located in                                                                                 | value passed                                                    |
 |-------------------------------------------------------|--------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------|

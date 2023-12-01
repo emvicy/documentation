@@ -25,15 +25,15 @@ You don't need to write secondary modules if you don't need one. Develop your ap
 
 **Secondary module**  
 But sometimes there are parts of code you want to reuse in other software projects.
-For such a case `secondary` modules are suitable. Code written here should be reused in other myMVC software projects if necessary.
-For this version of myMVC there are already some secondary, public myMVC modules out there for reuse.
+For such a case `secondary` modules are suitable. Code written here should be reused in other Emvicy software projects if necessary.
+For this version of Emvicy there are already some secondary, public Emvicy modules out there for reuse.
 
 Public available modules:  
-- <a href="https://github.com/gueff/myMVC_module_DB" target="_blank">`https://github.com/gueff/myMVC_module_DB`</a>
-- <a href="https://github.com/gueff/myMVC_module_OpenApi" target="_blank">`https://github.com/gueff/myMVC_module_OpenApi`</a>
-- <a href="https://github.com/gueff/myMVC_module_Idolon" target="_blank">`https://github.com/gueff/myMVC_module_Idolon`</a>
-- <a href="https://github.com/gueff/myMVC_module_Email" target="_blank">`https://github.com/gueff/myMVC_module_Email`</a>
-- <a href="https://github.com/gueff/myMVC_module_Captcha" target="_blank">`https://github.com/gueff/myMVC_module_Captcha`</a>
+- <a href="https://github.com/gueff/Emvicy_module_DB" target="_blank">`https://github.com/gueff/Emvicy_module_DB`</a>
+- <a href="https://github.com/gueff/Emvicy_module_OpenApi" target="_blank">`https://github.com/gueff/Emvicy_module_OpenApi`</a>
+- <a href="https://github.com/gueff/Emvicy_module_Idolon" target="_blank">`https://github.com/gueff/Emvicy_module_Idolon`</a>
+- <a href="https://github.com/gueff/Emvicy_module_Email" target="_blank">`https://github.com/gueff/Emvicy_module_Email`</a>
+- <a href="https://github.com/gueff/Emvicy_module_Captcha" target="_blank">`https://github.com/gueff/Emvicy_module_Captcha`</a>
 
 ---
 
@@ -60,14 +60,14 @@ php emvicy.php c module=foo primary=yes force=no;  # same
 php emvicy.php c module=foo primary=yes force=yes; # no asking - instantly creating of primary module "Foo"
 ~~~
 
-_After creating a primary module, you could start myMVC's local development server to test the module frontend_
+_After creating a primary module, you could start Emvicy's local development server to test the module frontend_
 ~~~bash
 php emvicy.php s
 ~~~
 
 Call http://127.0.0.1:1969/ and you will see your created module frontend
 
-![myMVC Creating a Module](/doc/3.4.x/getting-started/mymvc-creating-a-module.png)
+![Emvicy Creating a Module](/doc/3.4.x/getting-started/mymvc-creating-a-module.png)
 
 ---
 

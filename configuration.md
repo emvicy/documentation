@@ -5,14 +5,14 @@
   - [MVC_ENV](#MVC_ENV)
   - [Custom .env variables](#custom-env-variables)
 - [Config files, -places and reading order](#Config-files-places-and-reading-order)
-  - [myMVC config folder](#myMVC-config-folder)
+  - [Emvicy config folder](#Emvicy-config-folder)
   - [Module's config folder](#Modules-config-folder)
   - [Module's environment config file](#Modules-environment-config-file)
 - [Module's composer.json](#Modules-composer-json)
 - [Access `MVC_*` config values](#Access-MVC-config-values)
 - [Access module config values](#Access-module-config-values)
 - [Appendix](#appendix)
-  - [`/config/_mvc.php`](#myMVC-config-folder-example)
+  - [`/config/_mvc.php`](#Emvicy-config-folder-example)
   - [Example `/modules/Foo/etc/config/_mvc.php`](#Modules-config-folder-example)
   - [Example `/modules/Foo/etc/config/Foo/config/develop.php`](#Modules-environment-config-file-example)
 
@@ -23,7 +23,7 @@
 
 <a id="MVC_ENV"></a>
 **MVC_ENV**  
-In the root folder of your myMVC copy you will find an `.env` file. There the variable `MVC_ENV` declares what Environment is valid for myMVC.  
+In the root folder of your Emvicy copy you will find an `.env` file. There the variable `MVC_ENV` declares what Environment is valid for Emvicy.  
 You can name the value as you like - But common values are: `develop`, `test`, `production` or `live`.  
 
 ~~~bash
@@ -59,19 +59,19 @@ The following locations for configurations exist and are read in succession in t
 
 This also means that a later loaded configuration beats (overrides) an earlier loaded one.
 
-1. ⬆ **myMVC config folder** <a id="myMVC-config-folder"></a>
+1. ⬆ **Emvicy config folder** <a id="Emvicy-config-folder"></a>
    - `/config/` 
    - Any `*.php` file in this directory will be included; Reading order is `a-z`
    - Coverage: **globally** - Configs placed here are valid to all modules and to all environments
    - By default, the following files are located here
-      - `_mvc.php`: This file contains basic settings that are necessary for operation. You should not edit this file. If you want to change settings, override values in your own module config. myMVC config variable names always begin with `MVC_`.  
-      - See content of file [`/config/_mvc.php`](#myMVC-config-folder-example)
+      - `_mvc.php`: This file contains basic settings that are necessary for operation. You should not edit this file. If you want to change settings, override values in your own module config. Emvicy config variable names always begin with `MVC_`.  
+      - See content of file [`/config/_mvc.php`](#Emvicy-config-folder-example)
 2. ⬆ **Module's config folder** <a id="Modules-config-folder"></a> _(overrides 1.)_
     - `/modules/{moduleName}/etc/config/`
     - Any `*.php` file in this directory will be included; Reading order is `a-z`
     - Coverage: **module globally** - Configs placed here are valid to all environments of your module
    - By default, the following files are located here
-      - `_mvc.php`: further MVC configs. myMVC config variable names always begin with `MVC_`.
+      - `_mvc.php`: further MVC configs. Emvicy config variable names always begin with `MVC_`.
       - See [Example `/modules/Foo/etc/config/_mvc.php`](#Modules-config-folder-example)
 3. ⬆ **Module's environment config file** <a id="Modules-environment-config-file"></a> _(overrides 2.)_
    - Schema: `/modules/{moduleName}/etc/config/{moduleName}/config/{environment}.php`
@@ -87,7 +87,7 @@ Example: If your Module is named `Foo`, and you set `MVC_ENV=production`, then t
 <a id="Modules-composer-json"></a>
 ## Module's composer.json
 
-Extend your module with third libraries using composer. You don't need to have composer installed locally, because myMVC has a composer.phar on board which is used to install and update libraries.
+Extend your module with third libraries using composer. You don't need to have composer installed locally, because Emvicy has a composer.phar on board which is used to install and update libraries.
 
 Write your requirements into the composer.json file which you find here:
 
@@ -96,7 +96,7 @@ _`composer.json`_
 /modules/{moduleName}/etc/config/{moduleName}/composer.json
 ~~~
 
-The next time you run your myMVC Application, myMVC will automatically perform a `composer install`.  
+The next time you run your Emvicy Application, Emvicy will automatically perform a `composer install`.  
 Alternatively you can of course also perform an installation by hand.
 
 _Installed vendor folder_  
@@ -104,7 +104,7 @@ _Installed vendor folder_
 /modules/{moduleName}/etc/config/{moduleName}/vendor
 ~~~
 
-myMVC will automatically integrate all `/vendor/autoload.php` autoloaders from any myMVC module.
+Emvicy will automatically integrate all `/vendor/autoload.php` autoloaders from any Emvicy module.
 
 **keep vendor libraries updated**
 
@@ -159,13 +159,13 @@ $aModule = \MVC\Registry::get('MODULE');
 <a id="appendix"></a>
 ## Appendix
 
-<a id="myMVC-config-folder-example"></a>
+<a id="Emvicy-config-folder-example"></a>
 *`/config/_mvc.php`*  
 ~~~php
 <?php
 
 /**
- * @package myMVC
+ * @package Emvicy
  * @copyright ueffing.net
  * @author Guido K.B.W. Üffing <mymvc@ueffing.net>
  * @license GNU GENERAL PUBLIC LICENSE Version 3. See application/doc/COPYING
@@ -185,7 +185,7 @@ MVC_RUNTIME_SETTINGS: {
 
     // enable exit on "kill" command and CLI break (CTRL-C)
     // This command needs the pcntl extension to run.
-    // do not provide if php's builtin webserver is running (using e.g. php myMVC.phar)
+    // do not provide if php's builtin webserver is running (using e.g. php Emvicy.phar)
     if (true === isset($_SERVER['HTTP_HOST']) && '127.0.0.1:1969' !== $_SERVER['HTTP_HOST'])
     {
         (function_exists('pcntl_async_signals')) ? pcntl_async_signals(true) : false;
@@ -259,7 +259,7 @@ MVC_APPLICATION_SETTINGS_I: {
     $aConfig['MVC_LIBRARY'] = $aConfig['MVC_APPLICATION_PATH'] . '/library';
     $aConfig['MVC_MODULES_DIR'] = $aConfig['MVC_BASE_PATH'] . '/modules';
 
-    // Main myMVC config directory
+    // Main Emvicy config directory
     $aConfig['MVC_CONFIG_DIR'] = $aConfig['MVC_BASE_PATH'] . '/config';
 
     /**
@@ -334,14 +334,14 @@ MVC_APPLICATION_SETTINGS_I: {
      */
     // session directory and
     // Session options @see http://php.net/manual/de/session.configuration.php
-    $aConfig['MVC_SESSION_NAMESPACE'] = 'myMVC';
+    $aConfig['MVC_SESSION_NAMESPACE'] = 'Emvicy';
     $aConfig['MVC_SESSION_PATH'] = $aConfig['MVC_APPLICATION_PATH'] . '/session';
     $aConfig['MVC_SESSION_OPTIONS'] = array(
         'cookie_httponly' => true,
         'auto_start' => 0,
         'save_path' => $aConfig['MVC_SESSION_PATH'],
         'cookie_secure' => $aConfig['MVC_SECURE_REQUEST'],
-        'name' => 'myMVC' . (($aConfig['MVC_SECURE_REQUEST']) ? '_secure' : ''),
+        'name' => 'Emvicy' . (($aConfig['MVC_SECURE_REQUEST']) ? '_secure' : ''),
         'save_handler' => 'files',
         'cookie_lifetime' => 0,
 
@@ -451,7 +451,7 @@ MVC_MISC: {
 <?php
 
 /**
- * @package myMVC
+ * @package Emvicy
  * @copyright ueffing.net
  * @author Guido K.B.W. Üffing <mymvc@ueffing.net>
  * @license GNU GENERAL PUBLIC LICENSE Version 3. See application/doc/COPYING
@@ -482,7 +482,7 @@ $aConfig['MVC_SMARTY_PLUGINS_DIR'][] = realpath(__DIR__ . '/../../') . '/etc/sma
 <?php
 
 /**
- * @package myMVC
+ * @package Emvicy
  * @copyright ueffing.net
  * @author Guido K.B.W. Üffing <mymvc@ueffing.net>
  * @license GNU GENERAL PUBLIC LICENSE Version 3. See application/doc/COPYING

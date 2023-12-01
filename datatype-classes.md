@@ -25,7 +25,7 @@ object(MVC\DataType\DTRoute)#15 (9) {
     ["methodsAssigned":protected]=>array(1) {[0]=> string(3) "GET"}
     ["query":protected]=>string(30) "module=Foo&c=Index&m=index"
     ["class":protected]=>string(24) "Foo\Controller\Index"
-    ["classFile":protected]=>string(128) "/var/www/myMVC/modules/Foo/Controller/Index.php"
+    ["classFile":protected]=>string(128) "/var/www/Emvicy/modules/Foo/Controller/Index.php"
     ["module":protected]=>string(7) "Foo"
     ["c":protected]=>string(5) "Index"
     ["m":protected]=>string(5) "index"
@@ -67,7 +67,7 @@ object(MVC\DataType\DTRequestCurrent)#17 (14) {
     ["Referer"]=>string(64) "http://mymvcdoku.ueffing.local/3.4.x/generating-datatype-classes"
     ["Accept-Encoding"]=>string(13) "gzip, deflate"
     ["Accept-Language"]=>string(35) "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7"
-    ["Cookie"]=>string(58) "myMVC_cookieConsent=true; myMVC=827rv9s19bfsk692j0pgje3kn2"
+    ["Cookie"]=>string(58) "Emvicy_cookieConsent=true; Emvicy=827rv9s19bfsk692j0pgje3kn2"
   }
   ["pathParam":protected]=>array(0) {}
   ["ip":protected]=>string(9) "127.0.0.1"
@@ -86,9 +86,9 @@ $oDTFileinfo = \MVC\File::info(__FILE__);
 ~~~
 ~~~
 object(MVC\DataType\DTFileinfo)#84 (16) {
-  ["dirname":protected]=>string(151) "/var/www/myMVC/modules/Doc/Controller"
+  ["dirname":protected]=>string(151) "/var/www/Emvicy/modules/Doc/Controller"
   ["basename":protected]=>string(9) "Index.php"
-  ["path":protected]=>string(161) "/var/www/myMVC/modules/Doc/Controller/Index.php"
+  ["path":protected]=>string(161) "/var/www/Emvicy/modules/Doc/Controller/Index.php"
   ["is_file":protected]=>bool(true)
   ["is_dir":protected]=>bool(false)
   ["extension":protected]=>string(3) "php"

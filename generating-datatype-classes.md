@@ -1,7 +1,7 @@
 
 # Generating DataType Classes
 
-myMVC includes a Generator that you can use to generate DataType Classes. Consider those Classes more than a Storage than a Logic Element.  
+Emvicy includes a Generator that you can use to generate DataType Classes. Consider those Classes more than a Storage than a Logic Element.  
 Define what name the class and which namespace it should have, which properties or constants it should provide.  
 Then just run the Generator and it will create the Class for you.
 

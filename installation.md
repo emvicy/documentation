@@ -1,14 +1,14 @@
 
 # Installation
 
-- [Get myMVC](#Get-myMVC)
-- [Initialize myMVC](#Initialize_myMVC)
+- [Get Emvicy](#Get-Emvicy)
+- [Initialize Emvicy](#Initialize_Emvicy)
 - [Requirements](#Requirements)
 
 ---
 
-<a id="Get-myMVC"></a>
-## Get myMVC
+<a id="Get-Emvicy"></a>
+## Get Emvicy
 
 make sure that your machine has PHP >=8.0 installed (see [Requirements](#Requirements)). 
 
@@ -18,29 +18,29 @@ clone the `3.4.x` repository branch - this way you have the possibility to perfo
 
 _command_  
 ~~~bash
-git clone --branch 3.4.x https://github.com/gueff/myMVC.git myMVC_3.4.x;
+git clone --branch 3.4.x https://github.com/gueff/Emvicy.git Emvicy_3.4.x;
 ~~~
 
-🛈 the repository url for this version is: https://github.com/gueff/myMVC/tree/3.4.x
+🛈 the repository url for this version is: https://github.com/gueff/Emvicy/tree/3.4.x
 
 _see complete installation video_  
 <iframe width="560" height="315" src="https://www.youtube.com/embed/I4qcD-t9IP8?si=8k4ucCeeGm5zOP2v" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ### Installation :: alternative methods
 
-- get myMVC `3.4.x` **branch head**: 📥 https://github.com/gueff/myMVC/archive/refs/heads/3.4.x.zip
-- get the **latest stable** myMVC Release of myMVC _(🛈 latest stable Releases may be relate on other branches than `3.4.x`)_  
-  - Go to download page: <a href="https://github.com/gueff/myMVC/releases/latest" target="_blank">`https://github.com/gueff/myMVC/releases/latest`</a>
+- get Emvicy `3.4.x` **branch head**: 📥 https://github.com/gueff/Emvicy/archive/refs/heads/3.4.x.zip
+- get the **latest stable** Emvicy Release of Emvicy _(🛈 latest stable Releases may be relate on other branches than `3.4.x`)_  
+  - Go to download page: <a href="https://github.com/gueff/Emvicy/releases/latest" target="_blank">`https://github.com/gueff/Emvicy/releases/latest`</a>
 
 ---
 
-<a id="Initialize_myMVC"></a>
-## Initialize myMVC    
+<a id="Initialize_Emvicy"></a>
+## Initialize Emvicy    
 
-cd into the root folder of myMVC and run `emvicy.php`
+cd into the root folder of Emvicy and run `emvicy.php`
 
 ~~~bash
-cd myMVC_3.4.x/; 
+cd Emvicy_3.4.x/; 
 php emvicy.php
 ~~~
  
@@ -56,7 +56,7 @@ setup checking
 .......Installation completed.
 ~~~
 
-After that, start myMVC's local development server.
+After that, start Emvicy's local development server.
 
 ~~~bash
 php emvicy.php s
@@ -64,7 +64,7 @@ php emvicy.php s
 
 _Example output_  
 ~~~bash
-admin1@erazer:/tmp/foo/myMVC_3.4.x$ php emvicy.php s
+admin1@erazer:/tmp/foo/Emvicy_3.4.x$ php emvicy.php s
 export MVC_ENV='develop'; /opt/lampp_8.2.0/bin/php-8.2.0 -S 127.0.0.1:1969 -t ./public/
 --------------------------------------------------------------------------------
 export MVC_ENV='develop'; /opt/lampp_8.2.0/bin/php-8.2.0 -S 127.0.0.1:1969 -t ./public/
@@ -75,7 +75,7 @@ export MVC_ENV='develop'; /opt/lampp_8.2.0/bin/php-8.2.0 -S 127.0.0.1:1969 -t ./
 Now you can call your application in your web browser at <a href="http://127.0.0.1:1969" target="_blank">`http://127.0.0.1:1969`</a>.
 
 _You should see this Frontend_  
-![myMVC Installation](/doc/3.4.x/getting-started/mymvc-installation.png)
+![Emvicy Installation](/doc/3.4.x/getting-started/mymvc-installation.png)
 
 ---
 

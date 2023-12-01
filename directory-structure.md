@@ -16,8 +16,8 @@
 
 | Folder / File                                         | Meaning                                            |
 |-------------------------------------------------------|----------------------------------------------------|
-| 📁 [application](#application)                        | myMVC Framework and libraries, temporary files     |    
-| 📁 [config](/3.4.x/configuration#myMVC-config-folder) | top config folder; gobal                           |  
+| 📁 [application](#application)                        | Emvicy Framework and libraries, temporary files     |    
+| 📁 [config](/3.4.x/configuration#Emvicy-config-folder) | top config folder; gobal                           |  
 | 📁 [modules](#modules-moduleName)                     | **&larr; in here you write your application code** |    
 | 📁 public                                             | any public files like `*.css`, `*.js`              | 
 | emvicy.php                                            | command line tool; helps to manage                 |  
