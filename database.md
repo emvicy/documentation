@@ -47,6 +47,8 @@ db.collation=utf8_unicode_ci
 db.prefix=
 ~~~
 
+---
+
 <a id="2"></a>
 ## Creation
 
@@ -77,6 +79,7 @@ $aConfig['MODULE']['Foo']['DB']['logging']['general_log'] = 'ON'; // consider to
 
 ~~~
 
+---
 
 <a id="2-2"></a> 
 ### 2.2. Creating a concrete Table Class
@@ -298,6 +301,7 @@ DB::$oFooModelTableUser->...<method>...
 therefore an object of its related Datatype must be instanciated and given to the method `create`.
 Here e.g. with Datatype "DTFooModelTableUser" to TableClass "modules/Foo/Model/Table/User":
 
+_example `create`: put data into table_  
 ~~~php
 // create DataType object
 $oDTFooModelTableUser = DTFooModelTableUser::create()
@@ -320,75 +324,70 @@ $oDTFooModelTableUser = DB::$oFooModelTableUser->create(
 $iId = $oDTFooModelTableUser->get_id();
 ~~~
 
+---
 
 <a id="3-2"></a>  
 #### 3.2. retrieve
 
 `retrieveTupel` asks for a specific Tupel and returns the DataType Object according to the requested Table.
 
-_`retrieveTupel` - identified by `id`_
+_example `retrieveTupel` - identified by `id`_
 ~~~php
 /** @var \Foo\DataType\DTFooModelTableUser $oDTFooModelTableUser */
 $oDTFooModelTableUser = DB::$oFooModelTableUser->retrieveTupel(
-    DTFooModelTableUser::create()
-        ->set_id(2)
-)
+    DTFooModelTableUser::create()->set_id(2)
+);
 ~~~
 - get User Object whose id=2
 
 
 `retrieve` returns an array of DataType Objects according to the requested Table.
 
-_`retrieve`: get all Datasets_
+_example `retrieve`: get all Datasets_
 ~~~php
 /** @var \Foo\DataType\DTFooModelTableUser[] $aDTFooModelTableUser */
-$aDTFooModelTableUser = DB::$oFooModelTableUser->retrieveTupel();
+$aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve();
 ~~~
 
-_`retrieve`: get specific Datasets_
-~~~php
-/** @var \Foo\DataType\DTFooModelTableUser[] $aDTFooModelTableUser */
-$aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve(
-    DTArrayObject::create()
-        ->add_aKeyValue(
-            DTKeyValue::create()
-                ->set_sKey('stampChange')
-                ->set_mOptional1('LIKE')
-                ->set_sValue('2021-06-19')
-            );
-);
-~~~
-
-_`retrieve`: get Datasets with sort order_
+_example `retrieve`: get specific Datasets_
 ~~~php
 /** @var \Foo\DataType\DTFooModelTableUser[] $aDTFooModelTableUser */
 $aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve(
-    DTArrayObject::create()
-        ->add_aKeyValue(
-            DTKeyValue::create()
-                ->set_sKey('email')
-                ->set_mOptional1('LIKE')
-                ->set_sValue('%@example.com%')
-        ),
-    DTArrayObject::create()
-        ->add_aKeyValue(
-            DTKeyValue::create()
-                ->set_sValue('ORDER BY id ASC')
-        )
+    DTArrayObject::create()->add_aKeyValue(
+        DTKeyValue::create()
+            ->set_sKey('stampChange')
+            ->set_mOptional1('>=')
+            ->set_sValue('2021-06-19')
+    )
 );
 ~~~
 
-_`retrieve`: get first 30 Datasets (LIMIT 0,30)_
+_example `retrieve`: get Datasets with sort order_
+~~~php
+/** @var \Foo\DataType\DTFooModelTableUser[] $aDTFooModelTableUser */
+$aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve(
+    DTArrayObject::create()->add_aKeyValue(
+        DTKeyValue::create()
+            ->set_sKey('email')
+            ->set_mOptional1('LIKE')
+            ->set_sValue('%@example.com%')
+    ),
+    DTArrayObject::create()->add_aKeyValue(
+        DTKeyValue::create()
+            ->set_sValue('ORDER BY id ASC')
+    )
+);
+~~~
+
+_example `retrieve`: get first 30 Datasets (LIMIT 0,30)_
 ~~~php
 /** @var \Foo\DataType\DTFooModelTableUser[] $aDTFooModelTableUser */
 $aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve(
     null,
-    DTArrayObject::create()
-        ->add_aKeyValue(
-            DTKeyValue::create()
-                ->set_sValue('LIMIT 0,30')
-        )
-)
+    DTArrayObject::create()->add_aKeyValue(
+        DTKeyValue::create()->set_sValue('LIMIT 0, 30')
+    )
+);
 ~~~
 
 
@@ -396,34 +395,61 @@ $aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve(
 #### 3.3. update
 
 
-_`updateTupel`: update this specific Tupel - identified by `id`_
+_example `updateTupel`: update this specific Tupel - identified by `id`_
+~~~php
+// retrieve User object
+/** @var \Foo\DataType\DTFooModelTableUser $oDTFooModelTableUser */
+$oDTFooModelTableUser = DB::$oFooModelTableUser->retrieveTupel(
+    DTFooModelTableUser::create()->set_id(2)
+);
+
+// modify User object
+$oDTFooModelTableUser->set_nickname('XYZ')
+
+// update tupel with modified object
+/** @var boolean $bSuccess */
+$bSuccess = DB::$oFooModelTableUser->updateTupel($oDTFooModelTableUser);
+~~~
+
+_shortened example `updateTupel`: update this specific Tupel - identified by `id`_
 ~~~php
 /** @var boolean $bSuccess */
 $bSuccess = DB::$oFooModelTableUser->updateTupel(
-    DTFooModelTableUser::create()
-        ->set_id(1)
-        ->set_nickname('XYZ')
+    DB::$oFooModelTableUser->retrieveTupel( DTFooModelTableUser::create()->set_id(2) )->set_nickname('ABC')
 );
 ~~~
-- the equivalent dataset tupel with object's `id` will be updated.
-
-_`update`: update all Tupel which are affected by the where clause_
+  
+<!--
+_example `update`: update all Tupel which are affected by the where clause_
 ~~~php
+// retrieve User object
+/** @var \Foo\DataType\DTFooModelTableUser $oDTFooModelTableUser */
+$oDTFooModelTableUser = DB::$oFooModelTableUser->retrieveTupel(
+    DTFooModelTableUser::create()->set_id(2)
+);
+
 /** @var boolean $bSuccess */
 $bSuccess = DB::$oFooModelTableUser->update(
-    DTFooModelTableUser::create()
-        ->set_active('1'),
+    // modify User object
+    $oDTFooModelTableUser->set_active(0),
     // where
-    DTArrayObject::create()
-        ->add_aKeyValue(
-            DTKeyValue::create()
-                ->set_sKey('active')
-                ->set_mOptional1('=')
-                ->set_sValue('0')
-        )
+    DTArrayObject::create()->add_aKeyValue(
+        DTKeyValue::create()
+            ->set_sKey(DTFooModelTableUser::getPropertyName_email())
+            ->set_mOptional1('=')
+            ->set_sValue('foo@example.com')
+    ), true
 );
 ~~~
+-->
 
+_update via SQL Statement_  
+~~~php
+DB::$oPDO->query("UPDATE `FooModelTableUser` SET `active` = '0' WHERE `email` = 'foo@example.com'");
+~~~
+- see also: [3.8. SQL](#3-8)
+
+---
 
 <a id="3-4"></a>  
 #### 3.4. delete
@@ -622,42 +648,56 @@ Array
 <a id="3-8"></a>  
 #### 3.8. SQL
 
-_`SQL` example `fetchRow`_
+_`fetchRow`: select a single tupel (a row)_
 ~~~php
-public function getUserByNickname(string $sNickname = '')
-{
-    $sSql = "SELECT * FROM `FooModelTableUser` WHERE nickname = '" . $sNickname . "'";
-    $aResult = DB::$oFooModelTableUser->fetchRow($sSql);
-
-    /** @var DTFooModelTableUser[] $aDTFooModelTableUser */
-    $aDTFooModelTableUser = array();
-
-    foreach ($aResult as $aData)
-    {
-        $aDTFooModelTableUser[] = DTFooModelTableUser::create($aData);
-    }
-        
-    return $aDTFooModelTableUser;
-}
+/** @var \Foo\DataType\DTFooModelTableUser $oDTFooModelTableUser */
+$oDTFooModelTableUser = DTFooModelTableUser::create(
+    DB::$oPDO->fetchRow("SELECT * FROM `FooModelTableUser` WHERE id = '2'")
+);
 ~~~
-_`SQL` example `fetchAll`_
+- here we select the entry which id = 2
+- we put in into the table's Datatype object of type `\Foo\DataType\DTFooModelTableUser`
+
+---
+
+_`fetchAll`: select all tupel (multiple rows)_
 ~~~php
-public function getUserByNickname(string $sNickname = '')
-{
-    $sSql = "SELECT * FROM `FooModelTableUser` WHERE nickname = '" . $sNickname . "'";
-    $aResult = DB::$oFooModelTableUser->fetchAll($sSql);
-
-    /** @var DTFooModelTableUser[] $aDTFooModelTableUser */
-    $aDTFooModelTableUser = array();
-
-    foreach ($aResult as $aData)
-    {
-        $aDTFooModelTableUser[] = DTFooModelTableUser::create($aData);
-    }
-        
-    return $aDTFooModelTableUser;
-}
+/** @var \Foo\DataType\DTFooModelTableUser[] $aDTFooModelTableUser */
+$aDTFooModelTableUser = array_map(
+    function($aData){
+        return DTFooModelTableUser::create($aData);
+    },
+    DB::$oPDO->fetchAll("SELECT * FROM `FooModelTableUser` WHERE email LIKE '%example.com'")
+);
 ~~~
+- here we select all entries which email is like '%example.com'
+- we map them all into the table's Datatype object
+- so we get an array of type `DTFooModelTableUser[]`
+
+---
+
+_`query`: insert_  
+~~~php
+DB::$oPDO->query("INSERT INTO  `FooModelTableUser` 
+    (`stampChange`,`stampCreate`,`id_TableGroup`,`email`,`active`,`uuid`,`uuidtmp`,`password`,`nickname`,`forename`,`lastname`) 
+    VALUES ('2023-12-01 18:53:33',
+            '2023-12-01 18:53:33',
+            '1','foo2@example.com',
+            '1',
+            '7cb3c040-36f1-4aa0-ae3a-8ef19d0667aa',
+            '236dde6b-f6a1-440f-afd2-393291331642',
+            '" . password_hash('...password...', PASSWORD_DEFAULT) . "',
+            'foo2',
+            'foo2',
+            'bar2');"
+);
+~~~
+
+_`query`: update_
+~~~php
+DB::$oPDO->query("UPDATE `FooModelTableUser` SET `active` = '0' WHERE `email` = 'foo@example.com'");
+~~~
+
 
 ---
 
