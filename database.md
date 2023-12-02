@@ -315,12 +315,14 @@ $oDTFooModelTableUser = DTFooModelTableUser::create()
     ->set_uuidtmp(Strings::uuid4())
     ->set_active(1);
         
-// put DataType object into Table and get updated object back        
+// put DataType object into Table and get updated object back
+/** @var \Foo\DataType\DTFooModelTableUser $oDTFooModelTableUser */
 $oDTFooModelTableUser = DB::$oFooModelTableUser->create(
     $oDTFooModelTableUser
 );
 
-// if successful, `$oDTFooModelTableUser` now has an id (auto increment of database table) set
+// on success, `$oDTFooModelTableUser` now has an id (auto increment of database table) set
+// on fail, id = 0
 $iId = $oDTFooModelTableUser->get_id();
 ~~~
 

@@ -39,9 +39,6 @@ db.port=3306
 db.dbname=Emvicy1x
 db.username=root
 db.password=
-db.charset=utf8
-db.collation=utf8_unicode_ci
-db.prefix=
 ~~~
 
 <a id="MVC_ENV"></a>

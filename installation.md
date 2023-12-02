@@ -23,10 +23,8 @@ git clone --branch 1.x https://github.com/Emvicy/Emvicy.git Emvicy_1.x;
 
 🛈 the repository url for this version is: https://github.com/Emvicy/Emvicy/tree/1.x
 
-<!--
 _see complete installation video_  
-<iframe width="560" height="315" src="https://www.youtube.com/embed/I4qcD-t9IP8?si=8k4ucCeeGm5zOP2v" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
--->
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Z4YmvQUjq0U?si=3DFrhwWmGFMHwR4m" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ### Installation :: alternative methods
 
