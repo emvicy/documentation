@@ -61,16 +61,15 @@ setup checking
 After that, start Emvicy's local development server.
 
 ~~~bash
-php emvicy.php s
+php emvicy.php serve
 ~~~
 
 _Example output_  
 ~~~bash
-admin1@erazer:/tmp/foo/Emvicy_1.x$ php emvicy.php s
-export MVC_ENV='develop'; /opt/lampp_8.2.0/bin/php-8.2.0 -S 127.0.0.1:1969 -t ./public/
+admin1@erazer:/tmp/foo/Emvicy_1.x$ php emvicy.php serve
+/opt/lampp_8.2.0/bin/php-8.2.0 -S 127.0.0.1:1969 -t ./public/
 --------------------------------------------------------------------------------
-export MVC_ENV='develop'; /opt/lampp_8.2.0/bin/php-8.2.0 -S 127.0.0.1:1969 -t ./public/
-[Sun Nov 19 15:53:29 2023] PHP 8.2.0 Development Server (http://127.0.0.1:1969) started
+[Sat Dec  2 11:09:12 2023] PHP 8.2.0 Development Server (http://127.0.0.1:1969) started
 ~~~
 
 
