@@ -330,7 +330,7 @@ $iId = $oDTFooModelTableUser->get_id();
 
 `retrieveTupel` asks for a specific Tupel and returns the DataType Object according to the requested Table.
 
-_example `retrieveTupel` - identified by `id`_
+_example `retrieveTupel`: retrieve this **one** specific Tupel - identified **only** by **`id`**_  
 ~~~php
 /** @var \Foo\DataType\DTFooModelTableUser $oDTFooModelTableUser */
 $oDTFooModelTableUser = DB::$oFooModelTableUser->retrieveTupel(
@@ -352,29 +352,23 @@ _example `retrieve`: get specific Datasets_
 ~~~php
 /** @var \Foo\DataType\DTFooModelTableUser[] $aDTFooModelTableUser */
 $aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve(
-    DTArrayObject::create()->add_aKeyValue(
-        DTKeyValue::create()
-            ->set_sKey('stampChange')
-            ->set_mOptional1('>=')
-            ->set_sValue('2021-06-19')
-    )
+    [ // where
+        DTDBWhere::create()->set_sKey( DTFooModelTableUser::getPropertyName_email() )->set_sRelation('LIKE')->set_sValue('%example%')
+    ]
 );
 ~~~
 
-_example `retrieve`: get Datasets with sort order_
+_example `retrieve`: get Datasets with options_
 ~~~php
 /** @var \Foo\DataType\DTFooModelTableUser[] $aDTFooModelTableUser */
 $aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve(
-    DTArrayObject::create()->add_aKeyValue(
-        DTKeyValue::create()
-            ->set_sKey('email')
-            ->set_mOptional1('LIKE')
-            ->set_sValue('%@example.com%')
-    ),
-    DTArrayObject::create()->add_aKeyValue(
-        DTKeyValue::create()
-            ->set_sValue('ORDER BY id ASC')
-    )
+    [ // where
+        DTDBWhere::create()->set_sKey( DTFooModelTableUser::getPropertyName_email() )->set_sRelation('LIKE')->set_sValue('%example%')
+    ],
+    [ // option
+        DTDBOption::create()->set_sValue('ORDER BY `email` ASC'),
+        DTDBOption::create()->set_sValue('LIMIT 0,10'),
+    ]
 );
 ~~~
 
@@ -392,7 +386,6 @@ $aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve(
 
 <a id="3-3"></a>  
 #### 3.3. update
-
 
 _example `updateTupel`: update this **one** specific Tupel - identified **only** by **`id`**_
 ~~~php
@@ -440,7 +433,7 @@ _update via SQL Statement_
 DB::$oPDO->query("UPDATE `FooModelTableUser` SET `active` = '0' WHERE `email` = 'foo@example.com'");
 ~~~
 - **Note**: when using `DB::$oPDO->query()`, no events of `mvc.db.model.db.[create|retrieve|update|delete|insert].*` are fired 
-- see also: [3.8. SQL](#3-8)
+- see also: [Database Events](/1.x/events#database_events), and [Database - 3.8. SQL](#3-8)
 
 ---
 
