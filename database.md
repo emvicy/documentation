@@ -494,6 +494,11 @@ $iAmount = DB::$oFooModelTableUser->count([
 // Returns a checksum of the table
 $iChecksum = DB::$oFooModelTableUser->checksum();
 ~~~
+~~~
+// type: integer
+1138916503
+~~~
+
 
 <a id="3-7"></a>  
 ### 3.7. getFieldInfo
