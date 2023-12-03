@@ -235,6 +235,7 @@ _Example: delete *all* Events_
 | mvc.db.model.db.retrieve.before     |                                     | `\MVC\DB\Model\Db::retrieve`          | `\MVC\DataType\DTValue $oDTValue`                   |
 | mvc.db.model.db.retrieve.sql        | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::retrieve`          | `\MVC\ArrDot $oSql`                                 |
 | mvc.db.model.db.retrieve.after      |                                     | `\MVC\DB\Model\Db::retrieve`          | `\MVC\DataType\DTValue $oDTValue`                   |
+| mvc.db.model.db.count.before        |                                     | `\MVC\DB\Model\Db::count`             | `\MVC\DataType\DTValue $oDTValue`                   |
 | mvc.db.model.db.count.sql           |                                     | `\MVC\DB\Model\Db::count`             | `\MVC\ArrDot $oSql`                                 |
 | mvc.db.model.db.updateTupel.before  |                                     | `\MVC\DB\Model\Db::updateTupel`       | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
 | mvc.db.model.db.update.before       | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::update`            | `\MVC\DataType\DTValue $oDTValue`                   |

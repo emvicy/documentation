@@ -489,15 +489,9 @@ $bSuccess = DB::$oFooModelTableUser->delete([ // array of where clauses
 $iAmount = DB::$oFooModelTableUser->count();
 
 // Amount of specific Datasets
-$iAmount = DB::$oFooModelTableUser->count(
-    DTArrayObject::create()
-        ->add_aKeyValue(
-            DTKeyValue::create()
-                ->set_sKey('stampChange')
-                ->set_mOptional1('=')
-                ->set_sValue('2021-06-19')
-    )
-);
+$iAmount = DB::$oFooModelTableUser->count([
+    DTDBWhere::create()->set_sKey( DTFooModelTableUser::getPropertyName_email() )->set_sRelation('LIKE')->set_sValue('%example.com')
+]);
 ~~~
 
 <a id="3-6"></a>  
