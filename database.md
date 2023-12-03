@@ -376,10 +376,10 @@ _example `retrieve`: get first 30 Datasets (LIMIT 0,30)_
 ~~~php
 /** @var \Foo\DataType\DTFooModelTableUser[] $aDTFooModelTableUser */
 $aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve(
-    null,
-    DTArrayObject::create()->add_aKeyValue(
-        DTKeyValue::create()->set_sValue('LIMIT 0, 30')
-    )
+    [], // where
+    [ // option
+        DTDBOption::create()->set_sValue('LIMIT 0,30'),
+    ]
 );
 ~~~
 
