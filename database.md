@@ -569,6 +569,8 @@ Array
 <a id="3-8"></a>  
 #### 3.8. SQL
 
+**Note**: when using `DB::$oPDO->...`, no events of `mvc.db.model.db.[create|retrieve|update|delete|insert].*` are fired.  
+
 _`fetchRow`: select a single tupel (a row)_
 ~~~php
 /** @var \Foo\DataType\DTFooModelTableUser $oDTFooModelTableUser */
