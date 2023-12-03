@@ -524,7 +524,7 @@ _example return_
 _get info of all fields_  
 ~~~php
 // get info of all fields
-$aFieldInfo = DB::$oFooModelTableUser->getFieldInfo('email');
+$aFieldInfo = DB::$oFooModelTableUser->getFieldInfo();
 ~~~
 _example return (shortened)_  
 ~~~
