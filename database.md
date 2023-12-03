@@ -42,9 +42,6 @@ db.port=3306
 db.dbname=Emvicy1x
 db.username=root
 db.password=
-db.charset=utf8
-db.collation=utf8_unicode_ci
-db.prefix=
 ~~~
 
 ---
@@ -397,22 +394,24 @@ $aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve(
 #### 3.3. update
 
 
-_example `updateTupel`: update this specific Tupel - identified by `id`_
+_example `updateTupel`: update this **one** specific Tupel - identified **only** by **`id`**_
 ~~~php
-// retrieve User object
+// retrieve User object with id=2
 /** @var \Foo\DataType\DTFooModelTableUser $oDTFooModelTableUser */
 $oDTFooModelTableUser = DB::$oFooModelTableUser->retrieveTupel(
     DTFooModelTableUser::create()->set_id(2)
 );
 
 // modify User object
-$oDTFooModelTableUser->set_nickname('XYZ')
+$oDTFooModelTableUser->set_nickname('ABC');
 
 // update tupel with modified object
-/** @var boolean $bSuccess */
-$bSuccess = DB::$oFooModelTableUser->updateTupel($oDTFooModelTableUser);
+$bSuccess = DB::$oFooModelTableUser->updateTupel(
+    $oDTFooModelTableUser
+);
 ~~~
 
+<!--
 _shortened example `updateTupel`: update this specific Tupel - identified by `id`_
 ~~~php
 /** @var boolean $bSuccess */
@@ -420,35 +419,27 @@ $bSuccess = DB::$oFooModelTableUser->updateTupel(
     DB::$oFooModelTableUser->retrieveTupel( DTFooModelTableUser::create()->set_id(2) )->set_nickname('ABC')
 );
 ~~~
+-->
   
-<!--
-_example `update`: update all Tupel which are affected by the where clause_
+_example `update`: update **all** Tupel with data defined in **set** (array) which are affected by the **where** clause (array)_
 ~~~php
-// retrieve User object
-/** @var \Foo\DataType\DTFooModelTableUser $oDTFooModelTableUser */
-$oDTFooModelTableUser = DB::$oFooModelTableUser->retrieveTupel(
-    DTFooModelTableUser::create()->set_id(2)
-);
-
 /** @var boolean $bSuccess */
 $bSuccess = DB::$oFooModelTableUser->update(
-    // modify User object
-    $oDTFooModelTableUser->set_active(0),
-    // where
-    DTArrayObject::create()->add_aKeyValue(
-        DTKeyValue::create()
-            ->set_sKey(DTFooModelTableUser::getPropertyName_email())
-            ->set_mOptional1('=')
-            ->set_sValue('foo@example.com')
-    ), true
+    [ // set
+        DTDBSet::create()->set_sKey( DTFooModelTableUser::getPropertyName_active() )->set_sValue(0),
+        DTDBSet::create()->set_sKey( DTFooModelTableUser::getPropertyName_email() )->set_sValue('bar@example.com')
+    ],
+    [ // where
+        DTDBWhere::create()->set_sKey( DTFooModelTableUser::getPropertyName_email() )->set_sRelation('LIKE')->set_sValue('%example.com')
+    ]
 );
 ~~~
--->
 
 _update via SQL Statement_  
 ~~~php
 DB::$oPDO->query("UPDATE `FooModelTableUser` SET `active` = '0' WHERE `email` = 'foo@example.com'");
 ~~~
+- **Note**: when using `DB::$oPDO->query()`, no events of `mvc.db.model.db.[create|retrieve|update|delete|insert].*` are fired 
 - see also: [3.8. SQL](#3-8)
 
 ---
@@ -456,27 +447,38 @@ DB::$oPDO->query("UPDATE `FooModelTableUser` SET `active` = '0' WHERE `email` = 
 <a id="3-4"></a>  
 #### 3.4. delete
 
-_`deleteTupel`: delete this specific Tupel - identified by `id`_
+_`deleteTupel`: delete this **one** specific Tupel - identified **only** by **`id`** (id is required; other values do not have an effect)_
 ~~~php
-/** @var boolean $bSuccess */
+// take User object (you retrieved before)
 $bSuccess = DB::$oFooModelTableUser->deleteTupel(
-    DTFooModelTableUser::create()
-        ->set_id(2)
-)
+    $oDTFooModelTableUser
+);
+
+// example setting object explicitly
+$bSuccess = DB::$oFooModelTableUser->deleteTupel(
+    DTFooModelTableUser::create()->set_id(2)
+);
 ~~~
 
-_`delete`: delete all Tupel which are affected by the where clause_
+_`delete`: delete **all** Tupel which are affected by the **where** clause (array)_
 ~~~php
-$bSuccess = DB::$oFooModelTableUser->delete(
-    // where
-    DTArrayObject::create()
-        ->add_aKeyValue(
-            DTKeyValue::create()
-                ->set_sKey('stampCreate')
-                ->set_mOptional1('<')
-                ->set_sValue('2023-06-19 00:00:00')
-        )
-);
+// example setting key and value directly
+$bSuccess = DB::$oFooModelTableUser->delete([ // array of where clauses
+    DTDBWhere::create()->set_sKey('id')->set_sValue(2),
+    DTDBWhere::create()->set_sKey('active')->set_sValue(0),
+]);
+
+// example setting the key using Property getter
+$bSuccess = DB::$oFooModelTableUser->delete([ // array of where clauses
+    DTDBWhere::create()->set_sKey(DTFooModelTableUser::getPropertyName_id())->set_sValue(2),
+    DTDBWhere::create()->set_sKey(DTFooModelTableUser::getPropertyName_active())->set_sValue(0),
+]);
+
+// example setting the key using Property getter; take values from User object (you retrieved before)
+$bSuccess = DB::$oFooModelTableUser->delete([ // array of where clauses
+    DTDBWhere::create()->set_sKey(DTFooModelTableUser::getPropertyName_id())->set_sValue($oDTFooModelTableUser->get_id()),
+    DTDBWhere::create()->set_sKey(DTFooModelTableUser::getPropertyName_active())->set_sValue($oDTFooModelTableUser->get_active()),
+]);
 ~~~
 
 <a id="3-5"></a>  
@@ -729,12 +731,12 @@ _`/modules/{MODULE}/etc/event/sql.php`_
 if (true === \MVC\Config::get_MVC_LOG_SQL())
 {
     \MVC\Event::processBindConfigStack([
-        'mvc.db.model.db.create.sql' => array(function(\MVC\DataType\DTArrayObject $oDTArrayObject) {\MVC\Log::write($oDTArrayObject->getDTKeyValueByKey('sSql')->get_sValue(), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
-        'mvc.db.model.db.insert.sql' => array(function(\MVC\DataType\DTArrayObject $oDTArrayObject) {\MVC\Log::write($oDTArrayObject->getDTKeyValueByKey('sSql')->get_sValue(), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
-        'mvc.db.model.db.retrieve.sql' => array(function(\MVC\DataType\DTArrayObject $oDTArrayObject) {\MVC\Log::write($oDTArrayObject->getDTKeyValueByKey('sSql')->get_sValue(), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
-        'mvc.db.model.db.update.sql' => array(function(\MVC\DataType\DTArrayObject $oDTArrayObject) {\MVC\Log::write($oDTArrayObject->getDTKeyValueByKey('sSql')->get_sValue(), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
-        'mvc.db.model.db.delete.sql' => array(function(\MVC\DataType\DTArrayObject $oDTArrayObject) {\MVC\Log::write($oDTArrayObject->getDTKeyValueByKey('sSql')->get_sValue(), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
-        'mvc.db.model.db.createTable.sql' => array(function(\MVC\DataType\DTArrayObject $oDTArrayObject) {\MVC\Log::write($oDTArrayObject->getDTKeyValueByKey('sSql')->get_sValue(), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
+        'mvc.db.model.db.create.sql' => array(function(MVC\ArrDot $oSql) {\MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
+        'mvc.db.model.db.insert.sql' => array(function(MVC\ArrDot $oSql) {\MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
+        'mvc.db.model.db.retrieve.sql' => array(function(MVC\ArrDot $oSql) {\MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
+        'mvc.db.model.db.update.sql' => array(function(MVC\ArrDot $oSql) {\MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
+        'mvc.db.model.db.delete.sql' => array(function(MVC\ArrDot $oSql) {\MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
+        'mvc.db.model.db.createTable.sql' => array(function(MVC\ArrDot $oSql) {\MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
     ]);
 }
 ~~~
