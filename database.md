@@ -500,11 +500,33 @@ $iChecksum = DB::$oFooModelTableUser->checksum();
 
 returns array with table fields info
 
+_get info of certain field `email`_  
 ~~~php
-$aFieldInfo = DB::$oFooModelTableUser->getFieldInfo();
+// get info of certain field `email`
+$aFieldInfo = DB::$oFooModelTableUser->getFieldInfo('email');
+~~~
+_example return_  
+~~~
+// type: array, items: 9
+[
+    'Field' => 'email',
+    'Type' => 'varchar(255)',
+    'Null' => 'NO',
+    'Key' => 'UNI',
+    'Default' => NULL,
+    'Extra' => '',
+    '_php' => 'string',
+    '_type' => 'varchar',
+    '_typeValue' => 255,
+]
 ~~~
 
-_example return_  
+_get info of all fields_  
+~~~php
+// get info of all fields
+$aFieldInfo = DB::$oFooModelTableUser->getFieldInfo('email');
+~~~
+_example return (shortened)_  
 ~~~
 Array
 (
@@ -535,104 +557,7 @@ Array
             [_type] => varchar
             [_typeValue] => 255
         )
-
-    [active] => Array
-        (
-            [Field] => active
-            [Type] => int(1)
-            [Null] => NO
-            [Key] => 
-            [Default] => 0
-            [Extra] => 
-            [php] => int
-            [_php] => int
-            [_type] => int
-            [_typeValue] => 1
-        )
-
-    [uuid] => Array
-        (
-            [Field] => uuid
-            [Type] => varchar(36)
-            [Null] => NO
-            [Key] => 
-            [Default] => 
-            [Extra] => 
-            [php] => string
-            [_php] => string
-            [_type] => varchar
-            [_typeValue] => 36
-        )
-
-    [uuidtmp] => Array
-        (
-            [Field] => uuidtmp
-            [Type] => varchar(36)
-            [Null] => NO
-            [Key] => 
-            [Default] => 
-            [Extra] => 
-            [php] => string
-            [_php] => string
-            [_type] => varchar
-            [_typeValue] => 36
-        )
-
-    [password] => Array
-        (
-            [Field] => password
-            [Type] => varchar(60)
-            [Null] => NO
-            [Key] => 
-            [Default] => 
-            [Extra] => 
-            [php] => string
-            [_php] => string
-            [_type] => varchar
-            [_typeValue] => 60
-        )
-
-    [nickname] => Array
-        (
-            [Field] => nickname
-            [Type] => varchar(10)
-            [Null] => NO
-            [Key] => 
-            [Default] => 
-            [Extra] => 
-            [php] => string
-            [_php] => string
-            [_type] => varchar
-            [_typeValue] => 10
-        )
-
-    [forename] => Array
-        (
-            [Field] => forename
-            [Type] => varchar(25)
-            [Null] => NO
-            [Key] => 
-            [Default] => 
-            [Extra] => 
-            [php] => string
-            [_php] => string
-            [_type] => varchar
-            [_typeValue] => 25
-        )
-
-    [lastname] => Array
-        (
-            [Field] => lastname
-            [Type] => varchar(25)
-            [Null] => NO
-            [Key] => 
-            [Default] => 
-            [Extra] => 
-            [php] => string
-            [_php] => string
-            [_type] => varchar
-            [_typeValue] => 25
-        )
+    ...
 )
 ~~~
 
