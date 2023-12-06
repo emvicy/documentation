@@ -326,19 +326,38 @@ $iId = $oDTFooModelTableUser->get_id();
 ---
 
 <a id="3-2"></a>  
-#### 3.2. retrieve
+### 3.2. retrieve
+
+`getOnId`: returns tupel object or field of tupel by id
+
+_example `getOnId`: get Object from table where `id=2`_  
+~~~php
+/** @var \Foo\DataType\DTFooModelTableUser $oDTFooModelTableUser */
+$oDTFooModelTableUser = DB::$oFooModelTableUser->getOnId(2);
+~~~
+_example `getOnId`: get `email` from table where `id=2`_    
+~~~php
+/** @var string $sEmail */
+$sEmail = DB::$oFooModelTableUser->getOnId(2, DTFooModelTableUser::getPropertyName_email()); # using name helper
+~~~
+~~~php
+/** @var string $sEmail */
+$sEmail = DB::$oFooModelTableUser->getOnId(2, 'email'); # plain text
+~~~
+
+---
 
 `retrieveTupel` asks for a specific Tupel and returns the DataType Object according to the requested Table.
 
-_example `retrieveTupel`: retrieve this **one** specific Tupel - identified **only** by **`id`**_  
+_example `retrieveTupel`: get Object from table where `id=2`_
 ~~~php
 /** @var \Foo\DataType\DTFooModelTableUser $oDTFooModelTableUser */
 $oDTFooModelTableUser = DB::$oFooModelTableUser->retrieveTupel(
     DTFooModelTableUser::create()->set_id(2)
 );
 ~~~
-- get User Object whose id=2
 
+---
 
 `retrieve` returns an array of DataType Objects according to the requested Table.
 
@@ -352,8 +371,16 @@ _example `retrieve`: get specific Datasets_
 ~~~php
 /** @var \Foo\DataType\DTFooModelTableUser[] $aDTFooModelTableUser */
 $aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve(
-    [ // where
+    [ // where using name helper
         DTDBWhere::create()->set_sKey( DTFooModelTableUser::getPropertyName_email() )->set_sRelation('LIKE')->set_sValue('%example%')
+    ]
+);
+~~~
+~~~php
+/** @var \Foo\DataType\DTFooModelTableUser[] $aDTFooModelTableUser */
+$aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve(
+    [ // where
+        DTDBWhere::create()->set_sKey('email')->set_sRelation('LIKE')->set_sValue('%example%')
     ]
 );
 ~~~
@@ -385,15 +412,13 @@ $aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve(
 
 
 <a id="3-3"></a>  
-#### 3.3. update
+### 3.3. update
 
-_example `updateTupel`: update this **one** specific Tupel - identified **only** by **`id`**_
+_example `updateTupel`: update Object in table where `id=2`_
 ~~~php
 // retrieve User object with id=2
 /** @var \Foo\DataType\DTFooModelTableUser $oDTFooModelTableUser */
-$oDTFooModelTableUser = DB::$oFooModelTableUser->retrieveTupel(
-    DTFooModelTableUser::create()->set_id(2)
-);
+$oDTFooModelTableUser = DB::$oFooModelTableUser->getOnId(2);
 
 // modify User object
 $oDTFooModelTableUser->set_nickname('ABC');
@@ -432,22 +457,21 @@ _update via SQL Statement_
 ~~~php
 DB::$oPDO->query("UPDATE `FooModelTableUser` SET `active` = '0' WHERE `email` = 'foo@example.com'");
 ~~~
-- **Note**: when using `DB::$oPDO->query()`, no events of `mvc.db.model.db.[create|retrieve|update|delete|insert].*` are fired 
 - see also: [Database Events](/1.x/events#database_events), and [Database - 3.8. SQL](#3-8)
 
 ---
 
 <a id="3-4"></a>  
-#### 3.4. delete
+### 3.4. delete
 
 _`deleteTupel`: delete this **one** specific Tupel - identified **only** by **`id`** (id is required; other values do not have an effect)_
 ~~~php
-// take User object (you retrieved before)
+// delete User object (you retrieved before)
 $bSuccess = DB::$oFooModelTableUser->deleteTupel(
     $oDTFooModelTableUser
 );
 
-// example setting object explicitly
+// example deleting by setting object explicitly
 $bSuccess = DB::$oFooModelTableUser->deleteTupel(
     DTFooModelTableUser::create()->set_id(2)
 );
@@ -512,14 +536,17 @@ $aFieldInfo = DB::$oFooModelTableUser->getFieldInfo('email');
 ~~~
 _example return_  
 ~~~
-// type: array, items: 9
+// type: array, items: 12
 [
     'Field' => 'email',
     'Type' => 'varchar(255)',
+    'Collation' => 'utf8_general_ci',
     'Null' => 'NO',
     'Key' => 'UNI',
     'Default' => NULL,
     'Extra' => '',
+    'Privileges' => 'select,insert,update,references',
+    'Comment' => '',
     '_php' => 'string',
     '_type' => 'varchar',
     '_typeValue' => 255,
@@ -533,43 +560,42 @@ $aFieldInfo = DB::$oFooModelTableUser->getFieldInfo();
 ~~~
 _example return (shortened)_  
 ~~~
-Array
-(
-    [id_TableGroup] => Array
-        (
-            [Field] => id_TableGroup
-            [Type] => int(11)
-            [Null] => YES
-            [Key] => MUL
-            [Default] => 
-            [Extra] => 
-            [php] => int
-            [_php] => int
-            [_type] => int
-            [_typeValue] => 11
-        )
-
-    [email] => Array
-        (
-            [Field] => email
-            [Type] => varchar(255)
-            [Null] => NO
-            [Key] => 
-            [Default] => 
-            [Extra] => 
-            [php] => string
-            [_php] => string
-            [_type] => varchar
-            [_typeValue] => 255
-        )
+// type: array, items: 9
+[
+    'id_TableGroup' => [
+        'Field' => 'id_TableGroup',
+        'Type' => 'int(11)',
+        'Collation' => NULL,
+        'Null' => 'YES',
+        'Key' => 'MUL',
+        'Default' => NULL,
+        'Extra' => '',
+        'Privileges' => 'select,insert,update,references',
+        'Comment' => '',
+        '_php' => 'int',
+        '_type' => 'int',
+        '_typeValue' => 11,
+    ],
+    'email' => [
+        'Field' => 'email',
+        'Type' => 'varchar(255)',
+        'Collation' => 'utf8_general_ci',
+        'Null' => 'NO',
+        'Key' => 'UNI',
+        'Default' => NULL,
+        'Extra' => '',
+        'Privileges' => 'select,insert,update,references',
+        'Comment' => '',
+        '_php' => 'string',
+        '_type' => 'varchar',
+        '_typeValue' => 255,
+    ],
     ...
-)
+]
 ~~~
 
 <a id="3-8"></a>  
 #### 3.8. SQL
-
-**Note**: when using `DB::$oPDO->...`, no events of `mvc.db.model.db.[create|retrieve|update|delete|insert].*` are fired.  
 
 _`fetchRow`: select a single tupel (a row)_
 ~~~php
@@ -633,16 +659,17 @@ see [Database Events](/1.x/events#database_events)
 
 ### 4.1. Logging SQL
 
-_enable sql logging in your config file_  
+Consider to set to `true` for develop environments only: logging request into `MVC_LOG_FILE_SQL`.
+
+_enable sql logging in your config file_    
 ~~~php
-// consider to set to true for develop environments only: logging request into MVC_LOG_FILE_SQL
-$aConfig['MVC_LOG_SQL'] = true;            
+$aConfig['MVC_LOG_SQL'] = true;   
 ~~~
 
-if it not already exists, create a file `sql.php` in the event folder of your module
+if it not already exists, create a file `db.php` in the event folder of your module
 and declare the bindings as follows.
 
-_`/modules/{MODULE}/etc/event/sql.php`_
+_`/modules/{MODULE}/etc/event/db.php`_
 ~~~php
 /*
  * log SQL Statements, if enabled via config
@@ -650,12 +677,20 @@ _`/modules/{MODULE}/etc/event/sql.php`_
 if (true === \MVC\Config::get_MVC_LOG_SQL())
 {
     \MVC\Event::processBindConfigStack([
+        'sql.log.filter' => array(function(MVC\ArrDot $oSql) {
+            // remove newline, multiple whitespaces
+            $oSql->set('sSql', trim(preg_replace('!\s+!', ' ', str_replace("\n", ' ', stripslashes($oSql->get('sSql'))))));
+        }),
         'mvc.db.model.db.create.sql' => array(function(MVC\ArrDot $oSql) {\MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
+        'mvc.db.model.db.createTable.sql' => array(function(MVC\ArrDot $oSql) {\MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
         'mvc.db.model.db.insert.sql' => array(function(MVC\ArrDot $oSql) {\MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
         'mvc.db.model.db.retrieve.sql' => array(function(MVC\ArrDot $oSql) {\MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
         'mvc.db.model.db.update.sql' => array(function(MVC\ArrDot $oSql) {\MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
         'mvc.db.model.db.delete.sql' => array(function(MVC\ArrDot $oSql) {\MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
-        'mvc.db.model.db.createTable.sql' => array(function(MVC\ArrDot $oSql) {\MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
-    ]);
-}
+        'mvc.db.model.db.count.sql' => array(function(MVC\ArrDot $oSql) {\MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
+        'mvc.db.model.dbpdo.*' => array(function(MVC\ArrDot $oSql) {
+            \MVC\Event::run('sql.log.filter', $oSql);
+            \MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());
+        }),
+  
 ~~~
