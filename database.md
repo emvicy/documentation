@@ -692,5 +692,6 @@ if (true === \MVC\Config::get_MVC_LOG_SQL())
             \MVC\Event::run('sql.log.filter', $oSql);
             \MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());
         }),
-  
+    ]);
+}
 ~~~
