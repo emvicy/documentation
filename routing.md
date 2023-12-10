@@ -54,20 +54,23 @@ you can create you own `*.php` routing file, for example `foo.php` and edit your
 
 If you want to create routes for an API, it then makes sense to create a file called `api.php` and write all your api routes inside that file.
 
+<br>
 
 <a id="writing-a-Route"></a>
 ### Writing a Route
 
 _TLDR; Examples_  
 ~~~php
-\MVC\Route::get     ('/', 'module=Foo&c=Index&m=index'); // expecting GET
-\MVC\Route::POST    ('/', 'module=Foo&c=Index&m=index'); // expecting POST
-\MVC\Route::PUT     ('/', 'module=Foo&c=Index&m=index'); // expecting PUT
-\MVC\Route::DELETE  ('/', 'module=Foo&c=Index&m=index'); // expecting DELETE
+\MVC\Route::get     ('/', '\Foo\Controller\Index::index'); // expecting GET
+\MVC\Route::post    ('/', '\Foo\Controller\Index::index'); // expecting POST
+\MVC\Route::put     ('/', '\Foo\Controller\Index::index'); // expecting PUT
+\MVC\Route::delete  ('/', '\Foo\Controller\Index::index'); // expecting DELETE
 
-\MVC\Route::ANY     ('/', 'module=Foo&c=Index&m=index');  // be open for any request method
-\MVC\Route::MIX     (['GET', 'POST'], '/',    'module=Foo&c=Index&m=index'); // expecting GET or POST
+\MVC\Route::any     ('/', '\Foo\Controller\Index::index');  // be open for any request method
+\MVC\Route::mix     (['GET', 'POST'], '/',    '\Foo\Controller\Index::index'); // expecting GET or POST
 ~~~
+
+<br>
 
 <a id="Standard-RESTful-Request-Methods"></a>
 **Standard RESTful Request Methods**
@@ -83,17 +86,19 @@ _You declare a route with Command `\MVC\Route`:_
 
 _Example_  
 ~~~php
-\MVC\Route::get('/foo/', 'module=Foo&c=Index&m=index');
+\MVC\Route::get('/foo/', '\Foo\Controller\Index::index');
 ~~~
 
 Assuming you are running Emvicy's local development server, you can then call the url `http://127.0.0.1:1969/foo/`
+
+<br>
 
 <a id="Any-Request-Method"></a>
 **Any Request Method**
 
 _Using `ANY` you leave it open which request method should apply_   
 ~~~php
-\MVC\Route::ANY('/foo/', 'module=Foo&c=Index&m=index');
+\MVC\Route::any('/foo/', '\Foo\Controller\Index::index');
 ~~~
 
 <a id="Mixed-Request-Methods"></a>
@@ -101,13 +106,15 @@ _Using `ANY` you leave it open which request method should apply_
 
 _Assign more than one request method to the route with `MIX`_
 ~~~php
-\MVC\Route::MIX(['GET', 'POST'], '/foo/', 'module=Foo&c=Index&m=index');
+\MVC\Route::mix(['GET', 'POST'], '/foo/', '\Foo\Controller\Index::index');
 ~~~
 
+<br>
 
 <a id="Naming-the-target-controller"></a>
 ### Naming the target controller
 
+<!--
 You can name the target controller in two ways.
 
 **query notation**
@@ -120,10 +127,11 @@ historically conditioned you can still name it with the Emvicy's query notation
 - request method here is `GET`
 - path is `/foo/`
 - targetController: leads to => Module `Foo` (module), Controller `Index` (c), Method `index` (m) => (which is Class::method `\Foo\Controller\Index::index`)
-
+ 
 **controller::method notation**
+-->
 
-You can also name the target controller and method info by its class and method names itself.  
+You name the target controller and method info by its class and method names itself.  
 ⚠ Requirement: It has to be a MVC Controller.
 
 ~~~php
@@ -132,6 +140,8 @@ You can also name the target controller and method info by its class and method 
 - request method here is `GET`
 - path is `/foo/`
 - targetController: leads to Class::method `\Foo\Controller\Index::index`
+
+<br>
 
 <a id="adding-additional-context-information-to-route"></a>
 ### Adding additional context information to route
@@ -179,14 +189,27 @@ $oDTRoutingAdditional = \Foo\DataType\DTRoutingAdditional::create()
     ));
 ~~~
 
-_Example route_
+_Example routes using `$oDTRoutingAdditional`_
 ~~~php
+/*
+ * Routes
+ */
+\MVC\Route::mix(
+    ['GET', 'POST'],
+    '/',
+    '\Foo\Controller\Index::index',
+    clone $oDTRoutingAdditional // copy from above object
+);
 \MVC\Route::get(
-    '/foo/', 
-    '\Foo\Controller\Index::index', 
-    $oDTRoutingAdditional
+    '/404/',
+    '\Foo\Controller\Index::notFound',
+    clone $oDTRoutingAdditional // copy from above object; but set different title, content
+        ->set_sTitle('404')
+        ->set_sContent('Frontend/content/404.tpl')
 );
 ~~~
+
+<br>
 
 <a id="wildcard-routing"></a>
 ### Wildcard routing
@@ -228,6 +251,7 @@ bar/baz/
 
 - see `Request`: [Accessing Path Params / Variables](/3.4.x/request#Accessing-Path-Params-Variables)
 
+<br>
 
 <a id="path-params"></a>
 ### Routing with Path Params / Variables
@@ -266,6 +290,8 @@ _Access the Variables_
 - see `Request`: [Accessing Path Params / Variables](/3.4.x/request#Accessing-Path-Params-Variables)
 
 ---
+
+<br>
 
 <a id="Working-with-Routes"></a>
 ## Working with Routes
