@@ -193,16 +193,16 @@ _Example: using config Stack to bind closures to Events_
 
     '\Foo\Controller\Index::foo' => [ // 2 Closures bonded to this Event
     
-        function (\MVC\DataType\DTArrayObject $oDTArrayObject) {      
-            \MVC\Debug::info($oDTArrayObject);
+        function (\MVC\DataType\DTArrayObject $oDTArrayObject, \MVC\DataType\DTEventContext $oDTEventContext) {      
+            info($oDTArrayObject);
         },
-        function (\MVC\DataType\DTArrayObject $oDTArrayObject) {      
+        function (\MVC\DataType\DTArrayObject $oDTArrayObject, \MVC\DataType\DTEventContext $oDTEventContext) {      
             \MVC\Log:write($oDTArrayObject, 'debug.log');
         }
     ],
     '\Foo\Controller\Index::bar' => [ // 1 Closure bonded to this Event
     
-        function (\MVC\DataType\DTArrayObject $oDTArrayObject) {      
+        function (\MVC\DataType\DTArrayObject $oDTArrayObject, \MVC\DataType\DTEventContext $oDTEventContext) {      
             \MVC\Log:write($oDTArrayObject, 'debug.log');
         }
     ],    
