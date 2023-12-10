@@ -91,29 +91,84 @@ _Example: pass an `DTArrayObject` Object with Infos_
 ## `\MVC\Event::bind()`
 
 with `bind` you create a Listener to an expected event;
-you _bind_ a closure to the expected event.
+you _bind_ a _closure_ to the expected event.
 
-_Syntax_
+_Syntax_  
 ~~~
-\MVC\Event::bind('eventName', {closure} );
+\MVC\Event::bind('event', {closure} );
 ~~~
 
-_Example: bind a closure to the Event "foo"_
+**bind to an Event Name**
+
+_regular - listens to event whose event name is 'fooName'_
 ~~~php
-\MVC\Event::bind('foo', function(\MVC\DataType\DTArrayObject $oDTArrayObject) {
-    \MVC\Debug:info($oDTArrayObject);
+\MVC\Event::bind('fooName', function(\Foo\Bar $mPackage, \MVC\DataType\DTEventContext $oDTEventContext) {
+    info($mPackage);
+    display($oDTEventContext);
 });
 ~~~
-- If the event 'foo' is triggered, the closure will be executed: the content of `$oDTArrayObject` will be displayed on screen
+
+**bind to an Event Name with placeholder**
+
+_with placeholder * - listens to all events whose event names start with 'foo'_
+~~~php
+\MVC\Event::bind('foo*', function(\Foo\Bar $mPackage, \MVC\DataType\DTEventContext $oDTEventContext) {
+    info($mPackage);
+    display($oDTEventContext);
+});
+~~~
+
+**bind to a Controller::method**  
 
 _Example: bind a closure to a concrete Controller::method_ 
 ~~~php
-\MVC\Event::bind('\{module}\Controller\Index::foo', function (\MVC\DataType\DTArrayObject $oDTArrayObject) {
-    \MVC\Debug:info($oDTArrayObject);
+\MVC\Event::bind('\{module}\Controller\Index::foo', function (\MVC\DataType\DTArrayObject $oDTArrayObject, \MVC\DataType\DTEventContext $oDTEventContext) {
+    info($oDTArrayObject);
+    display($oDTEventContext);
 });
 ~~~
-- If the method `\{module}\Controller\Index::foo` is being called, the closure will be executed: the content of `$oDTArrayObject` will be displayed on screen
-- ⚠ Make sure to write the event name as the method was a static one, even it is not.
+- 🛈 The first parameter will always be of type `\MVC\DataType\DTArrayObject $oDTArrayObject`
+- 🛈 You can bind to Controller classes only which have `\MVC\MVCInterface\Controller` implemented
+- 🛈 Make sure to write the event name as the method was a static one, even it is not.
+
+---
+
+**Additional Context Infos passed as second parameter to a bonded closure**
+
+As you may have noticed, the object `\MVC\DataType\DTEventContext $oDTEventContext)` is always being passed as the second parameter to a bonded closure. 
+It provides Infos about the context of the event.
+
+This is helpful if your app listens to events with placeholder `*` - let's say `foo*` (with placeholder asterisk).
+You can get the origin Event which matched to `foo*`:
+
+~~~php
+// returns 'fooName'
+$oDTEventContext->get_sEventOrigin();
+~~~
+
+_example content of `\MVC\DataType\DTEventContext $oDTEventContext)`_
+~~~
+// type: object
+\MVC\DataType\DTEventContext::__set_state(array(
+      'sEvent' => 'foo*',
+      'sEventOrigin' => 'fooName',
+      'mRunPackage' => true,
+      'aBonded' =>    array (
+        's:53:"/modules/Foo/etc/event/default.php, 7 (65759f7544778)";' =>        \Closure::__set_state(array(
+        )),
+    ),
+      'sBondedBy' => 's:53:"/modules/Foo/etc/event/default.php, 7 (65759f7544778)";',
+      'sCalledIn' => '/modules/Foo/Controller/Index.php, 58',
+      'oCallback' =>    \Closure::__set_state(array(
+    )),
+      'sCallbackDumped' => 'function (oDTEventContext $oDTEventContext){
+                        info($oDTEventContext);
+                        display($oDTEventContext->get_sEventOrigin());
+                },
+',
+      'sMessage' => 'RUN+ (foo* [fooName]) --> called in: /modules/Foo/Controller/Index.php, 58 --> bonded by `/modules/Foo/etc/event/default.php, 7 (65759f7544778), try to run its Closure: function ($mPackage, \\MVC\\DataType\\DTEventContext $oDTEventContext) { info($oDTEventContext); display($oDTEventContext->get_sEventOrigin()); }',
+))
+~~~
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -139,7 +194,7 @@ _Example: using config Stack to bind closures to Events_
     '\Foo\Controller\Index::foo' => [ // 2 Closures bonded to this Event
     
         function (\MVC\DataType\DTArrayObject $oDTArrayObject) {      
-            \MVC\Debug:info($oDTArrayObject);
+            \MVC\Debug::info($oDTArrayObject);
         },
         function (\MVC\DataType\DTArrayObject $oDTArrayObject) {      
             \MVC\Log:write($oDTArrayObject, 'debug.log');
