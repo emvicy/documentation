@@ -102,21 +102,18 @@ _Syntax_
 
 _regular - listens to event whose event name is 'fooName'_
 ~~~php
-\MVC\Event::bind('fooName', function(\Foo\Bar $mPackage, \MVC\DataType\DTEventContext $oDTEventContext) {
-    info($mPackage);
-    display($oDTEventContext);
-});
+\MVC\Event::bind('fooName', function() { ... });
 ~~~
 
 **bind to an Event Name with placeholder**
 
-_with placeholder * - listens to all events whose event names start with 'foo'_
+_with placeholder * - listens to all events whose event names match_
 ~~~php
-\MVC\Event::bind('foo*', function(\Foo\Bar $mPackage, \MVC\DataType\DTEventContext $oDTEventContext) {
-    info($mPackage);
-    display($oDTEventContext);
-});
+\MVC\Event::bind('foo*', function() { ... });
+\MVC\Event::bind('*Name', function() { ... });
+\MVC\Event::bind('f*N*', function() { ... });
 ~~~
+
 
 **bind to a Controller::method**  
 
