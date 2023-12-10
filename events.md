@@ -227,27 +227,27 @@ _Example: delete *all* Events_
 |-----------------------------------------|-------------------------------------|---------------------------------------|-----------------------------------------------------|
 | mvc.db.model.db.construct.saveCache     | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::__construct`       |                                                     |
 | mvc.db.model.db.create.before           | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::create`            | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
-| mvc.db.model.db.create.sql              | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::create`            | `\MVC\ArrDot $oSql`                                 |
+| mvc.db.model.db.create.sql              | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::create`            | `string $sSql`                                      |
 | mvc.db.model.db.create.after            |                                     | `\MVC\DB\Model\Db::create`            | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
 | mvc.db.model.db.createTable.before      |                                     | `\MVC\DB\Model\Db::create`            | `\MVC\DataType\DTValue $oDTValue`                   |
-| mvc.db.model.db.createTable.sql         | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::create`            | `\MVC\ArrDot $oSql`                                 |
-| mvc.db.model.db.insert.sql              | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::synchronizeFields` | `\MVC\ArrDot $oSql`                                 |
+| mvc.db.model.db.createTable.sql         | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::create`            | `string $sSql`                                      |
+| mvc.db.model.db.insert.sql              | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::synchronizeFields` | `string $sSql`                                      |
 | mvc.db.model.db.retrieveTupel.before    |                                     | `\MVC\DB\Model\Db::retrieveTupel`     | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
 | mvc.db.model.db.retrieve.before         |                                     | `\MVC\DB\Model\Db::retrieve`          | `\MVC\DataType\DTValue $oDTValue`                   |
-| mvc.db.model.db.retrieve.sql            | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::retrieve`          | `\MVC\ArrDot $oSql`                                 |
+| mvc.db.model.db.retrieve.sql            | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::retrieve`          | `string $sSql`                                      |
 | mvc.db.model.db.retrieve.after          |                                     | `\MVC\DB\Model\Db::retrieve`          | `\MVC\DataType\DTValue $oDTValue`                   |
 | mvc.db.model.db.count.before            |                                     | `\MVC\DB\Model\Db::count`             | `\MVC\DataType\DTValue $oDTValue`                   |
-| mvc.db.model.db.count.sql               |                                     | `\MVC\DB\Model\Db::count`             | `\MVC\ArrDot $oSql`                                 |
+| mvc.db.model.db.count.sql               |                                     | `\MVC\DB\Model\Db::count`             | `string $sSql`                                      |
 | mvc.db.model.db.updateTupel.before      |                                     | `\MVC\DB\Model\Db::updateTupel`       | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
 | mvc.db.model.db.update.before           | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::update`            | `\MVC\DataType\DTValue $oDTValue`                   |
-| mvc.db.model.db.update.sql              | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::update`            | `\MVC\ArrDot $oSql`                                 |
+| mvc.db.model.db.update.sql              | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::update`            | `string $sSql`                                      |
 | mvc.db.model.db.deleteTupel.before      |                                     | `\MVC\DB\Model\Db::deleteTupel`       | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
 | mvc.db.model.db.delete.before           |                                     | `\MVC\DB\Model\Db::delete`            | `\MVC\DataType\DTValue $oDTValue`                   |
-| mvc.db.model.db.delete.sql              | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::delete`            | `\MVC\ArrDot $oSql`                                 |
+| mvc.db.model.db.delete.sql              | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::delete`            | `string $sSql`                                      |
 | mvc.db.model.db.synchronizeFields.after |                                     | `\MVC\DB\Model\Db::synchronizeFields` |                                                     |
 | mvc.db.model.db.dropIndices.after       |                                     | `\MVC\DB\Model\Db::dropIndices`       |                                                     |
-| mvc.db.model.dbpdo.fetchRow.sql         | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\DbPDO::fetchRow`       | `\MVC\ArrDot $oSql`                                 |
-| mvc.db.model.dbpdo.fetchAll.sql         | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\DbPDO::fetchAll`       | `\MVC\ArrDot $oSql`                                 |
-| mvc.db.model.dbpdo.query.sql            | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\DbPDO::query`          | `\MVC\ArrDot $oSql`                                 |
+| mvc.db.model.dbpdo.fetchRow.sql         | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\DbPDO::fetchRow`       | `string $sSql`                                      |
+| mvc.db.model.dbpdo.fetchAll.sql         | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\DbPDO::fetchAll`       | `string $sSql`                                      |
+| mvc.db.model.dbpdo.query.sql            | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\DbPDO::query`          | `string $sSql`                                      |
 
 
