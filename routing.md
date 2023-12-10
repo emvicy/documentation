@@ -9,7 +9,7 @@
       - [Mixed Request Methods](#Mixed-Request-Methods)
     - [Naming the target controller](#Naming-the-target-controller)
     - [Adding additional context information to route](#adding-additional-context-information-to-route)
-    - [Wildcard routing](#wildcard-routing)
+    - [Placeholder routing](#wildcard-routing)
     - [Routing with Path Params / Variables](#path-params)
 - [Working with Routes](#Working-with-Routes)
     - [Get all routes](#Get-all-routes)
@@ -21,7 +21,6 @@
     - [Accessing additional context information](#Accessing-additional-context-information)
         - [Get the additional context information of the current route](#Get-the-additional-context-information-of-the-current-route)
         - [Get the additional context information of _any_ route](#Get-the-additional-context-information-of-any-route)
-        - [Converting JSON back to object](#Converting-JSON-back-to-object)
 
 ---
 
@@ -146,18 +145,41 @@ You name the target controller and method info by its class and method names its
 <a id="adding-additional-context-information-to-route"></a>
 ### Adding additional context information to route
 
-You can add any information to the route as long as it is a string or any other type that could be encoded to JSON - type `array` for example.
-
-The information you add to your route will be `json_encode()` and therefore stored as JSON. When you read the additional information you get JSON.
+You can add any information of any type to the route. 
 
 **Simple Examples**
 
 ~~~php
-\MVC\Route::get('/foo/', '\Foo\Controller\Index::index', 'Hello World');
+\MVC\Route::get('/foo/', '\Foo\Controller\Index::index', 'Hello World'); # passing string
 ~~~
 ~~~php
-\MVC\Route::get('/foo/', '\Foo\Controller\Index::index', [1, 'foo', 'bar']);
+\MVC\Route::get('/foo/', '\Foo\Controller\Index::index', [1, 'foo', 'bar']); # passing array
 ~~~
+~~~php
+\MVC\Route::get('/foo/', '\Foo\Controller\Index::index', DTRoutingAdditional::create()->set_sTitle('Foo')); # passing object
+~~~
+
+**Get the additional context**
+
+you can get the additonal context via the Route object. 
+
+_example: get additonal context in Controller method_  
+~~~php
+public function index(DTRequestCurrent $oDTRequestCurrent, DTRoute $oDTRoute)
+{
+    $oDTRoutingAdditional = $oDTRoute->get_additional()
+    ...
+}
+~~~
+
+_You can also get the additional context by requesting Route class directly_  
+~~~php
+$oDTRoutingAdditional = Route::getCurrent()->get_additional()
+~~~
+
+see also: [Accessing additional context information](#Accessing-additional-context-information)
+
+<br>
 
 **More complex Example**
 
@@ -212,7 +234,7 @@ _Example routes using `$oDTRoutingAdditional`_
 <br>
 
 <a id="wildcard-routing"></a>
-### Wildcard routing
+### Placeholder routing
 
 **per default all routings are restricitv**  
 
@@ -227,7 +249,7 @@ you can only request
 you cannot request e.g.  
 - `/foo/bar/`
 
-**activating wildcard routing**  
+**activating Placeholder routing**  
 therefore, just add `*` after the path: `'/foo/*'`.  
 
 ~~~php
