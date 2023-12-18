@@ -277,6 +277,10 @@ _Example: delete *all* Events_
 
 | Event Name                              | `Event::bind` perforemd in          | `Event::run` located in               | value passed                                        |
 |-----------------------------------------|-------------------------------------|---------------------------------------|-----------------------------------------------------|
+| mvc.db.model.dbinit.construct.after     |                                     |                                       |                                                     |
+| mvc.db.model.dbpdo.fetchRow.sql         | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\DbPDO::fetchRow`       | `string $sSql`                                      |
+| mvc.db.model.dbpdo.fetchAll.sql         | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\DbPDO::fetchAll`       | `string $sSql`                                      |
+| mvc.db.model.dbpdo.query.sql            | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\DbPDO::query`          | `string $sSql`                                      |
 | mvc.db.model.db.construct.saveCache     | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::__construct`       |                                                     |
 | mvc.db.model.db.create.before           | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::create`            | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
 | mvc.db.model.db.create.sql              | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::create`            | `string $sSql`                                      |
@@ -298,8 +302,5 @@ _Example: delete *all* Events_
 | mvc.db.model.db.delete.sql              | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::delete`            | `string $sSql`                                      |
 | mvc.db.model.db.synchronizeFields.after |                                     | `\MVC\DB\Model\Db::synchronizeFields` |                                                     |
 | mvc.db.model.db.dropIndices.after       |                                     | `\MVC\DB\Model\Db::dropIndices`       |                                                     |
-| mvc.db.model.dbpdo.fetchRow.sql         | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\DbPDO::fetchRow`       | `string $sSql`                                      |
-| mvc.db.model.dbpdo.fetchAll.sql         | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\DbPDO::fetchAll`       | `string $sSql`                                      |
-| mvc.db.model.dbpdo.query.sql            | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\DbPDO::query`          | `string $sSql`                                      |
 
 
