@@ -94,12 +94,12 @@ _Example: bind policies `checkUserRights` and `isAdmin` to Route `/foo/bar/`_
 consider you have these following routes and you want to apply Policy Rules to `/edit`-Routes only.
 
 ~~~
-/@/client/:number/contract/new
-/@/client/:number/address/new
-/@/client/:number/person/new
-/@/client/:number/contract/:id/edit
-/@/client/:number/address/:id/edit
-/@/client/:number/person/:id/edit
+/client/:number/contract/new
+/client/:number/address/new
+/client/:number/person/new
+/client/:number/contract/:id/edit
+/client/:number/address/:id/edit
+/client/:number/person/:id/edit
 ~~~
 
 All Route Indices you can get by `\MVC\Route::getIndices()`.
