@@ -5,6 +5,7 @@
   - [Set a single Rule](#set-a-single-rule)
   - [Setting multiple Rules](#setting-multiple-rules)
   - [Bind a Policy Rule to a Route](#Bind-a-Policy-Rule-to-a-Route)
+  - [Bind a Policy Rule to multiple Routes](#Bind-a-Policy-Rule-to-multiple-Routes)
 - [Disabling Policy Rules](#disabling-policy-rules)
   - [Unset a single Rule](#unset-a-single-rule)
   - [Unset multiple Rules](#unset-multiple-rules)
@@ -81,11 +82,42 @@ _Example: bind policies `checkUserRights` and `isAdmin` to Route `/foo/bar/`_
 ~~~php
 \MVC\Policy::bindOnRoute(
     \MVC\Route::$aRoute['/foo/bar/'], [
-        '\Blg\Policy\Index::checkUserRights',
-        '\Blg\Policy\Index::isAdmin'
+        '\Foo\Policy\Index::checkUserRights',
+        '\Foo\Policy\Index::isAdmin'
     ]
 );
 ~~~
+
+<a id="Bind-a-Policy-Rule-to-multiple-Routes"></a>
+### Bind a Policy Rule to multiple Routes
+
+consider you have these following routes and you want to apply Policy Rules to `/edit`-Routes only.
+
+~~~
+/@/client/:number/contract/new
+/@/client/:number/address/new
+/@/client/:number/person/new
+/@/client/:number/contract/:id/edit
+/@/client/:number/address/:id/edit
+/@/client/:number/person/:id/edit
+~~~
+
+All Route Indices you can get by `\MVC\Route::getIndices()`.
+
+Now all you have to do is to grep in those Indices for any match and then to apply your Policy Rules to that match.
+
+_Example_
+~~~php
+// iterate all '/edit' Routes ...
+foreach (preg_grep('/^([\\p{L}\\p{M}\\p{Z}\\p{S}\\p{N}\\p{P}]*)\/edit/i', \MVC\Route::getIndices()) as $sRoute)
+{
+    // ... and bind 'isAdmin' Policy to those Routes  
+    \MVC\Policy::bindOnRoute(
+        \MVC\Route::$aRoute[$sRoute], ['\Foo\Policy\Index::isAdmin']
+    );
+}
+~~~
+
 
 ------------------------------------------------------------------------------------------------------------------------
 
