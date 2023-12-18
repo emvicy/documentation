@@ -4,8 +4,8 @@
 - [Enabling Policy Rules](#writing-policy-rules)
   - [Set a single Rule](#set-a-single-rule)
   - [Setting multiple Rules](#setting-multiple-rules)
-  - [Bind a Policy Rule to a Route](#Bind-a-Policy-Rule-to-a-Route)
-  - [Bind a Policy Rule to multiple Routes](#Bind-a-Policy-Rule-to-multiple-Routes)
+  - [Bind Policy Rules to a Route](#Bind-Policy-Rules-to-a-Route)
+  - [Bind Policy Rules to multiple Routes](#Bind-Policy-Rules-to-multiple-Routes)
 - [Disabling Policy Rules](#disabling-policy-rules)
   - [Unset a single Rule](#unset-a-single-rule)
   - [Unset multiple Rules](#unset-multiple-rules)
@@ -73,8 +73,8 @@ simply wrap the rules into an array.
 );
 ~~~
 
-<a id="Bind-a-Policy-Rule-to-a-Route"></a>
-### Bind a Policy Rule to a Route
+<a id="Bind-Policy-Rules-to-a-Route"></a>
+### Bind Policy Rules to a Route
 
 You can also bind a policy to a certain Route.
 
@@ -88,8 +88,8 @@ _Example: bind policies `checkUserRights` and `isAdmin` to Route `/foo/bar/`_
 );
 ~~~
 
-<a id="Bind-a-Policy-Rule-to-multiple-Routes"></a>
-### Bind a Policy Rule to multiple Routes
+<a id="Bind-Policy-Rules-to-multiple-Routes"></a>
+### Bind Policy Rules to multiple Routes
 
 consider you have these following routes and you want to apply Policy Rules to `/edit`-Routes only.
 
