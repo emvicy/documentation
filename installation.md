@@ -88,7 +88,7 @@ _You should see this Frontend_
 
 **PHP**
 
-- Version: `>=8.0`
+- Version: `>=8.2`
 
 Also you need some PHP-Extensions installed and PHP-functions enabled as listed below.
 
