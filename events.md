@@ -296,8 +296,13 @@ _Example: delete *all* Events_
 | mvc.db.model.db.count.before            |                                     | `\MVC\DB\Model\Db::count`             | `\MVC\DataType\DTValue $oDTValue`                   |
 | mvc.db.model.db.count.sql               |                                     | `\MVC\DB\Model\Db::count`             | `string $sSql`                                      |
 | mvc.db.model.db.updateTupel.before      |                                     | `\MVC\DB\Model\Db::updateTupel`       | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
+| mvc.db.model.db.updateTupel.after       |                                     | `\MVC\DB\Model\Db::updateTupel`       | `\MVC\DataType\DTValue $oDTValue`                   |
+| mvc.db.model.db.updateTupel.fail        |                                     | `\MVC\DB\Model\Db::updateTupel`       | `\MVC\DataType\DTValue $oDTValue`                   |
+| mvc.db.model.db.updateTupel.success     |                                     | `\MVC\DB\Model\Db::updateTupel`       | `\MVC\DataType\DTValue $oDTValue`                   |
 | mvc.db.model.db.update.before           | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::update`            | `\MVC\DataType\DTValue $oDTValue`                   |
 | mvc.db.model.db.update.sql              | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::update`            | `string $sSql`                                      |
+| mvc.db.model.db.update.fail             |                                     | `\MVC\DB\Model\Db::update`            | `\MVC\DataType\DTValue $oDTValue`                   |
+| mvc.db.model.db.update.success          |                                     | `\MVC\DB\Model\Db::update`            | `\MVC\DataType\DTValue $oDTValue`                   |
 | mvc.db.model.db.deleteTupel.before      |                                     | `\MVC\DB\Model\Db::deleteTupel`       | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
 | mvc.db.model.db.delete.before           |                                     | `\MVC\DB\Model\Db::delete`            | `\MVC\DataType\DTValue $oDTValue`                   |
 | mvc.db.model.db.delete.sql              | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::delete`            | `string $sSql`                                      |
