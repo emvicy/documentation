@@ -9,8 +9,8 @@
   - [Module's config folder](#Modules-config-folder)
   - [Module's environment config file](#Modules-environment-config-file)
 - [Module's composer.json](#Modules-composer-json)
-- [Access `MVC_*` config values](#Access-MVC-config-values)
 - [Access module config values](#Access-module-config-values)
+- [Access `MVC_*` config values](#Access-MVC-config-values)
 - [Appendix](#appendix)
   - [`/config/_mvc.php`](#Emvicy-config-folder-example)
   - [Example `/modules/Foo/etc/config/_mvc.php`](#Modules-config-folder-example)
@@ -133,33 +133,12 @@ simply run emvicy.php:
 php emvicy.php update
 ~~~
 
-
-<a id="Access-MVC-config-values"></a>
-## Access `MVC_*` config values 
-
-Access MVC configurations via the `\MVC\Config` Class. For each variable there is an identical getter.
-
-_Syntax_  
-~~~
-$mVar = \MVC\Config::get_{MVC_VARIABLE}();
-~~~
-
-_Example_  
-~~~php
-$sMvcBasePath = \MVC\Config::get_MVC_BASE_PATH();
-~~~
-
-Alternativley you can access all MVC Configs via `\MVC\Registry`.
-
-_Alternative_  
-~~~
-$sMvcBasePath = \MVC\Registry::get('MVC_BASE_PATH');
-~~~
+---
 
 <a id="Access-module-config-values"></a>
-## Access module config values 
+## Access module config values
 
-Access module configuration array via the `\MVC\Config` Class. 
+Access module configuration array via the `\MVC\Config` Class.
 
 _Example_
 ~~~php
@@ -171,6 +150,145 @@ Alternativley you can access the module configuration array via `\MVC\Registry`.
 _Alternative_
 ~~~
 $aModule = \MVC\Registry::get('MODULE');
+~~~
+
+---
+
+<a id="Access-MVC-config-values"></a>
+## Access `MVC_*` config values 
+
+Access MVC configurations via the `\MVC\Config` Class. For each variable there is an identical getter and for many there are setters also.
+
+_Setter_
+~~~
+\MVC\Config::set_{MVC_VARIABLE}( value );
+~~~
+
+_Getter_  
+~~~
+// Getter
+$mVar = \MVC\Config::get_{MVC_VARIABLE}();
+~~~
+
+_Setter Example_
+~~~php
+\MVC\Config::set_MVC_LOG_SQL(false); # logging SQL Statements true|false
+~~~
+
+_Getter Example_  
+~~~php
+$bLogSql = \MVC\Config::get_MVC_LOG_SQL(); # logging SQL Statements true|false
+~~~
+
+Alternativley you can access all MVC Configs via `\MVC\Registry`.
+
+_Alternative_  
+~~~
+$sMvcBasePath = \MVC\Registry::get('MVC_BASE_PATH');
+~~~
+
+_List of Setters_  
+~~~
+Config::set_MVC_CACHE_DIR();
+Config::set_MVC_EVENT();
+Config::set_MVC_EVENT_ENABLE_WILDCARD();
+Config::set_MVC_EVENT_LOG_RUN();
+Config::set_MVC_INFOTOOL_ENABLE();
+Config::set_MVC_LOG_AUTOLOADER();
+Config::set_MVC_LOG_DETAIL();
+Config::set_MVC_LOG_FILE_REQUEST();
+Config::set_MVC_LOG_FILE_ROUTEINTERVALL();
+Config::set_MVC_LOG_FILE_SQL();
+Config::set_MVC_LOG_FORCE_LINEBREAK();
+Config::set_MVC_LOG_REQUEST();
+Config::set_MVC_LOG_SQL();
+Config::set_MVC_MODULE_PRIMARY_VIEW();
+Config::set_MVC_PHP_SERVER();
+Config::set_MVC_POLICY();
+Config::set_MVC_SESSION();
+Config::set_MVC_SESSION_ENABLE();
+Config::set_MVC_SESSION_NAMESPACE();
+Config::set_MVC_UNIQUE_ID();
+~~~
+
+_List of Getters_
+~~~
+Config::get_MVC_APPLICATION_INIT_DIR();
+Config::get_MVC_APPLICATION_PATH();
+Config::get_MVC_BASE_PATH();
+Config::get_MVC_BIN_FIND();
+Config::get_MVC_BIN_GREP();
+Config::get_MVC_BIN_MOVE();
+Config::get_MVC_BIN_PHP_BINARY();
+Config::get_MVC_BIN_PS();
+Config::get_MVC_BIN_REMOVE();
+Config::get_MVC_BIN_SED();
+Config::get_MVC_BIN_XARGS();
+Config::get_MVC_CACHE_CONFIG();
+Config::get_MVC_CACHE_DIR();
+Config::get_MVC_CLI();
+Config::get_MVC_CONFIG_DIR();
+Config::get_MVC_CORE();
+Config::get_MVC_ENV();
+Config::get_MVC_EVENT();
+Config::get_MVC_EVENT_ENABLE_WILDCARD();
+Config::get_MVC_EVENT_LOG_RUN();
+Config::get_MVC_INFOTOOL_ENABLE();
+Config::get_MVC_LIBRARY();
+Config::get_MVC_LOG_AUTOLOADER();
+Config::get_MVC_LOG_DETAIL();
+Config::get_MVC_LOG_FILE_DEFAULT();
+Config::get_MVC_LOG_FILE_DIR();
+Config::get_MVC_LOG_FILE_ERROR();
+Config::get_MVC_LOG_FILE_EVENT();
+Config::get_MVC_LOG_FILE_NOTICE();
+Config::get_MVC_LOG_FILE_POLICY();
+Config::get_MVC_LOG_FILE_REQUEST();
+Config::get_MVC_LOG_FILE_ROUTEINTERVALL();
+Config::get_MVC_LOG_FILE_SQL();
+Config::get_MVC_LOG_FILE_WARNING();
+Config::get_MVC_LOG_FORCE_LINEBREAK();
+Config::get_MVC_LOG_REQUEST();
+Config::get_MVC_LOG_SQL();
+Config::get_MVC_METHODNAME_PRECONSTRUCT();
+Config::get_MVC_MODULES_DIR();
+Config::get_MVC_MODULE_PRIMARY_COMPOSER_DIR();
+Config::get_MVC_MODULE_PRIMARY_CONFIG_DIR();
+Config::get_MVC_MODULE_PRIMARY_CONTROLLER_DIR();
+Config::get_MVC_MODULE_PRIMARY_DATATYPE_DIR();
+Config::get_MVC_MODULE_PRIMARY_DIR();
+Config::get_MVC_MODULE_PRIMARY_ETC_DIR();
+Config::get_MVC_MODULE_PRIMARY_EVENT_DIR();
+Config::get_MVC_MODULE_PRIMARY_MODEL_DIR();
+Config::get_MVC_MODULE_PRIMARY_NAME();
+Config::get_MVC_MODULE_PRIMARY_POLICY_DIR();
+Config::get_MVC_MODULE_PRIMARY_STAGING_CONFIG_DIR();
+Config::get_MVC_MODULE_PRIMARY_VIEW();
+Config::get_MVC_MODULE_PRIMARY_VIEW_DIR();
+Config::get_MVC_PHP_SERVER();
+Config::get_MVC_POLICY();
+Config::get_MVC_PUBLIC_PATH();
+Config::get_MVC_ROUTE_QUERY_PARAM_C();
+Config::get_MVC_ROUTE_QUERY_PARAM_M();
+Config::get_MVC_ROUTE_QUERY_PARAM_MODULE();
+Config::get_MVC_ROUTING_FALLBACK();
+Config::get_MVC_SECURE_REQUEST();
+Config::get_MVC_SESSION();
+Config::get_MVC_SESSION_ENABLE();
+Config::get_MVC_SESSION_NAMESPACE();
+Config::get_MVC_SESSION_OPTIONS();
+Config::get_MVC_SESSION_PATH();
+Config::get_MVC_SMARTY_CACHE_DIR();
+Config::get_MVC_SMARTY_CACHE_STATUS();
+Config::get_MVC_SMARTY_PLUGINS_DIR();
+Config::get_MVC_SMARTY_TEMPLATE_CACHE_DIR();
+Config::get_MVC_SMARTY_TEMPLATE_DEFAULT();
+Config::get_MVC_SMARTY_TEMPLATE_DIR();
+Config::get_MVC_SSL_PORT();
+Config::get_MVC_UNIQUE_ID();
+Config::get_MVC_VERSION();
+Config::get_MVC_VIEW_TEMPLATE_DIR();
+Config::get_MVC_WEB_ROOT();
 ~~~
 
 ---

@@ -14,10 +14,29 @@
     "Logging":"logging.md",
     "Policy":"policy.md",
     "Database ⛁":"database.md",
-    "CLI Wrapping":"cli-wrapping.md"
+    "CLI Wrapping":"cli-wrapping.md",
+    "DataType": {
+      "Generating Classes": "generating-datatype-classes.md",
+      "Emvicy DataType Classes": "datatype-classes.md"
+    }
   },
-  "DataType": {
-    "Generating Classes": "generating-datatype-classes.md",
-    "Emvicy DataType Classes": "datatype-classes.md"
+  "Tools": {
+    "ArrDot <small>[array dot notation]</small>": "arrdot.md",
+    "Cache": "cache.md",
+    "Closure": "closure.md",
+    "Convert": "convert.md",
+    "Date": "date.md",
+    "Debug": "debug.md",
+    "Dir <small>[directory]</small>": "dir.md",
+    "Error": "error.md",
+    "File": "file.md",
+    "InfoTool": "infotool.md",
+    "Lock": "lock.md",
+    "Minify": "minify.md",
+    "Registry": "registry.md",
+    "RouteIntervall": "route-intervall.md",
+    "Session": "session.md",
+    "Strings": "strings.md",
+    "Traits": "traits.md"
   }
 }
