@@ -1,8 +1,15 @@
 
 # Registry
 
+- [set](#set)
+- [isRegistered](#isRegistered)
+- [get](#get)
+- [take](#take)
+- [delete](#delete)
+
 ---
 
+<a id="set"></a>
 # `set`
 
 saves a key/value pair to registry storage.
@@ -18,6 +25,7 @@ Registry::set('foo', 'bar');
 
 ---
 
+<a id="isRegistered"></a>
 # `isRegistered`
 
 Returns: 
@@ -39,6 +47,7 @@ true
 
 ---
 
+<a id="get"></a>
 # `get`
 
 gets (reads) a value by its key.
@@ -58,6 +67,7 @@ bar
 
 ---
 
+<a id="take"></a>
 # `take`
 
 gets a value by its key and deletes the entry afterwards.
@@ -77,6 +87,7 @@ bar
 
 ---
 
+<a id="delete"></a>
 # `delete`
 
 deletes a value in registry.
