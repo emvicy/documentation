@@ -98,7 +98,7 @@ object(MVC\DataType\DTFileinfo)#84 (16) {
   ["uid":protected]=>int(1000)
   ["gid":protected]=>int(1000)
   ["gecos":protected]=>string(9) "admin1,,,"
-  ["dir":protected]=>string(12) "/home/admin1"
+  ["dir":protected]=>string(12) "/var/www"
   ["shell":protected]=>string(9) "/bin/bash"
   ["filemtime":protected]=>int(1666350030)
   ["filectime":protected]=>int(1666350030)

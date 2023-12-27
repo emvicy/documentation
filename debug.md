@@ -70,7 +70,7 @@ stop();
 ~~~
 ~~~
 stop at:
-- File: /home/admin1/htdocs/_dev/Emvicy/Emvicy/Emvicy_1.x/modules/Foo/Controller/Index.php
+- File: /var/www/htdocs/Emvicy/modules/Foo/Controller/Index.php
 - Line: 100
 - Method: Foo\Controller\Index::index
 ~~~
@@ -94,12 +94,49 @@ _CLI_
 ~~~
 Debug::varExport(mixed $mData, bool $bReturn = false, bool $bShortArraySyntax = true)
 ~~~
-   
+
+_Examples_ 
+
+*equals `var_export()`, except that arrays are noted with square brackets `[ ]`*      
+~~~php
+Debug::varExport($GLOBALS['aConfig'];
+~~~
+
+*equals `var_export()`*  
+~~~php
+Debug::varExport($GLOBALS['aConfig'], bShortArraySyntax: false);
+~~~
+
+_returns output_  
+~~~php
+$aExport = Debug::varExport($GLOBALS['aConfig'], true);
+~~~
+
 ---
 
 <a id="prepareBacktraceArray"></a>
 ## `prepareBacktraceArray`
 
+returns an array containing information about the source of the call which leads to this place.
+
 ~~~
 Debug::prepareBacktraceArray(array $aBacktrace = array()) : array
+~~~
+
+_Example_  
+~~~php
+$aDebug = Debug::prepareBacktraceArray(
+    debug_backtrace()
+);
+~~~
+
+_Result of `$aDebug`_  
+~~~
+// type: array, items: 4
+[
+    'sFile' => '/var/www/htdocs/Emvicy/application/library/MVC/Reflex.php',
+    'sLine' => 153,
+    'sClass' => 'MVC\\Reflex',
+    'sFunction' => 'reflect',
+]
 ~~~
