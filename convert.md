@@ -8,12 +8,12 @@
 ---
 
 <a id="objectToArray"></a>
-## Object to array
+## `objectToArray`
 
 converts any object into array.
 
 ~~~
-Convert::objectToArray(object $oObject);
+Convert::objectToArray(mixed $mObject) : mixed
 ~~~
 
 _Example_  
@@ -31,12 +31,12 @@ var_dump(
 ---
 
 <a id="boolToString"></a>
-## Bool to String
+## `boolToString`
 
 converts `true` into `'true'` and `false` into `'false'`. Well of course it does not really convert the original value, but gives you a string representation of that value.
 
 ~~~
-Convert::boolToString(bool $bBool);
+Convert::boolToString(bool $bValue) : string
 ~~~
 
 ~~~php
@@ -54,12 +54,12 @@ var_dump(
 ---
 
 <a id="constValueToKey"></a>
-## Constant value to Key (Name)
+## `constValueToKey`
 
 returns constant name on its integer value - works for `php` constants.
 
 ~~~
-Convert::constValueToKey(int $iInt);
+Convert::constValueToKey(int $iValue, array $aConstant = array()) : string
 ~~~
 
 _Example_  

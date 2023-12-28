@@ -8,6 +8,7 @@
     "Frontend":"frontend.md"
   },
   "Basics": {
+    "MVC <small>[Model View Controller]</small>":"mvc.md",
     "Routing":"routing.md",
     "Request":"request.md",
     "Events":"events.md",

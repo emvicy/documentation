@@ -16,36 +16,36 @@ in your Module's environment config folder (`/modules/{moduleName}/etc/config/{m
 In this file you name your existing routes you want to be called periodically, following by intervall seconds for each route.
 
 *config file `_routeintervall.yaml`*  
-~~~
+~~~bash
 #-------------------------------------------
 # route             # intervall in seconds
 #-------------------------------------------
 
-"/robot/autokick":  30
-"/robot/sendEmail": 300
+"/robot/autokick": 30
+"/robot/sendMail": 300
 ~~~
 
 So in this example you want 
 - route `/robot/autokick` to be called **every 30 seconds**
-- route `/robot/sendEmail` to be called **every 300 seconds**
+- route `/robot/sendMail` to be called **every 300 seconds**
 
 ---
 
 <a id="Init-Route"></a>
 ## Init Route 
 
-you need to create an init route (see [Creating a Route](/1.x/routing#Creating-a-Route)) - you might want to call it `/intervall/`.
+you need to create an init route (see [Creating a Route](/1.x/routing#Creating-a-Route)) - you might want to call it `/routeIntervall/`.
 
 _init route_  
 ~~~php
-\MVC\Route::get('/intervall/', '\Foo\Controller\Index::intervall');
+\MVC\Route::get('/routeIntervall/', '\Foo\Controller\Index::routeIntervall');
 ~~~
 
-...and the corresponding controller `\Foo\Controller\Index::intervall`:
+...and the corresponding controller `\Foo\Controller\Index::routeIntervall`:
 
 ~~~php
 ...
-public function intervall()
+public function routeIntervall()
 {
     Event::run('mvc.view.render.off');
     Event::run('mvc.view.echoOut.off');
@@ -62,7 +62,7 @@ Once you have reached this point, you are already able to make a call.
 cd into the `/public` folder and start the init route. 
 
 ~~~php
-php index.php '/intervall/'
+php index.php '/routeIntervall/'
 ~~~
 
 ---

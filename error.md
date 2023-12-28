@@ -105,10 +105,12 @@ $aError = Error::get();
 
 _Example Retrieving error data using [ArrDot](/1.x/arrdot)_  
 ~~~php
+$oArrDot = new ArrDot(Error::get());
+
 info(
-    ArrDot::create(Error::get())->get('0.aKeyValue')
+    $oArrDot->get('0.aKeyValue')
 );
 display(
-    ArrDot::create(Error::get())->getIndexOnValue('this is an error')
+    $oArrDot->getIndexOnValue('this is an error')
 );
 ~~~

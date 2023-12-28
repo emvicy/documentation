@@ -4,33 +4,51 @@
 - [getCache](#getCache)
 - [saveCache](#saveCache)
 - [autoDeleteCache](#autoDeleteCache)
+- [flushCache](#flushCache)
 - [Example](#Example)
 
 ---
 
 <a id="getCache"></a>
-## get from Cache
+## `getCache`
+
+gets data from cache by key.
 
 ~~~
-Cache::getCache(string $sCacheToken);
+Cache::getCache(string $sKey = '')
 ~~~
 
 ---
 
 <a id="saveCache"></a>
-## save to Cache
+## `saveCache`
+
+saves data into cache on key.
 
 ~~~
-Cache::saveCache(string $sCacheToken, .. mixed .. );
+Cache::saveCache(string $sKey, $mData) : bool
 ~~~
 
 ---
 
 <a id="autoDeleteCache"></a>
-## autoDeleteCache
+## `autoDeleteCache`
+
+deletes cachefiles after certain time.
 
 ~~~
-Cache::autoDeleteCache(string $sCacheToken, int minutes);
+Cache::autoDeleteCache(string $sToken = '', string $sMinutes = null) : bool
+~~~
+
+---
+
+<a id="flushCache"></a>
+## `flushCache`
+
+flushes cache (deletes all cachefiles immediatly).
+
+~~~
+Cache::flushCache() : bool
 ~~~
 
 ---

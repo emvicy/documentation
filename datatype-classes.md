@@ -78,7 +78,7 @@ object(MVC\DataType\DTRequestCurrent)#17 (14) {
 ## `DTFileinfo`
 
 - This Class is used to store File Information.
-- An object of this class gets being returned by `File::info()`
+- An object of this class gets being returned by [File::info()](/1.x/file#info)
 
 ~~~php
 /** @var \MVC\DataType\DTFileinfo $oDTFileinfo */
@@ -102,6 +102,7 @@ object(MVC\DataType\DTFileinfo)#84 (16) {
   ["shell":protected]=>string(9) "/bin/bash"
   ["filemtime":protected]=>int(1666350030)
   ["filectime":protected]=>int(1666350030)
+  ["mimetype":protected]=>string(10) "text/x-php"
 }
 ~~~
 

@@ -1,16 +1,18 @@
 
 # Closure
 
-- [Check on Closure](#check-on-closure)
-- [Closure to String](#closure-to-string)
+- [is](#check-on-closure)
+- [toString](#closure-to-string)
 
 ---
 
 <a id="check-on-closure"></a>
-## Check on Closure
+## `is`
+
+checks whether the unknown parameter is of type closure object.
 
 ~~~
-Closure::is(closure $oClosure);
+Closure::is(mixed $mUnknown) : bool
 ~~~
 
 _Example_  
@@ -35,12 +37,12 @@ true
 ---
 
 <a id="closure-to-string"></a>
-## Closure to String
+## `toString`
 
 with the `Closure::toString` method you can convert a Closure into a String, which is useful if you want to log a closure into a logfile for example. 
 
 ~~~
-Closure::toString(clsoure $oClosure);
+Closure::toString(\Closure $oClosure, bool $bShrink = true) : string
 ~~~
 
 _Example_  

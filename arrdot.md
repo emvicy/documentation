@@ -3,14 +3,15 @@
 
 with ArrDot you can access arrays via dot notation.
 
-- [Create](#Create)
-- [Set](#Set)
-- [Get](#Get)
+- [Instantiate](#Instantiate)
+- [set](#Set)
+- [get](#Get)
+- [getIndexOnValue](#getIndexOnValue)
 
 ---
 
-<a id="Create"></a>
-## Create
+<a id="Instantiate"></a>
+## Instantiate
 
 ~~~
 $oArrDot = new ArrDot(array $aArray);
@@ -34,7 +35,7 @@ $oArrDot = new ArrDot(
 ---
 
 <a id="Set"></a>
-## Set
+## `set`
 
 ~~~
 $oArrDot->set(string $sKey, mixed);
@@ -48,7 +49,7 @@ $oArrDot->set('user.mary', 'moo');
 ---
 
 <a id="Get"></a>
-## Get
+## `get`
 
 ~~~
 $oArrDot->get();
@@ -81,6 +82,13 @@ $oArrDot->get('user.john')
 // type: string
 'doe'
 ~~~
+
+---
+
+<a id="getIndexOnValue"></a>
+## `getIndexOnValue`
+
+searches for a value in given array; returns dot notation address on the **first hit**.
 
 _get key on existing **`value`**_  
 ~~~php
