@@ -34,7 +34,7 @@ _assuming we have a Route, accepting GET Requests leading to module's `Foo` Cont
 
 writing the Controller class
 
-- The Controller Class has to placed inside your module's Controller folder (see [/modules/{moduleName}/](/1.x/directory-structure#modules-moduleName)
+- The Controller Class has to be placed inside your module's Controller folder (see [/modules/{moduleName}/](/1.x/directory-structure#modules-moduleName)
 - Naming Convention for the php file: Pascal Case (see <a href="https://wiki.c2.com/?PascalCase" target="_blank">wiki.c2.com/?PascalCase</a>)
 - The Controller must have implement the interface `\MVC\MVCInterface\Controller`; therefore simply extend App\Controller: `class Index extends App\Controller { }` as it fullfills the required interface.
 
@@ -109,6 +109,8 @@ Controller => Model => Controller
   
 The "Worker". Here you are receiving commands from Controller and do things with data. Try to avoid implementing business logic here - this always belongs to a Controller.
 
+A Model Class has to be placed inside your module's Model folder (see [/modules/{moduleName}/](/1.x/directory-structure#modules-moduleName)
+ 
 ---
 
 <a id="View"></a>
@@ -120,6 +122,7 @@ Controller => View
 
 The view renders presentation in a particular format, receiving commands from Controller. 
 
+A View Class has to be placed inside your module's View folder (see [/modules/{moduleName}/](/1.x/directory-structure#modules-moduleName)
 
 
 ---
