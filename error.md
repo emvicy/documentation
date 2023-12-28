@@ -25,7 +25,7 @@ $aError = Error::get();
 ## `notice`
 
 ~~~
-notice (string $sMessage = '', int $iCode = E_NOTICE, int $iSeverity = 0, string $sFilename = '', int $iLineNr = 0) : void
+Error::notice (string $sMessage = '', int $iCode = E_NOTICE, int $iSeverity = 0, string $sFilename = '', int $iLineNr = 0) : void
 ~~~
 
 _Example_  
@@ -39,7 +39,7 @@ Error::notice('this is a notice');
 ## `warning`
 
 ~~~
-warning (string $sMessage = '', int $iCode = E_WARNING, int $iSeverity = 0, string $sFilename = '', int $iLineNr = 0) : void
+Error::warning (string $sMessage = '', int $iCode = E_WARNING, int $iSeverity = 0, string $sFilename = '', int $iLineNr = 0) : void
 ~~~
 
 _Example_
@@ -53,7 +53,7 @@ Error::warning('this is a warning');
 ## `error`
 
 ~~~
-error (string $sMessage = '', int $iCode = E_ERROR, int $iSeverity = 0, string $sFilename = '', int $iLineNr = 0) : void
+Error::error (string $sMessage = '', int $iCode = E_ERROR, int $iSeverity = 0, string $sFilename = '', int $iLineNr = 0) : void
 ~~~
 
 _Example_
@@ -67,7 +67,7 @@ Error::error('this is an error');
 ## `exception`
 
 ~~~
-exception(\Exception $oErrorException) : void
+Error::exception(\Exception $oErrorException) : void
 ~~~
 
 _Example_
@@ -81,7 +81,7 @@ Error::exception(new \Exception('this is an exception'));
 ## `fatal`
 
 ~~~
-function fatal() : void
+Error::function fatal() : void
 ~~~
 
 _Example_
@@ -95,7 +95,7 @@ Error::fatal();
 ## `get`
 
 ~~~
-get() : array
+Error::get() : array
 ~~~
 
 _Example_
