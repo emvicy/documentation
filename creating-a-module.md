@@ -2,6 +2,9 @@
 # Creating a Module
 
 - [How it works](#how-it-works)
+  - [`primary` module](#primary-module)
+      - [dotfile `.primary`](#dotfile-primary)
+  - [`secondary` module](#secondary-module)
 - [Creating a `primary` Module](#creating-a-primary-module)
 - [Creating a `secondary` Module](#creating-a-secondary-module)
 
@@ -14,14 +17,33 @@ There is a distinction between `primary` and `secondary` modules.
 
 You create a module by using `emvicy.php` on CLI. The creation of the necessary environment config file (e.g. 'develop.php') during this module creation process depends on which `MVC_ENV` is set in `/.env` (see [/1.x/configuration#Environment](/1.x/configuration#Environment)).
 
-**Primary module**    
+---
+
+<a id="primary-module"></a>
+### `primary` module    
 You develop your application in a `primary` module.
 That `primary` module is also stored by name in the globally available config `$aConfig['MVC_MODULE_PRIMARY_NAME']` and is also available via `Config::get_MVC_MODULE_PRIMARY_NAME()`.
 
 The `primary` module is the leading, tone-setting module.
 You don't need to write secondary modules if you don't need one. Develop your application in a `primary` module.
 
-**Secondary module**  
+<a id="dotfile-primary"></a>
+
+**dotfile `.primary`**
+
+A primary module needs to have the dotfile `.primary` in its root folder. There can only be one module having a `.primary` dotfile at once.
+
+If you add a module by following [Creating a `primary` Module](#creating-a-primary-module), the `.primary` dotfile will be automatically created.
+
+If you want so make a secondary module as the primary one, just move the `.primary` dotfile to the secondary module.
+
+~~~
+.primary
+~~~
+
+<a id="secondary-module"></a>
+### `secondary` module
+
 But sometimes there are parts of code you want to reuse in other software projects.
 For such a case `secondary` modules are suitable. Code written here should be reused in other Emvicy software projects if necessary.
 
@@ -50,14 +72,14 @@ Conclusion
 
 _use one of the following commands to create a primary module_  
 ~~~bash
-php emvicy.php c module=foo;                       # creates primary module "Foo"; asks if modulename is correct
+php emvicy.php c module:foo                         # creates primary module "Foo"; asks if modulename is correct
 ~~~
 ~~~bash
-php emvicy.php c module=foo force=no;              # same
-php emvicy.php c module=foo force=yes;             # no asking - instantly creating of primary module "Foo"
-php emvicy.php c module=foo primary=yes;           # creates primary module "Foo"; asks if modulename is correct
-php emvicy.php c module=foo primary=yes force=no;  # same
-php emvicy.php c module=foo primary=yes force=yes; # no asking - instantly creating of primary module "Foo"
+php emvicy.php c module:foo force:no                # same
+php emvicy.php c module:foo force:yes               # no asking - instantly creating of primary module "Foo"
+php emvicy.php c module:foo primary:yes             # creates primary module "Foo"; asks if modulename is correct
+php emvicy.php c module:foo primary:yes force:no    # same
+php emvicy.php c module:foo primary:yes force:yes   # no asking - instantly creating of primary module "Foo"
 ~~~
 
 _After creating a primary module, you could start Emvicy's local development server to test the module frontend_
@@ -76,9 +98,6 @@ Call http://127.0.0.1:1969/ and you will see your created module frontend
 
 _use one of the following commands to create a secondary module_
 ~~~bash
-php emvicy.php c module=bar primary=no             # creates module "Bar" as a secondary module; asks if modulename is correct
-~~~
-~~~bash
-php emvicy.php c module=bar primary=no force=no;   # same
-php emvicy.php c module=bar primary=no force=yes;  # no asking - instantly creating of secondary module "Baz"
+php emvicy.php c module:bar primary:no              # creates module "Bar" as a secondary module; asks if modulename is correct
+php emvicy.php c module:bar primary:no force:yes    # no asking - instantly creating of secondary module "Bar"
 ~~~
