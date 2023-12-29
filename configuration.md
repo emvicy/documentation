@@ -322,12 +322,12 @@ MVC_RUNTIME_SETTINGS: {
 
     // enable exit on "kill" command and CLI break (CTRL-C)
     // This command needs the pcntl extension to run.
-    // do not provide if php's builtin webserver is running (using e.g. php emvicy.php)
-    if (true === isset($_SERVER['HTTP_HOST']) && '127.0.0.1:1969' !== $_SERVER['HTTP_HOST'])
+    // exclude emvicy.php usage (e.g. if php's builtin webserver is running `php emvicy.php s`)
+    if (false === getenv('emvicy'))
     {
-        (function_exists('pcntl_async_signals')) ? pcntl_async_signals(true) : false;
-        (function_exists('pcntl_signal')) ? pcntl_signal(SIGTERM, function(){exit();}) : false;
-        (function_exists('pcntl_signal')) ? pcntl_signal(SIGINT, function(){exit();}) : false;
+        (function_exists('pcntl_async_signals'))    ? pcntl_async_signals(true)                    : false;
+        (function_exists('pcntl_signal'))           ? pcntl_signal(SIGTERM, function(){exit();})    : false;
+        (function_exists('pcntl_signal'))           ? pcntl_signal(SIGINT,  function(){exit();})    : false;
     }
 
     /*
@@ -432,6 +432,7 @@ MVC_APPLICATION_SETTINGS_I: {
     $aConfig['MVC_LOG_FILE_EVENT'] = $aConfig['MVC_LOG_FILE_DIR'] . 'event.log';
     $aConfig['MVC_LOG_FILE_REQUEST'] = $aConfig['MVC_LOG_FILE_DIR'] . 'request.log';
     $aConfig['MVC_LOG_FILE_SQL'] = $aConfig['MVC_LOG_FILE_DIR'] . 'sql.log';
+    $aConfig['MVC_LOG_FILE_ROUTEINTERVALL'] = $aConfig['MVC_LOG_FILE_DIR'] . 'route_intervall.log';
 
     // 1) make sure write access is given to the folder
     // as long as the db user is going to write and not the webserver user
@@ -459,7 +460,11 @@ MVC_APPLICATION_SETTINGS_I: {
 
     // logging of SQL Statements
     $aConfig['MVC_LOG_SQL'] = false;
-    
+
+    /**
+     * Database
+     */
+
     /**
      * Caching
      */

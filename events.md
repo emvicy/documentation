@@ -16,7 +16,7 @@
 
 _Location where to write Event Listeners_  
 ~~~
-module/{module}/etc/config/event/
+module/{module}/etc/event/
 ~~~
 
 Listeners written here are executed right after all Configurations have been loaded. No essential classes of Emvicy have been loaded or processed at this point yet.
