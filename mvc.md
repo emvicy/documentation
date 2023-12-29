@@ -87,7 +87,7 @@ _Example Usage of parameters_
 public function index(DTRequestCurrent $oDTRequestCurrent, DTRoute $oDTRoute)
 {
     // get potential data sent
-    $mInput = $oDTReuestCurrent->get_input();
+    $mInput = $oDTRequestCurrent->get_input();
     
     // get additional object
     /** @var \MVC\DataType\DTRoutingAdditional $oDTRoutingAdditional */
@@ -185,10 +185,10 @@ class Index extends _Master
      * @return void
      * @throws \ReflectionException
      */
-	public function index(DTRequestCurrent $oDTRequestCurrent, DTRoute $oDTRoute)
-	{
+    public function index(DTRequestCurrent $oDTRequestCurrent, DTRoute $oDTRoute)
+    {
         view()->autoAssign();
-	}
+    }
 
     /**
      * @param \MVC\DataType\DTRequestCurrent $oDTRequestCurrent
