@@ -127,7 +127,7 @@ _Example Result_
 
 _Example route_
 ~~~php
-\MVC\Route::get('/api/:id/:name/:address/*', 'module=Foo&c=Api&m=index');
+\MVC\Route::get('/api/:id/:name/:address/*', '\Foo\Controller\Api::index');
 ~~~
 - _for more Information about setting up such routes, see [Routing with Path Params / Variables](/3.4.x/routing#path-params)_
 
@@ -172,7 +172,7 @@ say you have a wildcard route and you want to get the overlapping path string af
 
 _Example route_
 ~~~php
-\MVC\Route::get('/foo/*', 'module=Foo&c=Index&m=foo');
+\MVC\Route::get('/foo/*', '\Foo\Controller\Index::foo');
 ~~~
 - _see [Wildcard routing](/3.4.x/routing#wildcard-routing)_
 

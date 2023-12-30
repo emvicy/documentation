@@ -240,7 +240,7 @@ _Example routes using `$oDTRoutingAdditional`_
 
 _Example_  
 ~~~php
-\MVC\Route::get('/foo/', 'module=Foo&c=Index&m=foo');
+\MVC\Route::get('/foo/', '\Foo\Controller\Index::foo');
 ~~~
 
 you can only request  
@@ -253,7 +253,7 @@ you cannot request e.g.
 therefore, just add `*` after the path: `'/foo/*'`.  
 
 ~~~php
-\MVC\Route::get('/foo/*', 'module=Foo&c=Index&m=foo');
+\MVC\Route::get('/foo/*', '\Foo\Controller\Index::foo');
 ~~~
 
 now you can call the route with further paths 
@@ -290,9 +290,9 @@ All variables you declare in your route are accessible by name.
 _Examples_
 ~~~php
 # :var notation
-\MVC\Route::get('/api/:id/:name/:address/', 'module=Foo&c=Api&m=index');
+\MVC\Route::get('/api/:id/:name/:address/', '\Foo\Controller\Api::index');
 # {var} notation
-\MVC\Route::get('/api/{id}/{name}/{address}/', 'module=Foo&c=Api&m=index');
+\MVC\Route::get('/api/{id}/{name}/{address}/', '\Foo\Controller\Api::index');
 ~~~
 
 Valid Requests:
@@ -301,7 +301,7 @@ Valid Requests:
 
 _Example with activating wildcard routing_
 ~~~php
-\MVC\Route::get('/api/:id/:name/:address/*', 'module=Foo&c=Api&m=index');
+\MVC\Route::get('/api/:id/:name/:address/*', '\Foo\Controller\Api::index');
 ~~~
 
 Valid Requests:
