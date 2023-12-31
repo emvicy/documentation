@@ -15,7 +15,7 @@
 
 There is a distinction between `primary` and `secondary` modules.
 
-You create a module by using `emvicy.php` on CLI. The creation of the necessary environment config file (e.g. 'develop.php') during this module creation process depends on which `MVC_ENV` is set in `/.env` (see [/1.x/configuration#Environment](/1.x/configuration#Environment)).
+You create a module by using `emvicy` on CLI. The creation of the necessary environment config file (e.g. 'develop.php') during this module creation process depends on which `MVC_ENV` is set in `/.env` (see [/1.x/configuration#Environment](/1.x/configuration#Environment)).
 
 ---
 
@@ -72,19 +72,19 @@ Conclusion
 
 _use one of the following commands to create a primary module_  
 ~~~bash
-php emvicy.php c module:foo                         # creates primary module "Foo"; asks if modulename is correct
+php emvicy c module:foo                         # creates primary module "Foo"; asks if modulename is correct
 ~~~
 ~~~bash
-php emvicy.php c module:foo force:no                # same
-php emvicy.php c module:foo force:yes               # no asking - instantly creating of primary module "Foo"
-php emvicy.php c module:foo primary:yes             # creates primary module "Foo"; asks if modulename is correct
-php emvicy.php c module:foo primary:yes force:no    # same
-php emvicy.php c module:foo primary:yes force:yes   # no asking - instantly creating of primary module "Foo"
+php emvicy c module:foo force:no                # same
+php emvicy c module:foo force:yes               # no asking - instantly creating of primary module "Foo"
+php emvicy c module:foo primary:yes             # creates primary module "Foo"; asks if modulename is correct
+php emvicy c module:foo primary:yes force:no    # same
+php emvicy c module:foo primary:yes force:yes   # no asking - instantly creating of primary module "Foo"
 ~~~
 
 _After creating a primary module, you could start Emvicy's local development server to test the module frontend_
 ~~~bash
-php emvicy.php s
+php emvicy s
 ~~~
 
 Call http://127.0.0.1:1969/ and you will see your created module frontend
@@ -98,6 +98,6 @@ Call http://127.0.0.1:1969/ and you will see your created module frontend
 
 _use one of the following commands to create a secondary module_
 ~~~bash
-php emvicy.php c module:bar primary:no              # creates module "Bar" as a secondary module; asks if modulename is correct
-php emvicy.php c module:bar primary:no force:yes    # no asking - instantly creating of secondary module "Bar"
+php emvicy c module:bar primary:no              # creates module "Bar" as a secondary module; asks if modulename is correct
+php emvicy c module:bar primary:no force:yes    # no asking - instantly creating of secondary module "Bar"
 ~~~

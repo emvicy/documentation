@@ -12,7 +12,7 @@
 
 - Emvicy makes use of the robust Template Engine `Smarty` Version 4. 
 - All Templates you define in your module's template folder.
-- Emvicy provides a standard set of template files if you create your module via `emvicy.php` (see: [Creating a Module](/3.4.x/creating-a-module)). 
+- Emvicy provides a standard set of template files if you create your module via `emvicy` (see: [Creating a Module](/3.4.x/creating-a-module)). 
 - See the directory structure of the standard set of templates: [/3.4.x/directory-structure#modules-moduleName-templates](/3.4.x/directory-structure#modules-moduleName-templates)
 
 _Smarty_  

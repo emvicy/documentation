@@ -37,11 +37,11 @@ _see complete installation video_
 <a id="Initialize_Emvicy"></a>
 ## Initialize Emvicy    
 
-cd into the root folder of Emvicy and run `emvicy.php`
+cd into the root folder of Emvicy and run `emvicy`
 
 ~~~bash
 cd Emvicy_1.x/; 
-php emvicy.php
+php emvicy
 ~~~
  
 - A new Environment config file `/.env` will be created automatically containing `MVC_ENV=develop` (see [/1.x/configuration#Environment](/1.x/configuration#Environment)). 
@@ -59,12 +59,12 @@ setup checking
 After that, start Emvicy's local development server.
 
 ~~~bash
-php emvicy.php serve
+php emvicy serve
 ~~~
 
 _Example output_  
 ~~~bash
-admin1@erazer:/tmp/foo/Emvicy_1.x$ php emvicy.php serve
+admin1@erazer:/tmp/foo/Emvicy_1.x$ php emvicy serve
 /opt/lampp_8.2.0/bin/php-8.2.0 -S 127.0.0.1:1969 -t ./public/
 --------------------------------------------------------------------------------
 [Sat Dec  2 11:09:12 2023] PHP 8.2.0 Development Server (http://127.0.0.1:1969) started

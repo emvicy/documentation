@@ -44,7 +44,7 @@ _Example: minify css/js in given folders_
 ]);
 ~~~
 
-If you created a module using `emvicy.php` (see [Creating a Module](/1.x/creating-a-module)) you will already find an Activation via Event Listener in `/modules/{module}/etc/event/default.php`:
+If you created a module using `emvicy` (see [Creating a Module](/1.x/creating-a-module)) you will already find an Activation via Event Listener in `/modules/{module}/etc/event/default.php`:
 
 ![Emvicy Minify](/doc/1.x/minify/emvicy_minify.png)
 

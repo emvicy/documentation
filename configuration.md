@@ -98,7 +98,7 @@ This also means that a later loaded configuration beats (overrides) an earlier l
    - Coverage: **module environment specific** - The concrete environment config file is loaded appropiate to your environment of your module you have set in `MVC_ENV`
    - See [Example `/modules/Foo/etc/config/Foo/config/develop.php`](#Modules-environment-config-file-example)
 
-⚠ If you create a module by using emvicy.php (see: [Creating a primary Module](/3.4.x/creating-a-module#creating-a-primary-module)), the corresponding "Module's environment config file" will be generated automatically. 
+⚠ If you create a module by using emvicy (see: [Creating a primary Module](/3.4.x/creating-a-module#creating-a-primary-module)), the corresponding "Module's environment config file" will be generated automatically. 
 But if you change the value of the `MVC_ENV` variable of `/.env` config file afterwards, make sure the corresponding "Module's environment config file" does exist in your module. 
 Example: If your Module is named `Foo`, and you set `MVC_ENV=production`, then the config file `/modules/Foo/etc/config/Foo/config/production.php` has to exist.
 
@@ -127,10 +127,10 @@ Emvicy will automatically integrate all `/vendor/autoload.php` autoloaders from 
 
 **keep vendor libraries updated**
 
-simply run emvicy.php:
+simply run emvicy:
 
 ~~~bash
-php emvicy.php update
+php emvicy update
 ~~~
 
 ---
@@ -322,7 +322,7 @@ MVC_RUNTIME_SETTINGS: {
 
     // enable exit on "kill" command and CLI break (CTRL-C)
     // This command needs the pcntl extension to run.
-    // exclude emvicy.php usage (e.g. if php's builtin webserver is running `php emvicy.php s`)
+    // exclude emvicy usage (e.g. if php's builtin webserver is running `php emvicy s`)
     if (false === getenv('emvicy'))
     {
         (function_exists('pcntl_async_signals'))    ? pcntl_async_signals(true)                    : false;
