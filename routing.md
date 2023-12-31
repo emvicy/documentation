@@ -271,7 +271,7 @@ this will give you
 bar/baz/
 ~~~
 
-- see `Request`: [Accessing Path Params / Variables](/3.4.x/request#Accessing-Path-Params-Variables)
+- see `Request`: [Accessing Path Params / Variables](/1.x/request#Accessing-Path-Params-Variables)
 
 <br>
 
@@ -309,7 +309,7 @@ Valid Requests:
 - `/api/1969/FooBar/Somwhere%20else/what/else/`
 
 _Access the Variables_  
-- see `Request`: [Accessing Path Params / Variables](/3.4.x/request#Accessing-Path-Params-Variables)
+- see `Request`: [Accessing Path Params / Variables](/1.x/request#Accessing-Path-Params-Variables)
 
 ---
 

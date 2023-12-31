@@ -19,7 +19,7 @@
 | Folder / File                                         | Meaning                                            |
 |-------------------------------------------------------|----------------------------------------------------|
 | 📁 [application](#application)                        | Emvicy Framework and libraries, temporary files     |    
-| 📁 [config](/3.4.x/configuration#Emvicy-config-folder) | top config folder; gobal                           |  
+| 📁 [config](/1.x/configuration#Emvicy-config-folder) | top config folder; gobal                           |  
 | 📁 [modules](#modules-moduleName)                     | **&larr; in here you write your application code** |    
 | 📁 public                                             | any public files like `*.css`, `*.js`              | 
 | emvicy                                            | command line tool; helps to manage                 |  
@@ -68,7 +68,7 @@
 | 📁 _INSTALL                                 | place for files to install _(e.g. copy into `public` folder)_                                           |
 | 📁 [config](#modules-moduleName-etc-config) | Module's config files                                                                                   |
 | 📁 doc                                      | place for any further Module documentation                                                              |
-| 📁 event                                    | place for Event Listeners. See [Registering Event Listeners](/3.4.x/events#registering-event-listeners) |
+| 📁 event                                    | place for Event Listeners. See [Registering Event Listeners](/1.x/events#registering-event-listeners) |
 | 📁 policy                                   | Policy Rules                                                                                            |
 | 📁 routing                                  | Routing files                                                                                           |
 | 📁 smartyPlugins                            | Smarty template PlugIn files                                                                            |
@@ -94,7 +94,7 @@
 | _datatype.php | Module's DataType configuration files                                                                                                                         |
 | _db.php       | Database Config                                                                                                                                               |
 | _session.php  | Session Rules; Where to enable & disable Session                                                                                                              |
-| develop.php   | Module's environment config file. See [Example `/modules/Foo/etc/config/Foo/config/develop.php`](/3.4.x/configuration#Modules-environment-config-file-example) |
+| develop.php   | Module's environment config file. See [Example `/modules/Foo/etc/config/Foo/config/develop.php`](/1.x/configuration#Modules-environment-config-file-example) |
 
 
 <a id="modules-moduleName-templates"></a>
@@ -116,4 +116,4 @@ modules/{moduleName}/
 │           ├── index.tpl
 │           └── menu.tpl
 ~~~
-- You may find further Information in Topic [Frontend](/3.4.x/frontend)
+- You may find further Information in Topic [Frontend](/1.x/frontend)
