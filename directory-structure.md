@@ -46,18 +46,19 @@
 <a id="modules-moduleName"></a>
 ## `/modules/{moduleName}/` 
 
-| Folder / File                                 | Meaning                                                                                            |
-|-----------------------------------------------|----------------------------------------------------------------------------------------------------|
-| 📁 Controller                                 | Your Application Controller Classes                                                                |
-| 📁 DataType                                   | Your generated DataType Classes                                                                    |
-| 📁 [etc](#modules-moduleName-etc)             | place for install- and config files, docs, routing and individual other stuff                      |
-| 📁 Model                                      | Your Application Model Classes                                                                     |
-| 📁 Policy                                     | Your Application Policy Classes                                                                    |
-| 📁 [templates](#modules-moduleName-templates) | Template files                                                                                     |
-| 📁 View                                       | Your Application View Classes                                                                      |
-| _install.sh                                   | helper bash script to e.g. install files from `modules/{moduleName}/etc/_INSTALL/` to other places |
-| _publish.sh                                   | helper bash script to copy files from `modules/{moduleName}/etc/_INSTALL/public/` to `public/`     |
-| .primary                                      | indicator file for primary module                                                                  |
+| Folder / File                                  | Meaning                                                                                            |
+|------------------------------------------------|----------------------------------------------------------------------------------------------------|
+| 📁 Controller                                  | Your Application Controller Classes                                                                |
+| 📁 DataType                                    | Your generated DataType Classes                                                                    |
+| 📁 [etc](#modules-moduleName-etc)              | place for install- and config files, docs, routing and individual other stuff                      |
+| 📁 Model                                       | Your Application Model Classes                                                                     |
+| 📁 Policy                                      | Your Application Policy Classes                                                                    |
+| 📁 [templates](#modules-moduleName-templates)  | Template files                                                                                     |
+| 📁 Test                                        | PHPUnit Test Classes                                                                               |
+| 📁 View                                        | Your Application View Classes                                                                      |
+| _install.sh                                    | helper bash script to e.g. install files from `modules/{moduleName}/etc/_INSTALL/` to other places |
+| _publish.sh                                    | helper bash script to copy files from `modules/{moduleName}/etc/_INSTALL/public/` to `public/`     |
+| .primary                                       | indicator file for primary module                                                                  |
 
 
 <a id="modules-moduleName-etc"></a>
@@ -77,24 +78,26 @@
 <a id="modules-moduleName-etc-config"></a>
 ## `/modules/{moduleName}/etc/config/`
 
-| Folder / File                                                     | Meaning                                                                  |
-|-------------------------------------------------------------------|--------------------------------------------------------------------------|
-| 📁 {moduleName}                                                   |                                                                          |
-| └── 📁 [config](#modules-moduleName-etc-config-moduleName-config) | place for any further Module documentation                               |
-| _mvc.php                                                          | `primary` Module's config - a `secondary` module does not have this file |
+| Folder / File                                                     | Meaning                                                                                                                                                                       |
+|-------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 📁 {moduleName}                                                   |                                                                                                                                                                               |
+| └── 📁 [config](#modules-moduleName-etc-config-moduleName-config) | place for any further Module documentation                                                                                                                                    |
+| _mvc.php                                                          | further MVC configs (see [Module's config folder (overrides 1.)](/1.x/configuration#Modules-config-folder), and [Example](/1.x/configuration#Modules-config-folder-example))  |
 
 
 <a id="modules-moduleName-etc-config-moduleName-config"></a>
 ## `/modules/{moduleName}/etc/config/{moduleName}/config/`
 
-| Folder / File | Meaning                                                                                                                                                       |
-|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| _asset.yaml   | Asset Sets                                                                                                                                                    |
-| _csp.php      | Content-Security-Policy rules                                                                                                                                 |
-| _datatype.php | Module's DataType configuration files                                                                                                                         |
-| _db.php       | Database Config                                                                                                                                               |
-| _session.php  | Session Rules; Where to enable & disable Session                                                                                                              |
-| develop.php   | Module's environment config file. See [Example `/modules/Foo/etc/config/Foo/config/develop.php`](/1.x/configuration#Modules-environment-config-file-example) |
+| Folder / File         | Meaning                                                                                                                                                      |
+|-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| _asset.yaml           | Asset Sets                                                                                                                                                   |
+| _csp.php              | Content-Security-Policy rules                                                                                                                                |
+| _datatype.php         | Module's DataType configuration files                                                                                                                        |
+| _db.php               | Database Config                                                                                                                                              |
+| _function.php         | functions                                                                                                                                                    |
+| _routeintervall.yaml  | Config for [RouteIntervall](/1.x/route-intervall)                                                                                                            |
+| _session.php          | Session Rules; Where to enable & disable Session                                                                                                             |
+| develop.php           | Module's environment config file. See [Example `/modules/Foo/etc/config/Foo/config/develop.php`](/1.x/configuration#Modules-environment-config-file-example) |
 
 
 <a id="modules-moduleName-templates"></a>

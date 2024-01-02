@@ -30,6 +30,7 @@
     "Debug": "debug.md",
     "Dir <small>[directory]</small>": "dir.md",
     "Error": "error.md",
+    "functions": "functions.md",
     "File": "file.md",
     "InfoTool": "infotool.md",
     "Lock": "lock.md",
