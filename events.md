@@ -4,7 +4,11 @@
 - [Registering Event Listeners](#registering-event-listeners)
 - [`\MVC\Event::run()`](#event-run)
 - [`\MVC\Event::bind()`](#event-bind)
-  - [`\MVC\Event::processBindConfigStack()` - Bind to Events via config Stack](#processBindConfigStack)
+  - [bind to an Event Name](#event-bind-name) 
+  - [bind to an Event Name with placeholder](#event-bind-placeholder)
+  - [bind to a Controller::method](#event-bind-controller-method)
+  - [Additional Context Infos passed as second parameter to a bonded closure](#event-Additional-Context-Info)
+  - [Bind to Events via config Stack with `\MVC\Event::processBindConfigStack()`](#processBindConfigStack)
 - [`\MVC\Event::delete()`](#event-delete) 
 - [Emvicy Standard Events](#EmvicyStandardEvents)
   - [Database Events](#database_events)
@@ -98,24 +102,36 @@ _Syntax_
 \MVC\Event::bind('event', {closure} );
 ~~~
 
-**bind to an Event Name**
+<a id="event-bind-name"></a>
+### bind to an Event Name
 
 _regular - listens to event whose event name is 'fooName'_
 ~~~php
 \MVC\Event::bind('fooName', function() { ... });
 ~~~
 
-**bind to an Event Name with placeholder**
+<a id="event-bind-placeholder"></a>
+### bind to an Event Name with placeholder
 
-_with placeholder * - listens to all events whose event names match_
+you can listen for many similar events by using wildcard symbol `*` (asterisk).
+
+_Examples: with placeholder `*` - listens to all events whose event names match_
 ~~~php
+// listen for events that begin with `foo`
 \MVC\Event::bind('foo*', function() { ... });
+
+// listen for events ending with `Name`
 \MVC\Event::bind('*Name', function() { ... });
+
+// listens for events that begin with "f" and have an "N" somewhere in between
 \MVC\Event::bind('f*N*', function() { ... });
+
+// listen for events that begin with `mvc.db.model.` and end with `.sql`
+\MVC\Event::bind('mvc.db.model.*.sql', function() { ... }); 
 ~~~
 
-
-**bind to a Controller::method**  
+<a id="event-bind-controller-method"></a>
+### bind to a Controller::method  
 
 _Example: bind a closure to a concrete Controller::method_ 
 ~~~php
@@ -128,9 +144,8 @@ _Example: bind a closure to a concrete Controller::method_
 - 🛈 You can bind to Controller classes only which have `\MVC\MVCInterface\Controller` implemented
 - 🛈 Make sure to write the event name as the method was a static one, even it is not.
 
----
-
-**Additional Context Infos passed as second parameter to a bonded closure**
+<a id="event-Additional-Context-Info"></a>
+### Additional Context Infos passed as second parameter to a bonded closure
 
 As you may have noticed, the object `\MVC\DataType\DTEventContext $oDTEventContext)` is always being passed as the second parameter to a bonded closure. 
 It provides Infos about the context of the event.
@@ -167,10 +182,8 @@ _example content of `\MVC\DataType\DTEventContext $oDTEventContext)`_
 ))
 ~~~
 
-------------------------------------------------------------------------------------------------------------------------
-
 <a id="processBindConfigStack"></a>
-### `\MVC\Event::processBindConfigStack()` - Bind to Events via config Stack
+### Bind to Events via config Stack with `\MVC\Event::processBindConfigStack()`
 
 Instead of writing one `bind` command expressure after the other you can make use of array notation and use `Event::processBindConfigStack`.
 
