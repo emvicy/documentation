@@ -60,7 +60,7 @@ The main config file resides in `_db.php`.
 
 Overwrite the settings from `_db.php` in your concrete environment config file e.g. `develop.php` (depends on what your `MVC_ENV` is set to.)
 
-For example you might want to turn on Logging for develop environment:
+For example you might want to **turn on Logging** for develop environment:
 
 _Db Config example for `develop` environments_
 ~~~php
@@ -73,7 +73,42 @@ require realpath(__DIR__) . '/_db.php';
 
 // consider a logrotate mechanism for this logfile as it may grow quickly
 $aConfig['MODULE']['Foo']['DB']['logging']['general_log'] = 'ON'; // consider to set it to ON for develop or test environments only
+~~~
 
+*example: file `_db.php` - (`modules/Foo/etc/config/Foo/config/_db.php`)*    
+~~~php
+<?php
+
+//######################################################################################################################
+// Module DB
+
+$aConfig['MODULE']['Foo']['DB'] = array(
+
+    'db' => array(
+        'type' => getenv('db.type'),
+        'host' => getenv('db.host'),
+        'port' => getenv('db.port'),
+        'username' => getenv('db.username'),
+        'password' => getenv('db.password'),
+        'dbname' => getenv('db.dbname'),
+        'charset' => 'utf8',
+    ),
+    'caching' => array(
+        'enabled' => true,
+        'lifetime' => '1', # minutes
+    ),
+    'logging' => array(
+        'log_output' => 'FILE',
+
+        // consider to turn it on for develop and test environments only
+        'general_log' => 'OFF',
+
+        // 1) make sure write access is given to the folder
+        // as long as the db user is going to write and not the webserver user
+        // 2) consider a logrotate mechanism for this logfile as it may grow quickly
+        'general_log_file' => $aConfig['MVC_LOG_FILE_DB_DIR'] . getenv('db.dbname') . '_' . getenv('MVC_ENV') . '.log',
+    ),
+);
 ~~~
 
 ---
@@ -657,6 +692,8 @@ see [Database Events](/1.x/events#database_events)
 
 ### 4.1. Logging SQL
 
+**logging at application side** 
+
 Consider to set to `true` for develop environments only: logging request into `MVC_LOG_FILE_SQL`.
 
 _enable sql logging in your config file_    
@@ -666,6 +703,8 @@ $aConfig['MVC_LOG_SQL'] = true;
 
 if it not already exists, create a file `db.php` in the event folder of your module
 and declare the bindings as follows.
+
+Emvicy logs each action into the logfile specified in the var `MVC_LOG_FILE_SQL`; which is per default: `application/log/sql.log`. 
 
 _`/modules/{MODULE}/etc/event/db.php`_
 ~~~php
@@ -687,3 +726,14 @@ _`/modules/{MODULE}/etc/event/db.php`_
     ),
 ]);
 ~~~
+
+**logging at database engine side**
+
+if you set `general_log` to `ON` iny your [DB Config](/1.x/database#2-1), the database logs each action into the logfile 
+specified in the var `MVC_LOG_FILE_DB_DIR`.
+
+~~~php
+$aConfig['MVC_LOG_FILE_DB_DIR'] = '/tmp/';
+~~~
+- make sure write access is given to the folder  as long as the db user is going to write and not the webserver user
+- consider a logrotate mechanism for this logfile as it may grow quickly
