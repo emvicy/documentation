@@ -402,13 +402,11 @@ $aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve(
 _example `retrieve`: get first 30 Datasets (LIMIT 0,30)_
 ~~~php
 /** @var \Foo\DataType\DTFooModelTableUser[] $aDTFooModelTableUser */
-$aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve(
-    [], // where
-    [ // option
-        DTDBOption::create()->set_sValue('LIMIT 0,30'),
-    ]
-);
+$aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve(aDTDBOption: [
+    DTDBOption::create()->set_sValue('LIMIT 0, 30')
+]);
 ~~~
+- here the named Parameter `aDTDBOption` is used to address the right parameter correctly
 
 
 <a id="3-3"></a>  
@@ -671,27 +669,21 @@ and declare the bindings as follows.
 
 _`/modules/{MODULE}/etc/event/db.php`_
 ~~~php
-/*
- * log SQL Statements, if enabled via config
- */
-if (true === \MVC\Config::get_MVC_LOG_SQL())
-{
-    \MVC\Event::processBindConfigStack([
-        'sql.log.filter' => array(function(MVC\ArrDot $oSql) {
-            // remove newline, multiple whitespaces
-            $oSql->set('sSql', trim(preg_replace('!\s+!', ' ', str_replace("\n", ' ', stripslashes($oSql->get('sSql'))))));
-        }),
-        'mvc.db.model.db.create.sql' => array(function(MVC\ArrDot $oSql) {\MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
-        'mvc.db.model.db.createTable.sql' => array(function(MVC\ArrDot $oSql) {\MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
-        'mvc.db.model.db.insert.sql' => array(function(MVC\ArrDot $oSql) {\MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
-        'mvc.db.model.db.retrieve.sql' => array(function(MVC\ArrDot $oSql) {\MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
-        'mvc.db.model.db.update.sql' => array(function(MVC\ArrDot $oSql) {\MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
-        'mvc.db.model.db.delete.sql' => array(function(MVC\ArrDot $oSql) {\MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
-        'mvc.db.model.db.count.sql' => array(function(MVC\ArrDot $oSql) {\MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());}),
-        'mvc.db.model.dbpdo.*' => array(function(MVC\ArrDot $oSql) {
-            \MVC\Event::run('sql.log.filter', $oSql);
-            \MVC\Log::write($oSql->get('sSql'), \MVC\Config::get_MVC_LOG_FILE_SQL());
-        }),
-    ]);
-}
+\MVC\Event::processBindConfigStack([
+
+    'mvc.db.model.*.sql' => array(
+        /*
+         * log *all* SQL Statements, if enabled via config
+         */
+        function(string $sSql) {
+            if (true === \MVC\Config::get_MVC_LOG_SQL())
+            {
+                \MVC\Log::write(
+                    \MVC\Strings::tidy($sSql),
+                    \MVC\Config::get_MVC_LOG_FILE_SQL()
+                );
+            }
+        }
+    ),
+]);
 ~~~
