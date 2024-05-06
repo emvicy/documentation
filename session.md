@@ -167,3 +167,22 @@ true
 
 ---
 
+<a id="empty"></a>
+## `empty`
+
+empty a session namespace; removes all data in the current namespace.
+
+~~~
+Session::is()->empty() : bool
+~~~
+
+_Example_
+~~~php
+Session::is('Foo')->empty()
+~~~
+
+_Result_
+~~~
+true
+~~~
+
