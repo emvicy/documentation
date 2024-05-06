@@ -7,6 +7,7 @@
 - [get](#get)
 - [getAll](#getAll)
 - [has](#has)
+- [empty](#empty)
 
 ---
 
