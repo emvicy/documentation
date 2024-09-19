@@ -303,8 +303,9 @@ _Example: delete *all* Events_
 | mvc.db.model.db.create.before              | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::create`            | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
 | mvc.db.model.db.create.sql                 | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::create`            | `string $sSql`                                      |
 | mvc.db.model.db.create.after               |                                     | `\MVC\DB\Model\Db::create`            | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
-| mvc.db.model.db.createTable.before         |                                     | `\MVC\DB\Model\Db::create`            | `\MVC\DataType\DTValue $oDTValue`                   |
-| mvc.db.model.db.createTable.sql            | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::create`            | `string $sSql`                                      |
+| mvc.db.model.db.createTable.before         |                                     | `\MVC\DB\Model\Db::createTable`       | `\MVC\DataType\DTValue $oDTValue`                   |
+| mvc.db.model.db.createTable.after          |                                     | `\MVC\DB\Model\Db::createTable`       | `\MVC\DataType\DTValue $oDTValue`                   |
+| mvc.db.model.db.createTable.sql            | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::createTable`       | `string $sSql`                                      |
 | mvc.db.model.db.insert.sql                 | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::synchronizeFields` | `string $sSql`                                      |
 | mvc.db.model.db.retrieveTupel.before       |                                     | `\MVC\DB\Model\Db::retrieveTupel`     | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
 | mvc.db.model.db.retrieve.before            |                                     | `\MVC\DB\Model\Db::retrieve`          | `\MVC\DataType\DTValue $oDTValue`                   |
