@@ -12,6 +12,8 @@
 - [`\MVC\Event::delete()`](#event-delete) 
 - [Emvicy Standard Events](#EmvicyStandardEvents)
   - [Database Events](#database_events)
+- [Examples](#Examples)
+  - [Chained Events](#Chained-Events)
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -246,6 +248,7 @@ _Example: delete *all* Events_
 
 | Event Name                                            | `Event::bind` perforemd in                                   | `Event::run` located in                                                                                 | value passed                                                    |
 |-------------------------------------------------------|--------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------|
+| app.controller.__construct.before                     |                                                              | `\App\Controller::__construct`                                                                          | `\MVC\DataType\DTRequestCurrent $oDTRequestCurrent`             |
 | mvc.event.init.after                                  |                                                              | `\MVC\Event::init`                                                                                      |                                                                 |
 | policy.index.requestMethodHasToMatchRouteMethod.after | modules/{module}/etc/event/policy.php                        | `\{module}\Policy\Index::requestMethodHasToMatchRouteMethod`                                            | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
 | mvc.application.construct.after                       |                                                              | `\MVC\Application::__construct`                                                                         |                                                                 |
@@ -333,3 +336,69 @@ _Example: delete *all* Events_
 
 _striked events are `deprecated`_
 
+---
+
+<a id="Examples"></a>
+## Examples
+
+<a id="Chained-Events"></a>
+### Chained Events
+
+_wait for database coming up before binding to one (or more) certain events_   
+~~~php
+// bind to those events
+\MVC\Event::processBindConfigStack([
+
+    // WHEN Database has been built...
+    'mvc.db.model.dbinit.construct.after' => [
+    
+        function () {
+            // ...bind to those events
+            \MVC\Event::processBindConfigStack([
+
+                // event
+                'foo.model.index.action' => [
+                    function () {
+                        // concrete doing
+                    },
+                ],
+            ]);
+        }
+    ],
+]);
+~~~
+
+_wait for database coming up before binding to a certain event, run a further event when job has been done_
+~~~php
+// bind to those events
+\MVC\Event::processBindConfigStack([
+
+    // event
+    'job.done' => [
+        function () {
+            // concrete doing
+        },
+    ],
+                
+    // WHEN Database has been built...
+    'mvc.db.model.dbinit.construct.after' => [
+    
+        function () {
+            // ...bind to those events
+            \MVC\Event::processBindConfigStack([
+
+                // event
+                'foo.model.index.action' => [
+                    function () {
+                        
+                        // concrete doing...
+                        
+                        // run a "Job done" event
+                        \MVC\Event::run('job.done', $mData);
+                    },
+                ],
+            ]);
+        }
+    ],
+]);
+~~~

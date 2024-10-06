@@ -6,6 +6,9 @@
   - [Setting multiple Rules](#setting-multiple-rules)
   - [Bind Policy Rules to a Route](#Bind-Policy-Rules-to-a-Route)
   - [Bind Policy Rules to multiple Routes](#Bind-Policy-Rules-to-multiple-Routes)
+      - [Examples](#Examples)
+          - [Apply a regex to all routes](#apply-a-regex-to-all-routes)
+          - [Build a separate policy Ruleset array, then proceed the array](#build-a-separate-policy-ruleset-array-then-proceed-the-array)
 - [Disabling Policy Rules](#disabling-policy-rules)
   - [Unset a single Rule](#unset-a-single-rule)
   - [Unset multiple Rules](#unset-multiple-rules)
@@ -106,7 +109,11 @@ All Route Indices you can get by `\MVC\Route::getIndices()`.
 
 Now all you have to do is to grep in those Indices for any match and then to apply your Policy Rules to that match.
 
-_Example_
+#### Examples
+
+<a id="apply-a-regex-to-all-routes"></a>
+##### Apply a regex to all routes
+
 ~~~php
 // iterate all '/edit' Routes ...
 foreach (preg_grep('/^([\\p{L}\\p{M}\\p{Z}\\p{S}\\p{N}\\p{P}]*)\/edit/i', \MVC\Route::getIndices()) as $sRoute)
@@ -118,6 +125,42 @@ foreach (preg_grep('/^([\\p{L}\\p{M}\\p{Z}\\p{S}\\p{N}\\p{P}]*)\/edit/i', \MVC\R
 }
 ~~~
 
+---
+
+<a id="build-a-separate-policy-ruleset-array-then-proceed-the-array"></a>
+##### Build a separate policy Ruleset array, then proceed the array
+
+~~~php
+/*
+ * Ruleset
+ */
+$aPolicyOnRoute = array(
+    '/@/productroute/new'                                       => ['\Foo\Policy\Index::isUser'],
+    '/@/productroute/:id/edit'                                  => ['\Foo\Policy\Index::isUser'],
+    '/@/client/:number/credentials/new'                         => ['\Foo\Policy\Index::isUser'],
+    '/@/client/:number/credentials/:id/edit'                    => ['\Foo\Policy\Index::isUser'],
+    '/@/client/:number/credentialsproduct/new'                  => ['\Foo\Policy\Index::isUser'],
+    '/@/client/:number/credentialsproduct/:id/edit'             => ['\Foo\Policy\Index::isUser'],
+    '/@/client/:number/edit'                                    => ['\Foo\Policy\Index::isUser'],
+    '^([\\p{L}\\p{M}\\p{Z}\\p{S}\\p{N}\\p{P}]*)/contract/new'   => ['\Foo\Policy\Index::isAdmin'],
+);
+
+/*
+ * Implementation
+ */
+foreach ($aPolicyOnRoute as $sRoute => $aRule)
+{
+    $sRouteEscaped = str_replace('/', '\/', $sRoute);
+
+    foreach (preg_grep('/^' . $sRouteEscaped . '/i', \MVC\Route::getIndices()) as $sRoute)
+    {
+        \MVC\Policy::bindOnRoute(
+            \MVC\Route::$aRoute[$sRoute],
+            $aRule
+        );
+    }
+}
+~~~
 
 ------------------------------------------------------------------------------------------------------------------------
 
