@@ -231,3 +231,24 @@ _Result_
 ~~~
 889abaf2-461d-42a1-86f4-07eb3e9876a5
 ~~~
+
+---
+
+## `createPassword`
+
+creates a password up to 57 chars.  
+Makes sure that at least 4 characters contain one of each lower, upper, int, special char.
+
+~~~
+Strings::createPassword(int $iMaxLength = 15, string $sCharSpecial = '#*!$.') : string
+~~~
+
+_Example_
+~~~php
+$sPassword = Strings::createPassword();
+~~~
+
+_Result_
+~~~
+$cZY/iZncdgWwC8
+~~~
