@@ -6,8 +6,9 @@
 - [autoDeleteCache](#autoDeleteCache)
 - [flushCache](#flushCache)
 - [Examples](#Examples)
-  - [simple example](#simple-example)
-  - [process a file once at the beginning or if there is a change in the future](#process-a-file-once-at-the-beginning-or-if-there-is-a-change-in-the-future)
+  - [Simple example](#simple-example)
+  - [Process a file once at the beginning or if there is a change in the future](#process-a-file-once-at-the-beginning-or-if-there-is-a-change-in-the-future)
+  - [Creating a full-page cache](#creating-a-full-page-cache)
 
 ---
 
@@ -59,7 +60,7 @@ Cache::flushCache() : bool
 ### Examples
 
 <a id="simple-example"></a>
-#### simple example
+#### Simple example
 
 Build a cache token based on the method name od the current class.  
 Auto-delete the related cache after a certain time.  
@@ -86,8 +87,10 @@ if (true === empty($mData)
 // ... do your stuff with $mData ...
 ~~~
 
+---
+
 <a id="process-a-file-once-at-the-beginning-or-if-there-is-a-change-in-the-future"></a>
-#### process a file once at the beginning or if there is a change in the future
+#### Process a file once at the beginning or if there is a change in the future
 
 Create an MD5 sum over the file.  
 Build a cache token based on the file name.   
@@ -121,3 +124,55 @@ if (Cache::getCache($sCacheToken) !== $sMd5OfFile)
 
 ~~~
 
+---
+
+<a id="creating-a-full-page-cache"></a>
+#### Creating a full-page cache
+
+This shows how a simple full-page cache can be created with the help of event listeners.  
+For more Information about Event Handling in Emvicy, please see Chapter [Events](/1.x/events).
+
+~~~php
+\MVC\Event::processBindConfigStack([
+
+    // save page to cache
+    'mvc.view.renderString.after' => [
+        function (string $sRendered) {
+                        
+            if (
+                // if full page caching is enabled
+                true === \MVC\Registry::isRegistered('sPageKey') &&
+                // there is no related cache yet  
+                true === empty(\MVC\Cache::getCache(\MVC\Registry::get('sPageKey')))
+            )
+            {            
+                \MVC\Cache::saveCache(\MVC\Registry::get('sPageKey'), $sRendered);
+            }
+        }
+    ],
+    // get page from cache
+    'app.controller.__construct.before' => [
+        function(\MVC\DataType\DTRequestCurrent $oDTRequestCurrent) {
+
+            // create a cache key based on request uri
+            $sPageKey = \MVC\Strings::seofy($oDTRequestCurrent->get_requesturi());
+            
+            // save that key to registry
+            \MVC\Registry::set('sPageKey', $sPageKey);
+            
+            // delete cache relating to `$sPageKey` after 1 day (60 minutes * 24 = 24h = 1 day)
+            \MVC\Cache::autoDeleteCache($sPageKey, (60 * 24)); 
+            
+            // load from cache
+            $sPage = \MVC\Cache::getCache($sPageKey);
+
+            // present cache content if not empty 
+            if (false === empty($sPage))
+            {
+                echo $sPage;
+                exit();
+            }
+        }
+    ],
+]);
+~~~
