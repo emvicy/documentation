@@ -10,7 +10,7 @@
 <a id="Get-Emvicy"></a>
 ## Get Emvicy
 
-make sure that your machine has PHP >=8.0 installed (see [Requirements](#Requirements)). 
+make sure that your machine has PHP >=8.2 installed (see [Requirements](#Requirements)). 
 
 ### Installation :: preferred method 🗸
 
