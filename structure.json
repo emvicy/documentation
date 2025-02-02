@@ -1,6 +1,5 @@
 {
   "Getting started": {
-    "Introduction": "introduction.md",
     "Installation": "installation.md",
     "Creating a Module":"creating-a-module.md",
     "Configuration":"configuration.md",
@@ -8,14 +7,22 @@
     "Frontend":"frontend.md"
   },
   "Basics": {
-    "MVC <small>[Model View Controller]</small>":"mvc.md",
+    "MVC": {
+      "MVC <small>[Model View Controller]</small>":"mvc.md",
+      "Controller": "controller.md",
+      "Model": "model.md",
+      "View": "view.md"
+    },
     "Routing":"routing.md",
+    "Policy":"policy.md",
     "Request":"request.md",
     "Events":"events.md",
-    "Logging":"logging.md",
-    "Policy":"policy.md",
     "Database ⛁":"database.md",
+    "Queueing":"queueing.md",
+    "Process":"process.md",
+    "Cron":"cron.md",
     "CLI Wrapping":"cli-wrapping.md",
+    "Logging":"logging.md",
     "DataType": {
       "Generating Classes": "generating-datatype-classes.md",
       "Emvicy DataType Classes": "datatype-classes.md"
@@ -33,12 +40,28 @@
     "functions": "functions.md",
     "File": "file.md",
     "InfoTool": "infotool.md",
+    "Header": "header.md",
+    "Http\\Status": "http-status.md",
     "Lock": "lock.md",
+    "logrotate": "logrotate.md",
+    "Maintenance": "maintenance.md",
+    "Media\\Type": "media-type.md",
+    "Menu": "menu.md",
     "Minify": "minify.md",
     "Registry": "registry.md",
-    "RouteIntervall": "route-intervall.md",
     "Session": "session.md",
     "Strings": "strings.md",
     "Traits": "traits.md"
+  },
+  "Modules": {
+    "Email": "module_email.md",
+    "OpenApi": "module_openapi.md",
+    "Paginator": "module_paginator.md",
+    "SSE": "module_sse.md",
+    "Validator": "module_validator.md",
+    "Ws": "module_ws.md"
+  },
+  "Deprecated":{
+    "RouteIntervall": "route-intervall.md"
   }
 }

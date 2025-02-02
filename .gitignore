@@ -2,5 +2,6 @@
 .test
 .trash
 _push.sh
+_gitPush.sh
 *.sh
 

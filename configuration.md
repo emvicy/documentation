@@ -25,20 +25,31 @@ In the root folder of your Emvicy copy you will find an `.env` file.
 
 ~~~bash
 #-----------------------------------------------------
-# My Application
-
 # Environment
 MVC_ENV=develop
 
+#-----------------------------------------------------
+# API
+apikey=12345678-1234-1234-1234-123456789012
 
 #-----------------------------------------------------
 # DB
 db.type=mysql
-db.host=127.0.0.1
+db.host=db
 db.port=3306
-db.dbname=Emvicy1x
+db.dbname=Emvicy2x
 db.username=root
-db.password=
+db.password=root
+
+#-----------------------------------------------------
+# Email
+email.sHost=smtps.example.com
+email.iPort=465
+email.sSecure=ssl
+email.bAuth=true
+email.sUsername=example-user-0001
+email.sPassword=example-password
+email.sSenderEmailAddress=noreply@example.com
 ~~~
 
 <a id="MVC_ENV"></a>
@@ -47,7 +58,7 @@ There the variable `MVC_ENV` declares what Environment is valid for Emvicy. You 
 
 **Database Settings**  
 If you want to use a Database, edit the settings for your Database in the `/.env` file as well.  
-See also Chapter [Database](/1.x/database)
+See also Chapter [/2.x/database](/2.x/database)
 
 
 <a id="custom-env-variables"></a>
@@ -98,7 +109,7 @@ This also means that a later loaded configuration beats (overrides) an earlier l
    - Coverage: **module environment specific** - The concrete environment config file is loaded appropiate to your environment of your module you have set in `MVC_ENV`
    - See [Example `/modules/Foo/etc/config/Foo/config/develop.php`](#Modules-environment-config-file-example)
 
-⚠ If you create a module by using emvicy (see: [Creating a primary Module](/1.x/creating-a-module#creating-a-primary-module)), the corresponding "Module's environment config file" will be generated automatically. 
+⚠ If you create a module by using emvicy (see: [Creating a primary Module](/2.x/creating-a-module#creating-a-primary-module)), the corresponding "Module's environment config file" will be generated automatically. 
 But if you change the value of the `MVC_ENV` variable of `/.env` config file afterwards, make sure the corresponding "Module's environment config file" does exist in your module. 
 Example: If your Module is named `Foo`, and you set `MVC_ENV=production`, then the config file `/modules/Foo/etc/config/Foo/config/production.php` has to exist.
 
@@ -189,106 +200,152 @@ $sMvcBasePath = \MVC\Registry::get('MVC_BASE_PATH');
 
 _List of Setters_  
 ~~~
-Config::set_MVC_CACHE_DIR();
-Config::set_MVC_EVENT();
-Config::set_MVC_EVENT_ENABLE_WILDCARD();
-Config::set_MVC_EVENT_LOG_RUN();
-Config::set_MVC_INFOTOOL_ENABLE();
-Config::set_MVC_LOG_AUTOLOADER();
-Config::set_MVC_LOG_DETAIL();
-Config::set_MVC_LOG_FILE_REQUEST();
-Config::set_MVC_LOG_FILE_ROUTEINTERVALL();
-Config::set_MVC_LOG_FILE_SQL();
-Config::set_MVC_LOG_FORCE_LINEBREAK();
-Config::set_MVC_LOG_REQUEST();
-Config::set_MVC_LOG_SQL();
-Config::set_MVC_MODULE_PRIMARY_VIEW();
-Config::set_MVC_PHP_SERVER();
-Config::set_MVC_POLICY();
-Config::set_MVC_SESSION();
-Config::set_MVC_SESSION_ENABLE();
-Config::set_MVC_SESSION_NAMESPACE();
-Config::set_MVC_UNIQUE_ID();
+Config::set_MVC_LOG_AUTOLOADER(bool);
+Config::set_MVC_LOG_DETAIL(array);
+Config::set_MVC_LOG_FORCE_LINEBREAK(bool);
+Config::set_MVC_LOG_PROCESS(bool);
+Config::set_MVC_LOG_QUEUE(bool);
+Config::set_MVC_LOG_CRON(bool);
+Config::set_MVC_CACHE_DIR(string);
+Config::set_MVC_SESSION_NAMESPACE(string);
+Config::set_MVC_SESSION_ENABLE(bool);
+Config::set_MVC_POLICY(array);
+Config::set_MVC_EVENT(array);
+Config::set_MVC_UNIQUE_ID(string);
+Config::set_MVC_SESSION(Session);
+Config::set_MVC_INFOTOOL_ENABLE(bool);
+Config::set_MVC_MODULE_PRIMARY_VIEW(View);
+Config::set_MVC_LOG_EVENT_RUN(bool);
+Config::set_MVC_EVENT_ENABLE_WILDCARD(bool);
+Config::set_MVC_LOG_REQUEST(bool);
+Config::set_MVC_LOG_FILE_REQUEST(string);
+Config::set_MVC_LOG_FILE_PROCESS(string);
+Config::set_MVC_LOG_FILE_QUEUE(string);
+Config::set_MVC_LOG_FILE_CRON(string);
+Config::set_MVC_LOG_SQL(bool);
+Config::set_MVC_LOG_FILE_SQL(string);
+Config::set_MVC_PHP_SERVER(string);
+Config::set_MVC_LOG_FILE_ROUTEINTERVALL(string);
+Config::set_MVC_LOG_EVENT(bool);
+Config::set_MVC_LOG_DEFAULT(bool);
+Config::set_MVC_LOG_ERROR(bool);
+Config::set_MVC_LOG_WARNING(bool);
+Config::set_MVC_LOG_NOTICE(bool);
+Config::set_MVC_LOG_POLICY(bool);
+Config::set_MVC_LOG_ROUTEINTERVALL(bool);
+Config::set_MVC_ROUTE_PREFIX(string);
+Config::set_MVC_QUEUE_ROUTE_PREFIX(string);
+Config::set_MVC_QUEUE_WORKER_AUTO_ROUTE_PREFIX(string);
+Config::set_MVC_QUEUE_RUN(string);
+Config::set_MVC_QUEUE_RUN_CLASSMETHOD(string);
+Config::set_MVC_QUEUE_WORKER_AUTO_ROUTE_RESOLVE_CLASSMETHOD(string);
+Config::set_MVC_QUEUE_RUNTIME_SECONDS(int);
+Config::set_MVC_PROCESS_MAX_PROCESSES_OVERALL(int);
+Config::set_MVC_PROCESS_PID_FILE_DIR(string);
+Config::set_MVC_CRON_ROUTE(string);
+Config::set_MVC_CRON_RUN_CLASSMETHOD(string);
 ~~~
 
 _List of Getters_
 ~~~
-Config::get_MVC_APPLICATION_INIT_DIR();
-Config::get_MVC_APPLICATION_PATH();
+Config::get_MVC_LOG_AUTOLOADER();
+Config::get_MVC_MODULE_PRIMARY_DIR();
+Config::get_MVC_MODULE_PRIMARY_CONTROLLER_DIR();
+Config::get_MVC_MODULE_PRIMARY_DATATYPE_DIR();
+Config::get_MVC_MODULE_PRIMARY_ETC_DIR();
+Config::get_MVC_ROUTING_FALLBACK();
+Config::get_MVC_METHODNAME_PRECONSTRUCT();
+Config::get_MVC_WEB_ROOT();
 Config::get_MVC_BASE_PATH();
+Config::get_MVC_APPLICATION_PATH();
+Config::get_MVC_PUBLIC_PATH();
+Config::get_MVC_LOG_FILE_DIR();
+Config::get_MVC_LOG_FILE_DEFAULT();
+Config::get_MVC_LOG_FILE_ERROR();
+Config::get_MVC_LOG_FILE_WARNING();
+Config::get_MVC_LOG_FILE_NOTICE();
+Config::get_MVC_LOG_FILE_POLICY();
+Config::get_MVC_LOG_FILE_EVENT();
+Config::get_MVC_LOG_FILE_EVENT_RUN();
+Config::get_MVC_LOG_DETAIL();
+Config::get_MVC_LOG_FORCE_LINEBREAK();
+Config::get_MVC_LOG_PROCESS();
+Config::get_MVC_LOG_QUEUE();
+Config::get_MVC_LOG_CRON();
+Config::get_MVC_APPLICATION_INIT_DIR();
+Config::get_MVC_VIEW_TEMPLATE_DIR();
+Config::get_MVC_LIBRARY();
+Config::get_MVC_MODULES_DIR();
+Config::get_MVC_CONFIG_DIR();
+Config::get_MVC_CACHE_DIR();
+Config::get_MVC_SSL_PORT();
+Config::get_MVC_SECURE_REQUEST();
+Config::get_MVC_SESSION_NAMESPACE();
+Config::get_MVC_SESSION_PATH();
+Config::get_MVC_SESSION_OPTIONS();
+Config::get_MVC_SESSION_ENABLE();
+Config::get_MVC_CLI();
+Config::get_MVC_SMARTY_CACHE_STATUS();
+Config::get_MVC_SMARTY_CACHE_DIR();
+Config::get_MVC_SMARTY_TEMPLATE_DIR();
+Config::get_MVC_SMARTY_TEMPLATE_DEFAULT();
+Config::get_MVC_SMARTY_TEMPLATE_CACHE_DIR();
+Config::get_MVC_SMARTY_PLUGINS_DIR();
+Config::get_MVC_POLICY();
+Config::get_MVC_EVENT();
+Config::get_MVC_UNIQUE_ID();
+Config::get_MVC_SESSION();
+Config::get_MVC_INFOTOOL_ENABLE();
+Config::get_MVC_CORE();
+Config::get_MVC_ENV();
+Config::get_MVC_VERSION();
+Config::get_MVC_CACHE_CONFIG();
+Config::get_MVC_MODULE_PRIMARY_COMPOSER_DIR();
+Config::get_MVC_MODULE_PRIMARY_CONFIG_DIR();
+Config::get_MVC_MODULE_PRIMARY_MODEL_DIR();
+Config::get_MVC_MODULE_PRIMARY_POLICY_DIR();
+Config::get_MVC_MODULE_PRIMARY_VIEW_DIR();
+Config::get_MVC_MODULE_PRIMARY_STAGING_CONFIG_DIR();
+Config::get_MVC_MODULE_PRIMARY_NAME();
+Config::get_MVC_MODULE_PRIMARY_VIEW();
+Config::get_MVC_BIN_REMOVE();
 Config::get_MVC_BIN_FIND();
 Config::get_MVC_BIN_GREP();
 Config::get_MVC_BIN_MOVE();
+Config::get_MVC_BIN_XARGS();
+Config::get_MVC_BIN_SED();
 Config::get_MVC_BIN_PHP_BINARY();
 Config::get_MVC_BIN_PS();
-Config::get_MVC_BIN_REMOVE();
-Config::get_MVC_BIN_SED();
-Config::get_MVC_BIN_XARGS();
-Config::get_MVC_CACHE_CONFIG();
-Config::get_MVC_CACHE_DIR();
-Config::get_MVC_CLI();
-Config::get_MVC_CONFIG_DIR();
-Config::get_MVC_CORE();
-Config::get_MVC_ENV();
-Config::get_MVC_EVENT();
+Config::get_MVC_LOG_EVENT_RUN();
 Config::get_MVC_EVENT_ENABLE_WILDCARD();
-Config::get_MVC_EVENT_LOG_RUN();
-Config::get_MVC_INFOTOOL_ENABLE();
-Config::get_MVC_LIBRARY();
-Config::get_MVC_LOG_AUTOLOADER();
-Config::get_MVC_LOG_DETAIL();
-Config::get_MVC_LOG_FILE_DEFAULT();
-Config::get_MVC_LOG_FILE_DIR();
-Config::get_MVC_LOG_FILE_ERROR();
-Config::get_MVC_LOG_FILE_EVENT();
-Config::get_MVC_LOG_FILE_NOTICE();
-Config::get_MVC_LOG_FILE_POLICY();
-Config::get_MVC_LOG_FILE_REQUEST();
-Config::get_MVC_LOG_FILE_ROUTEINTERVALL();
-Config::get_MVC_LOG_FILE_SQL();
-Config::get_MVC_LOG_FILE_WARNING();
-Config::get_MVC_LOG_FORCE_LINEBREAK();
 Config::get_MVC_LOG_REQUEST();
+Config::get_MVC_LOG_FILE_REQUEST();
+Config::get_MVC_LOG_FILE_PROCESS();
+Config::get_MVC_LOG_FILE_QUEUE();
+Config::get_MVC_LOG_FILE_CRON();
 Config::get_MVC_LOG_SQL();
-Config::get_MVC_METHODNAME_PRECONSTRUCT();
-Config::get_MVC_MODULES_DIR();
-Config::get_MVC_MODULE_PRIMARY_COMPOSER_DIR();
-Config::get_MVC_MODULE_PRIMARY_CONFIG_DIR();
-Config::get_MVC_MODULE_PRIMARY_CONTROLLER_DIR();
-Config::get_MVC_MODULE_PRIMARY_DATATYPE_DIR();
-Config::get_MVC_MODULE_PRIMARY_DIR();
-Config::get_MVC_MODULE_PRIMARY_ETC_DIR();
-Config::get_MVC_MODULE_PRIMARY_EVENT_DIR();
-Config::get_MVC_MODULE_PRIMARY_MODEL_DIR();
-Config::get_MVC_MODULE_PRIMARY_NAME();
-Config::get_MVC_MODULE_PRIMARY_POLICY_DIR();
-Config::get_MVC_MODULE_PRIMARY_STAGING_CONFIG_DIR();
-Config::get_MVC_MODULE_PRIMARY_VIEW();
-Config::get_MVC_MODULE_PRIMARY_VIEW_DIR();
+Config::get_MVC_LOG_FILE_SQL();
 Config::get_MVC_PHP_SERVER();
-Config::get_MVC_POLICY();
-Config::get_MVC_PUBLIC_PATH();
-Config::get_MVC_ROUTE_QUERY_PARAM_C();
-Config::get_MVC_ROUTE_QUERY_PARAM_M();
-Config::get_MVC_ROUTE_QUERY_PARAM_MODULE();
-Config::get_MVC_ROUTING_FALLBACK();
-Config::get_MVC_SECURE_REQUEST();
-Config::get_MVC_SESSION();
-Config::get_MVC_SESSION_ENABLE();
-Config::get_MVC_SESSION_NAMESPACE();
-Config::get_MVC_SESSION_OPTIONS();
-Config::get_MVC_SESSION_PATH();
-Config::get_MVC_SMARTY_CACHE_DIR();
-Config::get_MVC_SMARTY_CACHE_STATUS();
-Config::get_MVC_SMARTY_PLUGINS_DIR();
-Config::get_MVC_SMARTY_TEMPLATE_CACHE_DIR();
-Config::get_MVC_SMARTY_TEMPLATE_DEFAULT();
-Config::get_MVC_SMARTY_TEMPLATE_DIR();
-Config::get_MVC_SSL_PORT();
-Config::get_MVC_UNIQUE_ID();
-Config::get_MVC_VERSION();
-Config::get_MVC_VIEW_TEMPLATE_DIR();
-Config::get_MVC_WEB_ROOT();
+Config::get_MVC_LOG_FILE_ROUTEINTERVALL();
+Config::get_MVC_LOG_EVENT();
+Config::get_MVC_LOG_DEFAULT();
+Config::get_MVC_LOG_ERROR();
+Config::get_MVC_LOG_WARNING();
+Config::get_MVC_LOG_NOTICE();
+Config::get_MVC_LOG_POLICY();
+Config::get_MVC_LOG_ROUTEINTERVALL();
+Config::get_MVC_ROUTING_DIR();
+Config::get_MVC_ROUTE_PREFIX();
+Config::get_MVC_QUEUE_ROUTE_PREFIX();
+Config::get_MVC_QUEUE_WORKER_AUTO_ROUTE_PREFIX();
+Config::get_MVC_QUEUE_RUN();
+Config::get_MVC_QUEUE_RUN_CLASSMETHOD();
+Config::get_MVC_QUEUE_WORKER_AUTO_ROUTE_RESOLVE_CLASSMETHOD();
+Config::get_MVC_QUEUE_RUNTIME_SECONDS();
+Config::get_MVC_PROCESS_MAX_PROCESSES_OVERALL();
+Config::get_MVC_PROCESS_PID_FILE_DIR();
+Config::get_MVC_CRON_ROUTE();
+Config::get_MVC_CRON_RUN_CLASSMETHOD();
 ~~~
 
 ---
@@ -312,7 +369,7 @@ Config::get_MVC_WEB_ROOT();
  *  `/modules/{module}/etc/config/{module}/config/{stage}.php`
  */
 
-//-------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 // MVC
 
 MVC_RUNTIME_SETTINGS: {
@@ -334,9 +391,8 @@ MVC_RUNTIME_SETTINGS: {
      * @see http://www.php.net/manual/en/timezones.php
      * @see http://stackoverflow.com/a/5559239/2487859
      * to get array of available timezones see result of timezone_identifiers_list()
-     * try to get timezone (ubuntu), or set to UTC
      */
-    date_default_timezone_set(((file_exists('/etc/timezone')) ? trim(file_get_contents('/etc/timezone')) : 'UTC'));
+    date_default_timezone_set('UTC');
     setlocale(LC_ALL, 'C');
 
     // show InfoTool bar
@@ -345,33 +401,25 @@ MVC_RUNTIME_SETTINGS: {
     // Log autoloader actions
     $aConfig['MVC_LOG_AUTOLOADER'] = true;
 
-    // address the built-in php server will run on
+    // address the built-in php server will run on ( php emvicy serve )
     $aConfig['MVC_PHP_SERVER'] = '127.0.0.1:1969';
 }
 
-MVC_BIN: {
-
+MVC_BIN:
+{
     $aConfig['MVC_BIN_PHP_BINARY'] = PHP_BINARY;
-    $aConfig['MVC_BIN_PS'] = whereis('ps');         # ps - report a snapshot of the current processes.
-    $aConfig['MVC_BIN_SED'] = whereis('sed');       # sed - stream editor for filtering and transforming text
-    $aConfig['MVC_BIN_MOVE'] = whereis('mv');       # mv - move (rename) files
-    $aConfig['MVC_BIN_GREP'] = whereis('grep');     # grep, egrep, fgrep, rgrep - print lines that match patterns
-    $aConfig['MVC_BIN_FIND'] = whereis('find');     # find - search for files in a directory hierarchy
-    $aConfig['MVC_BIN_REMOVE'] = whereis('rm');     # rm - remove files or directories
-    $aConfig['MVC_BIN_XARGS'] = whereis('xargs');   # xargs - build and execute command lines from standard input
+    $aConfig['MVC_BIN_PS'] = '/usr/bin/ps';         # ps - report a snapshot of the current processes.
+    $aConfig['MVC_BIN_SED'] = '/usr/bin/sed';       # sed - stream editor for filtering and transforming text
+    $aConfig['MVC_BIN_MOVE'] = '/usr/bin/mv';       # mv - move (rename) files
+    $aConfig['MVC_BIN_GREP'] = '/usr/bin/grep';     # grep, egrep, fgrep, rgrep - print lines that match patterns
+    $aConfig['MVC_BIN_FIND'] = '/usr/bin/find';     # find - search for files in a directory hierarchy
+    $aConfig['MVC_BIN_REMOVE'] = '/usr/sbin/rm';    # rm - remove files or directories
+    $aConfig['MVC_BIN_XARGS'] = '/usr/bin/xargs';   # xargs - build and execute command lines from standard input
 }
 
 MVC_APPLICATION_SETTINGS_I: {
 
-    /**
-     * keys for "query" notation in \MVC\Route routings
-     * e.g.: 'module=Foo&c=index&m=index'
-     */
-    $aConfig['MVC_ROUTE_QUERY_PARAM_MODULE'] = 'module';
-    $aConfig['MVC_ROUTE_QUERY_PARAM_C'] = 'c';
-    $aConfig['MVC_ROUTE_QUERY_PARAM_M'] = 'm';
-
-    /**
+    /**-----------------------------------------------------------------------------------------------------------------
      * Name of method to be executed in the Target Controller Class
      * before session and other main functionalities.
      * It will be called in /application/library/MVC/Application.php:
@@ -386,7 +434,7 @@ MVC_APPLICATION_SETTINGS_I: {
      */
     $aConfig['MVC_METHODNAME_PRECONSTRUCT'] = '__preconstruct';
 
-    /**
+    /**-----------------------------------------------------------------------------------------------------------------
      * Paths etc.
      */
     $aConfig['MVC_WEB_ROOT'] = dirname($_SERVER['PHP_SELF']);
@@ -402,27 +450,43 @@ MVC_APPLICATION_SETTINGS_I: {
     // Main Emvicy config directory
     $aConfig['MVC_CONFIG_DIR'] = $aConfig['MVC_BASE_PATH'] . '/config';
 
-    /**
+    /**-----------------------------------------------------------------------------------------------------------------
      * Event
      */
+    $aConfig['MVC_EVENT'] = array();
+
     // allow declaring listeners with wildcard, e.g.:   Event::bind('foo.bar.*', ... );
     // matches to event 'foo.bar.baz':                  Event::run('foo.bar.baz');
     // mandatory: asterisk `*` at the end
     // notice: wildcard listeners are processed before the regular event listeners
     $aConfig['MVC_EVENT_ENABLE_WILDCARD'] = true;
 
+    /**-----------------------------------------------------------------------------------------------------------------
+     * Log
+     * consider a logrotate mechanism for these logfiles as they may grow quickly
+     */
+    $aConfig['MVC_LOG_SQL'] = true;                 // logging enabled true|false
+    $aConfig['MVC_LOG_EVENT'] = true;               // logging enabled true|false
     // logging of each simple "RUN" event into MVC_LOG_FILE_EVENT
     // remember:
     // - events marked as "RUN": fired events without any listener (nothing happens)
     // - events marked as "RUN+": fired events with bonded listeners / closures to be executed
     // be aware that setting this to "true" would produce much data in the logfile (consider using logrotate!)
     // anyway this might be useful for a develop environment, as it helps debugging and understanding
-    $aConfig['MVC_EVENT_LOG_RUN'] = false;
+    $aConfig['MVC_LOG_EVENT_RUN'] = false;          // logging enabled true|false
+    $aConfig['MVC_LOG_POLICY'] = true;              // logging enabled true|false
+    $aConfig['MVC_LOG_PROCESS'] = true;              // logging enabled true|false
+    $aConfig['MVC_LOG_QUEUE'] = true;              // logging enabled true|false
+    $aConfig['MVC_LOG_CRON'] = true;              // logging enabled true|false
+    $aConfig['MVC_LOG_ERROR'] = true;               // logging enabled true|false
+    $aConfig['MVC_LOG_NOTICE'] = true;              // logging enabled true|false
+    $aConfig['MVC_LOG_WARNING'] = true;             // logging enabled true|false
+    $aConfig['MVC_LOG_REQUEST'] = true;            // logging enabled true|false
+    $aConfig['MVC_LOG_DEFAULT'] = true;             // logging enabled true|false
+    $aConfig['MVC_LOG_ROUTEINTERVALL'] = true;      // logging enabled true|false
+    $aConfig['MVC_LOG_FORCE_LINEBREAK'] = false;    // force linebreaks in logfiles no matter what
 
-    /**
-     * Log
-     * consider a logrotate mechanism for these logfiles as they may grow quickly
-     */
+    // Log file places
     $aConfig['MVC_LOG_FILE_DIR'] = $aConfig['MVC_APPLICATION_PATH'] . '/log/';          # trailing slash required
     $aConfig['MVC_LOG_FILE_DEFAULT'] = $aConfig['MVC_LOG_FILE_DIR'] . 'default.log';
     $aConfig['MVC_LOG_FILE_ERROR'] = $aConfig['MVC_LOG_FILE_DIR'] . 'error.log';
@@ -430,9 +494,13 @@ MVC_APPLICATION_SETTINGS_I: {
     $aConfig['MVC_LOG_FILE_NOTICE'] = $aConfig['MVC_LOG_FILE_DIR'] . 'notice.log';
     $aConfig['MVC_LOG_FILE_POLICY'] = $aConfig['MVC_LOG_FILE_DIR'] . 'policy.log';
     $aConfig['MVC_LOG_FILE_EVENT'] = $aConfig['MVC_LOG_FILE_DIR'] . 'event.log';
+    $aConfig['MVC_LOG_FILE_EVENT_RUN'] = $aConfig['MVC_LOG_FILE_DIR'] . 'event_run.log';
     $aConfig['MVC_LOG_FILE_REQUEST'] = $aConfig['MVC_LOG_FILE_DIR'] . 'request.log';
     $aConfig['MVC_LOG_FILE_SQL'] = $aConfig['MVC_LOG_FILE_DIR'] . 'sql.log';
     $aConfig['MVC_LOG_FILE_ROUTEINTERVALL'] = $aConfig['MVC_LOG_FILE_DIR'] . 'route_intervall.log';
+    $aConfig['MVC_LOG_FILE_PROCESS'] = $aConfig['MVC_LOG_FILE_DIR'] . 'process.log';
+    $aConfig['MVC_LOG_FILE_QUEUE'] = $aConfig['MVC_LOG_FILE_DIR'] . 'queue.log';
+    $aConfig['MVC_LOG_FILE_CRON'] = $aConfig['MVC_LOG_FILE_DIR'] . 'cron.log';
 
     // 1) make sure write access is given to the folder
     // as long as the db user is going to write and not the webserver user
@@ -452,20 +520,7 @@ MVC_APPLICATION_SETTINGS_I: {
         'message' => true,
     ];
 
-    // force linebreaks in logfiles no matter what
-    $aConfig['MVC_LOG_FORCE_LINEBREAK'] = false;
-
-    // logging request into request.log
-    $aConfig['MVC_LOG_REQUEST'] = false;
-
-    // logging of SQL Statements
-    $aConfig['MVC_LOG_SQL'] = false;
-
-    /**
-     * Database
-     */
-
-    /**
+    /**-----------------------------------------------------------------------------------------------------------------
      * Caching
      */
     // cache directory
@@ -479,7 +534,7 @@ MVC_APPLICATION_SETTINGS_I: {
         'sBinGrep' => $aConfig['MVC_BIN_GREP']
     );
 
-    /**
+    /**-----------------------------------------------------------------------------------------------------------------
      * misc
      */
     // Secure Port, SSL
@@ -488,7 +543,7 @@ MVC_APPLICATION_SETTINGS_I: {
     // boolean Request is secure ? (SSL)
     $aConfig['MVC_SECURE_REQUEST'] = (array_key_exists('HTTPS', $_SERVER) && strtolower($_SERVER['HTTPS']) !== 'off') || (array_key_exists('SERVER_PORT', $_SERVER) && ($_SERVER['SERVER_PORT'] == $aConfig['MVC_SSL_PORT']));
 
-    /**
+    /**-----------------------------------------------------------------------------------------------------------------
      * Session
      */
     // session directory and
@@ -518,12 +573,6 @@ MVC_APPLICATION_SETTINGS_I: {
     // true:    session will start
     $aConfig['MVC_SESSION_ENABLE'] = false;
 
-    // Routing Class
-    $aConfig['MVC_ROUTING_CLASS'] = '\\MVC\\Routing';
-
-    // routing.json file
-    $aConfig['MVC_ROUTING_JSON'] = '';
-
     // detect if request is done via cli. set boole true|false
     $aConfig['MVC_CLI'] = (('cli' === php_sapi_name()) ? true : false);
 }
@@ -548,7 +597,6 @@ MODULES: {
     $aConfig['MVC_MODULE_PRIMARY_DATATYPE_DIR'] = $aConfig['MVC_MODULE_PRIMARY_DIR'] . '/DataType';
     $aConfig['MVC_MODULE_PRIMARY_ETC_DIR'] = $aConfig['MVC_MODULE_PRIMARY_DIR'] . '/etc';
     $aConfig['MVC_MODULE_PRIMARY_STAGING_CONFIG_DIR'] = $aConfig['MVC_MODULE_PRIMARY_CONFIG_DIR'] . '/' . $aConfig['MVC_MODULE_PRIMARY_NAME'] . '/config';
-    $aConfig['MVC_MODULE_PRIMARY_EVENT_DIR'] = $aConfig['MVC_MODULES_DIR'] . '/Event';
     $aConfig['MVC_MODULE_PRIMARY_MODEL_DIR'] = $aConfig['MVC_MODULES_DIR'] . '/Model';
     $aConfig['MVC_MODULE_PRIMARY_POLICY_DIR'] = $aConfig['MVC_MODULES_DIR'] . '/Policy';
     $aConfig['MVC_MODULE_PRIMARY_VIEW_DIR'] = $aConfig['MVC_MODULES_DIR'] . '/View';
@@ -560,14 +608,21 @@ MODULES: {
 
 MVC_APPLICATION_SETTINGS_II:
 {
+    /**-----------------------------------------------------------------------------------------------------------------
+     * Routing etc.
+     */
+    // contains all routing file dirs to get read
+    $aConfig['MVC_ROUTING_DIR'] = array(
+        // add primary per default
+        $aConfig['MVC_MODULE_PRIMARY_ETC_DIR'] . '/routing'
+    );
+
     /**
      * MVC fallback routing
      * this routing will be used if none is specified for routing
      * Note: Possibility of a direct call (http|cli) of this route is disabled
      */
-    $aConfig['MVC_ROUTING_FALLBACK'] = $aConfig['MVC_ROUTE_QUERY_PARAM_MODULE'] . '=' . $aConfig['MVC_MODULE_PRIMARY_NAME'] . '&'
-                                       . $aConfig['MVC_ROUTE_QUERY_PARAM_C'] . '=index&'
-                                       . $aConfig['MVC_ROUTE_QUERY_PARAM_M'] . '=notFound';
+    $aConfig['MVC_ROUTING_FALLBACK'] = '\\' . $aConfig['MVC_MODULE_PRIMARY_NAME'] . '\\Controller\\Index::notFound';
 }
 
 MVC_TEMPLATE_ENGINE_SMARTY: {
@@ -602,6 +657,51 @@ MVC_MISC: {
 
     $aConfig['MVC_UNIQUE_ID'] = date('YmdHis') . '' . uniqid();
 }
+
+// needs a leading slash, avoid a trailing slash
+$aConfig['MVC_ROUTE_PREFIX'] = '/~';
+
+MVC_QUEUE: {
+
+    // prefix for AutoRoutes
+    $aConfig['MVC_QUEUE_ROUTE_PREFIX'] = $aConfig['MVC_ROUTE_PREFIX'] . '/queue';
+
+    // Route for running Queue; calling Worker on Jobs
+    // @see modules/{module}/etc/config/{module}/config/_queue.php
+    // @see modules/{module}/etc/routing/service.php
+    $aConfig['MVC_QUEUE_RUN'] = $aConfig['MVC_QUEUE_ROUTE_PREFIX'] . '/run';
+
+    // Class::method responsible for running Queue
+    $aConfig['MVC_QUEUE_RUN_CLASSMETHOD'] = '\App\Controller\Queue::run';
+
+    // Worker Route Structure
+    $aConfig['MVC_QUEUE_WORKER_AUTO_ROUTE_PREFIX'] = $aConfig['MVC_QUEUE_ROUTE_PREFIX'] . '/worker';
+
+    // Class::method responsible for resolving Worker Routes
+    $aConfig['MVC_QUEUE_WORKER_AUTO_ROUTE_RESOLVE_CLASSMETHOD'] = '\App\Controller\Queue::workerAutoRouteResolve';
+
+    // Max processing time of an async process in seconds; cancellation if reached.
+    $aConfig['MVC_QUEUE_RUNTIME_SECONDS'] = 300;
+}
+
+MVC_PROCESS: {
+
+    // Maximum number of all job processes allowed in parallel
+    $aConfig['MVC_PROCESS_MAX_PROCESSES_OVERALL'] = 30;
+
+    // pidFiles directory
+    $aConfig['MVC_PROCESS_PID_FILE_DIR'] = $aConfig['MVC_APPLICATION_PATH'] . '/pid/';
+}
+
+MVC_CRON: {
+
+    // @see modules/{module}/etc/config/{module}/config/_cron.php
+    // @see modules/{module}/etc/routing/service.php
+    $aConfig['MVC_CRON_ROUTE'] = $aConfig['MVC_ROUTE_PREFIX'] . '/cron/run';
+
+    // Class::method responsible for running CRON
+    $aConfig['MVC_CRON_RUN_CLASSMETHOD'] = '\App\Controller\Cron::run';
+}
 ~~~
 
 <a id="Modules-config-folder-example"></a>
@@ -627,9 +727,7 @@ MVC_MISC: {
 // MVC
 
 // override default fallback routing
-$aConfig['MVC_ROUTING_FALLBACK'] = $aConfig['MVC_ROUTE_QUERY_PARAM_MODULE'] . '=' . $aConfig['MVC_MODULE_PRIMARY_NAME'] . '&'
-                                   . $aConfig['MVC_ROUTE_QUERY_PARAM_C'] . '=index&'
-                                   . $aConfig['MVC_ROUTE_QUERY_PARAM_M'] . '=notFound';
+$aConfig['MVC_ROUTING_FALLBACK'] = '\\' . $aConfig['MVC_MODULE_PRIMARY_NAME'] . '\\Controller\\Index::notFound';
 
 // Add Location of Smarty PlugIns
 $aConfig['MVC_SMARTY_PLUGINS_DIR'][] = realpath(__DIR__ . '/../../') . '/etc/smartyPlugins';
@@ -657,13 +755,29 @@ declare(strict_types=1);  // @see https://www.php.net/manual/en/language.types.d
 error_reporting(E_ALL);
 date_default_timezone_set('Europe/Berlin');
 
-// consider a logrotate mechanism for these logfiles as they may grow quickly
-$aConfig['MVC_LOG_SQL'] = false;            // consider to set to true for develop environments only: logging request into MVC_LOG_FILE_SQL
-$aConfig['MVC_LOG_REQUEST'] = false;        // consider to set to true for develop environments only: logging request into MVC_LOG_FILE_REQUEST
-$aConfig['MVC_EVENT_LOG_RUN'] = false;      // consider to set to true for develop environments only: logging of each simple "RUN" event into MVC_LOG_FILE_EVENT
-$aConfig['MVC_LOG_AUTOLOADER'] = false;     // consider to set to true for develop environments only: Log autoloader actions
-$aConfig['MVC_INFOTOOL_ENABLE'] = true;     // consider to set to true for develop environments only: show InfoTool bar
-$aConfig['MVC_LOG_FORCE_LINEBREAK'] = true; // consider to set to true for develop environments only: force linebreaks in logfiles no matter what, improves readabilty of logs but blows up
+$aConfig['MVC_BIN_PHP_BINARY'] = '/usr/bin/php'; // überschreibe ddev's `/usr/sbin/php-fpm8.4`
+
+// recommended to set a logrotate mechanism for these logfiles as they may grow quickly
+$aConfig['MVC_LOG_SQL'] = true;
+$aConfig['MVC_LOG_CRON'] = true;
+$aConfig['MVC_LOG_EVENT'] = false;
+$aConfig['MVC_LOG_ERROR'] = true;               // recommended to set to true for ALL environments
+$aConfig['MVC_LOG_QUEUE'] = true;
+$aConfig['MVC_LOG_NOTICE'] = true;
+$aConfig['MVC_LOG_POLICY'] = true;
+$aConfig['MVC_LOG_PROCESS'] = true;
+$aConfig['MVC_LOG_WARNING'] = true;
+$aConfig['MVC_LOG_REQUEST'] = true;
+$aConfig['MVC_LOG_DEFAULT'] = true;
+$aConfig['MVC_LOG_EVENT_RUN'] = false;
+$aConfig['MVC_LOG_AUTOLOADER'] = false;         // recommended to set to true for develop environments only: Log autoloader actions
+$aConfig['MVC_LOG_ROUTEINTERVALL'] = false;      // recommended to set to true for develop environments only: Log Route Intervall actions
+$aConfig['MVC_LOG_FORCE_LINEBREAK'] = true;     // force linebreaks in logfiles no matter what, improves readability of logs but blows up logfile
+$aConfig['MVC_INFOTOOL_ENABLE'] = true;         // recommended to set to true for develop environments only: show InfoTool bar
+
+// take MVC_UNIQUE_ID out of request Header
+$sUniqueId = preg_replace("/[^[:alnum:]]/ui", '', get(array_change_key_case(getallheaders(), CASE_LOWER)['mvc-unique-id'], ''));
+(false === empty($sUniqueId)) ? $aConfig['MVC_UNIQUE_ID'] = $sUniqueId : false;
 
 
 //######################################################################################################################
@@ -673,19 +787,58 @@ $aConfig['MODULE']['Foo'] = array();
 
 // ...your config goes here...
 
-//----------------------------------------------------------------------------------------------------------------------
+//......................................................................................................................
 // DB
-// watch database log; e.g.:      cd /tmp; tail -f Foo*.log
 
-require realpath(__DIR__) . '/_db.php';
+require_once realpath(__DIR__) . '/_db.php';
 // consider a logrotate mechanism for this logfile as it may grow quickly
 $aConfig['MODULE']['Foo']['DB']['logging']['general_log'] = 'ON'; // consider to set it to ON for develop or test environments only
 
+//......................................................................................................................
+// Queue
+
+require_once realpath(__DIR__) . '/_queue.php';
+
+
+//######################################################################################################################
+// Module Email
+
+$aConfig['MODULE']['Email'] = array(
+
+    // callback function
+    'oCallback' => function($oEmail) {
+
+        /**
+         * (Nicht-LIVE): Immer an diese E-Mail-Adresse versenden
+         * NICHT an echte Mandanten!
+         */
+        $oEmail->set_recipientMailAdresses(array('guido@ueffing.net'));
+
+        // send e-mail via SMTP
+        return \Email\Model\Smtp::sendViaPhpMailer($oEmail);
+    },
+
+    'sSenderEmailAddress' => getenv('email.sSenderEmailAddress'),
+
+    /**
+     * SMTP account settings
+     * get from .env file
+     */
+    'sHost' => getenv('email.sHost'),
+    'iPort' => getenv('email.iPort'),       # ssl=465 | tls=587
+    'sSecure' => getenv('email.sSecure'),   # ssl | tls
+    'bAuth' => getenv('email.bAuth'),
+    'sUsername' => getenv('email.sUsername'),
+    'sPassword' => getenv('email.sPassword'),
+);
 
 //######################################################################################################################
 // common settings
 
-require realpath(__DIR__) . '/_datatype.php';
-require realpath(__DIR__) . '/_session.php';
-require realpath(__DIR__) . '/_csp.php';
+require_once realpath(__DIR__) . '/_function.php';
+require_once realpath(__DIR__) . '/_datatype.php';
+require_once realpath(__DIR__) . '/_session.php';
+require_once realpath(__DIR__) . '/_csp.php';
+require_once realpath(__DIR__) . '/_menu.php';
+require_once realpath(__DIR__) . '/_cron.php';
 ~~~
