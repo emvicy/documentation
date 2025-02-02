@@ -19,10 +19,10 @@
 | Folder / File                                         | Meaning                                            |
 |-------------------------------------------------------|----------------------------------------------------|
 | 📁 [application](#application)                        | Emvicy Framework and libraries, temporary files     |    
-| 📁 [config](/1.x/configuration#Emvicy-config-folder) | top config folder; gobal                           |  
+| 📁 [config](/2.x/configuration#Emvicy-config-folder)  | top config folder; gobal                           |  
 | 📁 [modules](#modules-moduleName)                     | **&larr; in here you write your application code** |    
 | 📁 public                                             | any public files like `*.css`, `*.js`              | 
-| emvicy                                            | command line tool; helps to manage                 |  
+| emvicy                                                | command line tool; helps to manage                 |  
 
 ---
 
@@ -35,6 +35,7 @@
 | 📁 init          | skeleton files and utilities                |
 | 📁 library       | Core Framework                              |  
 | 📁 log           | default logfile directory                   |
+| 📁 pid           | pid file directory                          |
 | 📁 session       | SessionIDs are stored here by default       |
 | 📁 smartyPlugins | default smartyPlugin directory              |  
 | 📁 templates_c   | default home for compiled smarty templates  |  
@@ -64,15 +65,15 @@
 <a id="modules-moduleName-etc"></a>
 ## `/modules/{moduleName}/etc/`
 
-| Folder / File                               | Meaning                                                                                                 |
-|---------------------------------------------|---------------------------------------------------------------------------------------------------------|
-| 📁 _INSTALL                                 | place for files to install _(e.g. copy into `public` folder)_                                           |
-| 📁 [config](#modules-moduleName-etc-config) | Module's config files                                                                                   |
-| 📁 doc                                      | place for any further Module documentation                                                              |
-| 📁 event                                    | place for Event Listeners. See [Registering Event Listeners](/1.x/events#registering-event-listeners) |
-| 📁 policy                                   | Policy Rules                                                                                            |
-| 📁 routing                                  | Routing files                                                                                           |
-| 📁 smartyPlugins                            | Smarty template PlugIn files                                                                            |
+| Folder / File                               | Meaning                                                                                                |
+|---------------------------------------------|--------------------------------------------------------------------------------------------------------|
+| 📁 _INSTALL                                 | place for files to install _(e.g. copy into `public` folder)_                                          |
+| 📁 [config](#modules-moduleName-etc-config) | Module's config files                                                                                  |
+| 📁 doc                                      | place for any further Module documentation                                                             |
+| 📁 event                                    | place for Event Listeners. See [Registering Event Listeners](/2.x/events#registering-event-listeners)  |
+| 📁 policy                                   | Policy Rules                                                                                           |
+| 📁 routing                                  | Routing files                                                                                          |
+| 📁 smartyPlugins                            | Smarty template PlugIn files                                                                           |
 
 
 <a id="modules-moduleName-etc-config"></a>
@@ -82,28 +83,30 @@
 |-------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | 📁 {moduleName}                                                   |                                                                                                                                                                               |
 | └── 📁 [config](#modules-moduleName-etc-config-moduleName-config) | place for any further Module documentation                                                                                                                                    |
-| _mvc.php                                                          | further MVC configs (see [Module's config folder (overrides 1.)](/1.x/configuration#Modules-config-folder), and [Example](/1.x/configuration#Modules-config-folder-example))  |
+| _mvc.php                                                          | further MVC configs (see [Module's config folder (overrides 1.)](/2.x/configuration#Modules-config-folder), and [Example](/2.x/configuration#Modules-config-folder-example))  |
 
 
 <a id="modules-moduleName-etc-config-moduleName-config"></a>
 ## `/modules/{moduleName}/etc/config/{moduleName}/config/`
 
-| Folder / File         | Meaning                                                                                                                                                      |
-|-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| _asset.yaml           | Asset Sets                                                                                                                                                   |
-| _csp.php              | Content-Security-Policy rules                                                                                                                                |
-| _datatype.php         | Module's DataType configuration files                                                                                                                        |
-| _db.php               | Database Config                                                                                                                                              |
-| _function.php         | functions                                                                                                                                                    |
-| _routeintervall.yaml  | Config for [RouteIntervall](/1.x/route-intervall)                                                                                                            |
-| _session.php          | Session Rules; Where to enable & disable Session                                                                                                             |
-| develop.php           | Module's environment config file. See [Example `/modules/Foo/etc/config/Foo/config/develop.php`](/1.x/configuration#Modules-environment-config-file-example) |
+| Folder / File        | Meaning                                                                                                                                                      |
+|----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| _asset.yaml          | Asset Sets                                                                                                                                                   |
+| _cron.php            | Routes to be called via `cron:run`                                                                                                                           |
+| _csp.php             | Content-Security-Policy rules                                                                                                                                |
+| _datatype.php        | Module's DataType configuration files                                                                                                                        |
+| _db.php              | Database Config                                                                                                                                              |
+| _function.php        | functions                                                                                                                                                    |
+| _menu.php            | Config for Menu building                                                                                                                                     |
+| _routeintervall.yaml | Config for [RouteIntervall](/2.x/route-intervall)                                                                                                            |
+| _session.php         | Session Rules; Where to enable & disable Session                                                                                                             |
+| develop.php          | Module's environment config file. See [Example `/modules/Foo/etc/config/Foo/config/develop.php`](/2.x/configuration#Modules-environment-config-file-example) |
 
 
 <a id="modules-moduleName-templates"></a>
 ## `/modules/{moduleName}/templates/` 
 
-_templates directory structure_  
+_Example: templates directory structure_  
 ~~~
 modules/{moduleName}/
 ├── templates/
@@ -119,4 +122,4 @@ modules/{moduleName}/
 │           ├── index.tpl
 │           └── menu.tpl
 ~~~
-- You may find further Information in Topic [Frontend](/1.x/frontend)
+- You may find further Information in Topic [Frontend](/2.x/frontend)
