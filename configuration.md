@@ -755,7 +755,7 @@ declare(strict_types=1);  // @see https://www.php.net/manual/en/language.types.d
 error_reporting(E_ALL);
 date_default_timezone_set('Europe/Berlin');
 
-$aConfig['MVC_BIN_PHP_BINARY'] = '/usr/bin/php'; // überschreibe ddev's `/usr/sbin/php-fpm8.4`
+$aConfig['MVC_BIN_PHP_BINARY'] = '/usr/bin/php'; // override ddev's `/usr/sbin/php-fpm8.4`
 
 // recommended to set a logrotate mechanism for these logfiles as they may grow quickly
 $aConfig['MVC_LOG_SQL'] = true;
@@ -808,11 +808,8 @@ $aConfig['MODULE']['Email'] = array(
     // callback function
     'oCallback' => function($oEmail) {
 
-        /**
-         * (Nicht-LIVE): Immer an diese E-Mail-Adresse versenden
-         * NICHT an echte Mandanten!
-         */
-        $oEmail->set_recipientMailAdresses(array('guido@ueffing.net'));
+        // develop: use always this recipient
+        $oEmail->set_recipientMailAdresses(array('foo@example.com'));
 
         // send e-mail via SMTP
         return \Email\Model\Smtp::sendViaPhpMailer($oEmail);
