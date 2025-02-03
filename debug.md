@@ -25,10 +25,10 @@ info($this);
 ~~~
 
 _Frontend_  
-![Debug::info()](/doc/1.x/debug/debug_info.png)
+![Debug::info()](/doc/2.x/debug/debug_info.png)
 
 _CLI_  
-![Debug::info()](/doc/1.x/debug/debug_info_cli.png)
+![Debug::info()](/doc/2.x/debug/debug_info_cli.png)
 
 ---
 
@@ -45,10 +45,10 @@ display(mixed $mData = '', array $aDebugBacktrace = array()) : void
 ~~~
 
 _Frontend_  
-![Debug::display()](/doc/1.x/debug/debug_display.png)
+![Debug::display()](/doc/2.x/debug/debug_display.png)
 
 _CLI_  
-![Debug::display()](/doc/1.x/debug/debug_display_cli.png)
+![Debug::display()](/doc/2.x/debug/debug_display_cli.png)
 
 ---
 
@@ -81,10 +81,10 @@ Debug::stop('here i stopped');
 ~~~
 
 _Frontend_  
-![Debug::display()](/doc/1.x/debug/debug_stop.png)
+![Debug::display()](/doc/2.x/debug/debug_stop.png)
 
 _CLI_  
-![Debug::display()](/doc/1.x/debug/debug_stop_cli.png)
+![Debug::display()](/doc/2.x/debug/debug_stop_cli.png)
 
 ---
 

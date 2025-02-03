@@ -801,35 +801,6 @@ require_once realpath(__DIR__) . '/_queue.php';
 
 
 //######################################################################################################################
-// Module Email
-
-$aConfig['MODULE']['Email'] = array(
-
-    // callback function
-    'oCallback' => function($oEmail) {
-
-        // develop: use always this recipient
-        $oEmail->set_recipientMailAdresses(array('foo@example.com'));
-
-        // send e-mail via SMTP
-        return \Email\Model\Smtp::sendViaPhpMailer($oEmail);
-    },
-
-    'sSenderEmailAddress' => getenv('email.sSenderEmailAddress'),
-
-    /**
-     * SMTP account settings
-     * get from .env file
-     */
-    'sHost' => getenv('email.sHost'),
-    'iPort' => getenv('email.iPort'),       # ssl=465 | tls=587
-    'sSecure' => getenv('email.sSecure'),   # ssl | tls
-    'bAuth' => getenv('email.bAuth'),
-    'sUsername' => getenv('email.sUsername'),
-    'sPassword' => getenv('email.sPassword'),
-);
-
-//######################################################################################################################
 // common settings
 
 require_once realpath(__DIR__) . '/_function.php';

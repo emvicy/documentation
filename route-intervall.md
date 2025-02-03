@@ -40,7 +40,7 @@ So in this example you want
 <a id="Init-Route"></a>
 ## Init Route 
 
-you need to create an init route (see [Creating a Route](/1.x/routing#Creating-a-Route)) - you might want to call it `/routeIntervall/`.
+you need to create an init route (see [Creating a Route](/2.x/routing#Creating-a-Route)) - you might want to call it `/routeIntervall/`.
 
 _init route_  
 ~~~php
@@ -77,7 +77,7 @@ php index.php '/routeIntervall/'
 <a id="Cron-Job"></a>
 ## Cron Job
 
-Since `RouteIntervall` is being locked (see [Lock](/1.x/lock)), you can safely call the Init Route each minute via cron - there 
+Since `RouteIntervall` is being locked (see [Lock](/2.x/lock)), you can safely call the Init Route each minute via cron - there 
 will only be one process of it running.
 
 _cronjob for RouteInternvall_  
@@ -91,7 +91,7 @@ _cronjob for RouteInternvall_
 <a id="Logging-RouteIntervall-Actions"></a>
 ## Logging RouteIntervall Actions
 
-create the file `routeintervall.php` in your event folder (see [Registering Event Listeners](/1.x/events#registering-event-listeners))
+create the file `routeintervall.php` in your event folder (see [Registering Event Listeners](/2.x/events#registering-event-listeners))
 
 ~~~
 module/{module}/etc/event/routeintervall.php
@@ -107,7 +107,7 @@ _Event Listener on RouteIntervall Actions_
 <?php
 
 # List of Emvicy Standard Events
-# @see https://emvicy.com/1.x/events#EmvicyStandardEvents
+# @see https://emvicy.com/2.x/events#EmvicyStandardEvents
 
 
 \MVC\Event::processBindConfigStack([
@@ -165,7 +165,7 @@ _Event Listener on RouteIntervall Actions_
 <a id="pidFile"></a>
 ## pid File
 
-Once `RouteIntervall` is running, there will be a dot-file created in your Emvicy Base Path _(this is where also `emvicy` resides, see [directory-structure#root](/1.x/directory-structure#root))_.
+Once `RouteIntervall` is running, there will be a dot-file created in your Emvicy Base Path _(this is where also `emvicy` resides, see [directory-structure#root](/2.x/directory-structure#root))_.
 
 Its name is `.mvc-routeintervall-run.` + `{process id}` .
 
@@ -188,7 +188,7 @@ admin1     18787 99.6  0.1 132584 30512 pts/3    R+   09:39   1:20 php index.php
 
 you can stop running the `RouteIntervall` process by simply removing the pidfile.
 
-cd into Emvicy Base Path _(this is where also `emvicy` resides, see [directory-structure#root](/1.x/directory-structure#root))_ and remove the pidfile.
+cd into Emvicy Base Path _(this is where also `emvicy` resides, see [directory-structure#root](/2.x/directory-structure#root))_ and remove the pidfile.
 
 _Example_  
 ~~~bash

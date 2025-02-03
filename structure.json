@@ -3,8 +3,7 @@
     "Installation": "installation.md",
     "Creating a Module":"creating-a-module.md",
     "Configuration":"configuration.md",
-    "Directory Structure":"directory-structure.md",
-    "Frontend":"frontend.md"
+    "Directory Structure":"directory-structure.md"
   },
   "Basics": {
     "MVC": {
@@ -58,7 +57,6 @@
     "OpenApi": "module_openapi.md",
     "Paginator": "module_paginator.md",
     "SSE": "module_sse.md",
-    "Validator": "module_validator.md",
     "Ws": "module_ws.md"
   },
   "Deprecated":{

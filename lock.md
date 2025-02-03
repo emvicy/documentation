@@ -28,4 +28,4 @@ This command creates a lock folder inside your cache folder during runtime.
 
 When runtime is over, the lock folder will be removed automatically.
 
-![Lock](/doc/1.x/lock/emvicy_lock.png)
+![Lock](/doc/2.x/lock/emvicy_lock.png)

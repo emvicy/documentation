@@ -15,10 +15,10 @@ As it lists sensitive data that you do not want to share with other people.
 ~~~php
 $aConfig['MVC_INFOTOOL_ENABLE'] = true;
 ~~~
-- see [Example: /modules/Foo/etc/config/Foo/config/develop.php](/1.x/configuration#Modules-environment-config-file-example)
-- see [Module's environment config file](/1.x/configuration#Modules-environment-config-file)
+- see [Example: /modules/Foo/etc/config/Foo/config/develop.php](/2.x/configuration#Modules-environment-config-file-example)
+- see [Module's environment config file](/2.x/configuration#Modules-environment-config-file)
 
 
 after that you should see the InfoTool on your Frontend:
 
-![Emvicy Infotool](/doc/1.x/infotool/emvicy_infotool.png)
+![Emvicy Infotool](/doc/2.x/infotool/emvicy_infotool.png)

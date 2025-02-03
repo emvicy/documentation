@@ -103,7 +103,7 @@ _Example_
 $aError = Error::get();
 ~~~
 
-_Example Retrieving error data using [ArrDot](/1.x/arrdot)_  
+_Example Retrieving error data using [ArrDot](/2.x/arrdot)_  
 ~~~php
 $oArrDot = new ArrDot(Error::get());
 

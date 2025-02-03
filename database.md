@@ -54,7 +54,7 @@ db.password=
 
 
 In your main module's config environment folder edit your DB Config.
-(@see [/1.x/configuration#Modules-environment-config-file](/1.x/configuration#Modules-environment-config-file))
+(@see [/2.x/configuration#Modules-environment-config-file](/2.x/configuration#Modules-environment-config-file))
 
 The main config file resides in `_db.php`.
 
@@ -490,7 +490,7 @@ _update via SQL Statement_
 ~~~php
 DB::$oPDO->query("UPDATE `FooModelTableUser` SET `active` = '0' WHERE `email` = 'foo@example.com'");
 ~~~
-- see also: [Database Events](/1.x/events#database_events), and [Database - 3.8. SQL](#3-8)
+- see also: [Database Events](/2.x/events#database_events), and [Database - 3.8. SQL](#3-8)
 
 ---
 
@@ -686,7 +686,7 @@ DB::$oPDO->query("UPDATE `FooModelTableUser` SET `active` = '0' WHERE `email` = 
 <a id="4"></a> 
 ## 4. Events
 
-see [Database Events](/1.x/events#database_events)
+see [Database Events](/2.x/events#database_events)
 
 <a id="4-1"></a>
 
@@ -729,7 +729,7 @@ _`/modules/{MODULE}/etc/event/db.php`_
 
 **logging at database engine side**
 
-if you set `general_log` to `ON` iny your [DB Config](/1.x/database#2-1), the database logs each action into the logfile 
+if you set `general_log` to `ON` iny your [DB Config](/2.x/database#2-1), the database logs each action into the logfile 
 specified in the var `MVC_LOG_FILE_DB_DIR`.
 
 ~~~php

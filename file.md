@@ -21,7 +21,7 @@ _Example_
 $oDTFileinfo = File::info(__FILE__);
 ~~~
 
-_return Datatype object `$oDTFileinfo` (see [DTFileinfo](/1.x/datatype-classes#DTFileinfo))_  
+_return Datatype object `$oDTFileinfo` (see [DTFileinfo](/2.x/datatype-classes#DTFileinfo))_  
 ~~~
 // type: object
 \MVC\DataType\DTFileinfo::__set_state(array(

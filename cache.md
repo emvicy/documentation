@@ -130,7 +130,7 @@ if (Cache::getCache($sCacheToken) !== $sMd5OfFile)
 #### Creating a full-page cache
 
 This shows how a simple full-page cache can be created with the help of event listeners.  
-For more Information about Event Handling in Emvicy, please see Chapter [Events](/1.x/events).
+For more Information about Event Handling in Emvicy, please see Chapter [Events](/2.x/events).
 
 ~~~php
 \MVC\Event::processBindConfigStack([

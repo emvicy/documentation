@@ -23,7 +23,7 @@ $mValue = get($aData['foo']['bar']);
 
 shorthand for `Debug::display()` on userland.
 
-see [Debug::display()](/1.x/debug#display)
+see [Debug::display()](/2.x/debug#display)
 
 ---
 
@@ -31,7 +31,7 @@ see [Debug::display()](/1.x/debug#display)
 
 shorthand for `Debug::info()` on userland.
 
-see [Debug::info()](/1.x/debug#info)
+see [Debug::info()](/2.x/debug#info)
 
 
 ---
@@ -40,7 +40,7 @@ see [Debug::info()](/1.x/debug#info)
 
 shorthand for `Debug::stop()` on userland.
 
-see [Debug::stop()](/1.x/debug#info)
+see [Debug::stop()](/2.x/debug#info)
 
 ---
 
@@ -79,4 +79,4 @@ reads environment key/values from a given file and stores them via putenv so tha
 
 loads all available configs. 
 
-see also [Config files, -places and reading order](/1.x/configuration#Config-files-places-and-reading-order)
+see also [Config files, -places and reading order](/2.x/configuration#Config-files-places-and-reading-order)
