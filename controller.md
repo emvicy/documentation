@@ -1,4 +1,7 @@
+<a id="Controller"></a>
+# Controller
 
+- [Quick start](#quick-start)
 - [Controller](#Controller)
     - [Method Parameter](#Controller-method-Parameter)
     - [special method `__preconstruct`](#preconstruct)
@@ -8,8 +11,15 @@
 
 ---
 
-<a id="Controller"></a>
-# Controller
+<a id="quick-start"></a>
+## Quick start
+
+_creates controller `Bar` in the given module `Foo`_  
+~~~bash
+php emvicy module:createController Bar Foo
+~~~
+
+---
 
 *"The controller responds to the user input and performs interactions on the data model objects. The controller receives the input, optionally validates it and then passes the input to the model."  
 <small><a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller#Interactions" target="_blank">wikipedia, "Model–view–controller#Interactions", 2023-12-28</a>*

@@ -35,8 +35,8 @@
 | 📁 init          | skeleton files and utilities                |
 | 📁 library       | Core Framework                              |  
 | 📁 log           | default logfile directory                   |
-| 📁 pid           | pid file directory                          |
-| 📁 session       | SessionIDs are stored here by default       |
+| 📁 pid           | default pid file directory                  |
+| 📁 session       | default SessionIDs directory                |
 | 📁 smartyPlugins | default smartyPlugin directory              |  
 | 📁 templates_c   | default home for compiled smarty templates  |  
 | 📁 vendor        | third party libraries installed by composer |

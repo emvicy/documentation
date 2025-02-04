@@ -7,7 +7,6 @@
   },
   "Basics": {
     "MVC": {
-      "MVC <small>[Model View Controller]</small>":"mvc.md",
       "Controller": "controller.md",
       "Model": "model.md",
       "View": "view.md"
@@ -48,6 +47,7 @@
     "Menu": "menu.md",
     "Minify": "minify.md",
     "Registry": "registry.md",
+    "RouteIntervall": "route-intervall.md",
     "Session": "session.md",
     "Strings": "strings.md",
     "Traits": "traits.md"
@@ -58,8 +58,5 @@
     "Paginator": "module_paginator.md",
     "SSE": "module_sse.md",
     "Ws": "module_ws.md"
-  },
-  "Deprecated":{
-    "RouteIntervall": "route-intervall.md"
   }
 }

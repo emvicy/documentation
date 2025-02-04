@@ -1,6 +1,7 @@
 
 # Configuration
 
+- [Quick start](#quick-start)
 - [Environment `/.env`](#Environment)
   - [MVC_ENV](#MVC_ENV)
   - [Custom .env variables](#custom-env-variables)
@@ -15,6 +16,25 @@
   - [`/config/_mvc.php`](#Emvicy-config-folder-example)
   - [Example `/modules/Foo/etc/config/_mvc.php`](#Modules-config-folder-example)
   - [Example `/modules/Foo/etc/config/Foo/config/develop.php`](#Modules-environment-config-file-example)
+
+---
+
+<a id="quick-start"></a>
+## Quick start
+
+**Environment file**
+
+🛈 write all private settings, accesses and passwords, as well as other secrets in the environment file: `/.env`
+
+- see: [Environment `/.env`](#Environment)
+
+**Config file**
+
+🛈 configure your settings in a file in the primary module and corresponds to the environment by name: `/modules/Foo/etc/config/Foo/config/develop.php`
+
+- the configuration file in your primary module always has the last word, as it is read last. Settings made here overwrite all other settings made previously.
+- see: [Creating a primary Module](/2.x/creating-a-module#creating-a-primary-module)
+- see: [Module's environment config file](#Modules-environment-config-file)
 
 ---
 
