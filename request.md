@@ -1,36 +1,40 @@
 
 # Request
 
-- [Get current Request](#Get-current-Request)
+- [`in()` - get Information about incoming Request](#Request-in)
   - [Check request method against route method](#check-request-method-against-route-method)
-- [Get data from header of current Request](#Get-data-from-header-of-current-Request)
-  - [Get all headers](#Get-all-headers)
-  - [Get a certain header](#Get-a-certain-header)
-- [Get data from body of current Request](#Get-data-from-body-of-current-Request)
-- [Accessing Path Params / Variables](#Accessing-Path-Params-Variables)
-- [Sanitizing](#Sanitizing)
+  - [Get data from header of current Request](#Get-data-from-header-of-current-Request)
+    - [Get all headers](#Get-all-headers)
+    - [Get a certain header](#Get-a-certain-header)
+  - [Get data from body of current Request](#Get-data-from-body-of-current-Request)
+  - [Accessing Path Params / Variables](#Accessing-Path-Params-Variables)
+  - [Get Path Info](#get-path-info)
+  - [Sanitizing](#Sanitizing)   
+- [`out()` - perform an outgoing Request](#perform-an-outgoing-Request)
+
 
 ------------------------------------------------------------------------------------------------------------------------
-<a id="Get-current-Request"></a>
-## Get current Request
+
+<a id="Request-in"></a>
+## `in()` - get Information about incoming Request
 
 _Example **GET** Request_
 ~~~
 http://mymvc.ueffing.local/foo/bar/?a=1;b=2;c=3
 ~~~
 
-_Command_  
+_`in()` returns `DTRequestIn` object representing the incoming Request_  
 ~~~php
-$oDTRequestCurrent = \MVC\Request::getCurrentRequest()
+$oDTRequestIn = \MVC\Request::in();
 ~~~
-- see [/2.x/datatype-classes#DTRequestCurrent](/2.x/datatype-classes#DTRequestCurrent)
+- see [/2.x/datatype-classes#DTRequestIn](/2.x/datatype-classes#DTRequestIn)
 
-As it gives you an object of type `MVC\DataType\DTRequestCurrent`, you can access all key/values by a getter.
+As it gives you an object of type `MVC\DataType\DTRequestIn`, you can access all key/values by getter and setter.
 
 _For example_  
 ~~~php
-$sPath = \MVC\Request::getCurrentRequest()->get_path();
-$sQuery = \MVC\Request::getCurrentRequest()->get_query();
+$sPath = \MVC\Request::in()->get_path();
+$sQuery = \MVC\Request::in()->get_query();
 ~~~
 
 <a id="check-request-method-against-route-method"></a>
@@ -44,7 +48,7 @@ $bMethodMatch = (
     // any request method is allowed
     '*' === \MVC\Route::getCurrent()->get_method() ||
     // request method does match route method
-    \MVC\Request::getServerRequestMethod() === \MVC\Route::getCurrent()->get_method()
+    \MVC\Request::in()->get_requestMethod() === \MVC\Route::getCurrent()->get_method()
 ) ? true : false;
 ~~~
 
@@ -61,6 +65,7 @@ if (false === $bMethodMatch)
 ~~~
 
 ------------------------------------------------------------------------------------------------------------------------
+
 <a id="Get-data-from-header-of-current-Request"></a>
 ## Get data from header of current Request
 
@@ -69,23 +74,36 @@ if (false === $bMethodMatch)
 
 _Command_
 ~~~php
-$aHeader = \MVC\Request::getHeaderArray();
+$aHeader = \MVC\Request::in()->get_headerArray();
 ~~~
 
-_Example Result_
+_Example Result of `$aHeader`_  
 ~~~
-array(10) {
-  ["Host"]=>string(23) "mymvcdoku.ueffing.local"
-  ["Connection"]=>string(10) "keep-alive"
-  ["Cache-Control"]=>string(9) "max-age=0"
-  ["Upgrade-Insecure-Requests"]=>string(1) "1"
-  ["User-Agent"]=>string(101) "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
-  ["Accept"]=>string(135) "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
-  ["Referer"]=>string(44) "http://mymvcdoku.ueffing.local/2.x/request"
-  ["Accept-Encoding"]=>string(13) "gzip, deflate"
-  ["Accept-Language"]=>string(35) "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7"
-  ["Cookie"]=>string(58) "Emvicy_cookieConsent=true; Emvicy=0j6eatdmvbq8tqsnsoeph6kipd"
-}
+// type: array, items: 22
+[
+    'X-Real-Ip' => '172.21.0.1',
+    'X-Forwarded-Server' => '0d23c0701c03',
+    'X-Forwarded-Proto' => 'https',
+    'X-Forwarded-Port' => '443',
+    'X-Forwarded-Host' => 'emvicy2x.ddev.site',
+    'X-Forwarded-For' => '172.21.0.1',
+    'Upgrade-Insecure-Requests' => '1',
+    'Sec-Fetch-User' => '?1',
+    'Sec-Fetch-Site' => 'none',
+    'Sec-Fetch-Mode' => 'navigate',
+    'Sec-Fetch-Dest' => 'document',
+    'Sec-Ch-Ua-Platform' => '"Linux"',
+    'Sec-Ch-Ua-Mobile' => '?0',
+    'Sec-Ch-Ua' => '"Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"',
+    'Priority' => 'u=0, i',
+    'Cookie' => 'Emvicy_cookieConsent=true; Emvicy_secure=7t9i925cp5bendbl939ct4h6ug',
+    'Cache-Control' => 'max-age=0',
+    'Accept-Language' => 'de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7',
+    'Accept-Encoding' => 'gzip, deflate, br, zstd',
+    'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+    'User-Agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36',
+    'Host' => 'emvicy2x.ddev.site',
+]
 ~~~
 
 <a id="Get-a-certain-header"></a>
@@ -93,15 +111,16 @@ array(10) {
 
 _Command_
 ~~~php
-$aHeader = \MVC\Request::getHeader('Connection');
+$aHeader = \MVC\Request::in()->getHeaderValueOnKey('User-Agent');
 ~~~
 
 _Example Result_
 ~~~
-string(10) "keep-alive"
+string(10) "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
 ~~~
 
 ------------------------------------------------------------------------------------------------------------------------
+
 <a id="Get-data-from-body-of-current-Request"></a>
 ## Get data from body of current Request
 
@@ -112,7 +131,7 @@ curl -X PUT http://mymvc.ueffing.local/api/1.0.0/user/1969/ -H "Content-Type: ap
 
 _Command_
 ~~~php
-$sInput = \MVC\Request::getCurrentRequest()->get_input();
+$sInput = \MVC\Request::in()->get_input();
 ~~~
 
 _Example Result_
@@ -122,6 +141,7 @@ _Example Result_
 - As you can see here, `input` contains the values we PUT (`{"key": "value"}`)
 
 ------------------------------------------------------------------------------------------------------------------------
+
 <a id="Accessing-Path-Params-Variables"></a>
 ## Accessing Path Params / Variables
 
@@ -139,17 +159,18 @@ _Example Request_
 
 _Command_
 ~~~php
-$aPathParam = \MVC\Request::getPathParam();
+$aPathParam = \MVC\Request::in()->get_pathParamArray();
 ~~~
 
 _Example Result of `$aPathParam`_
 ~~~
-array(4) {
-  ["id"]=>string(1) "1"
-  ["name"]=>string(3) "Foo"
-  ["address"]=>string(3) "Bar"
-  ["_tail"]=>string(10) "what/else/"
-}
+// type: array, items: 4
+[
+    'id' => '1',
+    'name' => 'Foo',
+    'address' => 'Bar',
+    '_tail' => 'what/else/',
+]
 ~~~
 
 <a id="Get-a-certain-Variable"></a>
@@ -157,7 +178,7 @@ array(4) {
 
 _Command_
 ~~~php
-$sPathParam = \MVC\Request::getPathParam('name')
+$aPathParam = \MVC\Request::in()->get_pathParamArray()['name']
 ~~~
 
 _Example Result of `$sPathParam`_
@@ -181,7 +202,7 @@ _Example Request_
 
 _Command_
 ~~~php
-$sTail = \MVC\Request::getPathParam()['_tail'];
+$sTail = \MVC\Request::in()->get_pathParamArray()['_tail'];
 ~~~
 
 _Result of `$sTail`_
@@ -189,54 +210,138 @@ _Result of `$sTail`_
 bar/baz/
 ~~~
 
-_If you want the Result as an array_
-~~~php
-$aTail = \MVC\Request::getPathArray(
-    \MVC\Request::getPathParam()['_tail']
-);
-~~~
-
-_Result of `$aTail`_
-~~~
-array(2) {
-  [0]=>string(3) "bar"
-  [1]=>string(1) "baz"
-}
-~~~
-
 ------------------------------------------------------------------------------------------------------------------------
+
+<a id="get-path-info"></a>
+## Get Path Info
+
+<a id="Get-path-as-array"></a>
+**Get requested path as array**
+
+say the incoming Request is `https://emvicy2x.ddev.site/imprint/foo/bar/baz`
+
+~~~php
+$aPath = Request::in()->get_pathArray();
+~~~
+
+_Result of `$aPath`_
+~~~
+// type: array, items: 4
+[
+    0 => 'imprint',
+    1 => 'foo',
+    2 => 'bar',
+    3 => 'baz',
+]
+~~~
+
+**Enquiry with any url**
+
+~~~php
+$aPath = RequestHelper::getPathArrayOnUrl('https://www.example.com/Imprint/')
+~~~
+
+_Result of `$aPath`_
+~~~
+// type: array, items: 1
+[
+    0 => 'Imprint',
+]
+~~~
+------------------------------------------------------------------------------------------------------------------------
+
 <a id="Sanitizing"></a>
 ## Sanitizing
 
-You can define rules for sanitizing any `$_GET`, `$_POST`, `$_COOKIE` parameter for a request. 
-
-*sanitizing `$_GET`, `$_POST`, `$_COOKIE`*  
-~~~php 
-\MVC\Request::sanitize('GET', array(
-    // rules for parameter `a`
-    'a' => array(
-        /** @see https://www.regular-expressions.info/unicode.html */
-        'regex' => "/[^\\p{L}\\p{M}\\p{Z}\\p{S}\\p{N}\\p{P}\|']+/u",#
-        'length' => 256,
-    ),
-));
-~~~
-
 _sanitizing input (e.g. `PUT`)_  
 ~~~php 
-$oDTRequestCurrent = \MVC\Request::getCurrentRequest();
+$oDTRequestIn = \MVC\Request::in();
 
 // sanitizing
-$oDTRequestCurrent->set_input(
+$oDTRequestIn->set_input(
     preg_replace(
         // sanitizing by regex rule
         "/[^\\p{L}\\p{M}\\p{Z}\\p{S}\\p{N}\\p{P}\|']+/u",
         '',
         // sanitizing by string length
-        substr($oDTRequestCurrent->get_input(), 0, 256)
+        substr($oDTRequestIn->get_input(), 0, 256)
     )
 );
 
 // sanitized
-$sInput = $oDTRequestCurrent->get_input();
+$sInput = $oDTRequestIn->get_input();  
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="perform-an-outgoing-Request"></a>
+## `out()` - perform an outgoing Request
+
+_perform a local `GET` request on `/api/`_
+~~~php
+/** @var \MVC\DataType\DTResponse $oDTResponse */
+$oDTResponse = Request::out(
+    DTRequestOut::create()
+        ->set_eRequestMethod(EnumRequestMethod::GET)
+        ->set_sUrl('/api/')
+);
+~~~
+
+_Example Response `\MVC\DataType\DTResponse $oDTResponse`_
+~~~
+\MVC\DataType\DTResponse::__set_state(array(
+      'body' => '{"requestMethod":"GET", ...',
+      'raw' => 'HTTP/1.1 200 OK
+          Content-Security-Policy: default-src \'self\'; ...
+          Content-Type: application/json
+          Date: Thu, 06 Feb 2025 13:17:44 GMT
+          Server: Apache/2.4.62 (Debian)
+          Strict-Transport-Security: max-age=63072000
+          X-Content-Security-Policy: default-src \'self\'; ...
+          X-Frame-Options: allow-from \'none\'
+          X-Webkit-Csp: default-src \'self\'; ...
+          X-Xss-Protection: 1; mode=block
+          Connection: close
+          Transfer-Encoding: chunked
+          
+          {"requestMethod":"GET", ...',
+      'headers' =>    array (
+        'content-security-policy' => 'default-src \'self\'; ...',
+        'content-type' => 'application/json',
+        'date' => 'Thu, 06 Feb 2025 13:17:44 GMT',
+        'server' => 'Apache/2.4.62 (Debian)',
+        'strict-transport-security' => 'max-age=63072000',
+        'x-content-security-policy' => 'default-src \'self\'; ...',
+        'x-frame-options' => 'allow-from \'none\'',
+        'x-webkit-csp' => 'default-src \'self\'; ...',
+        'x-xss-protection' => '1; mode=block',
+        'connection' => 'close',
+        'transfer-encoding' => 'chunked',
+    ),
+      'status_code' => 200,
+      'protocol_version' => 1.1,
+      'success' => true,
+      'redirects' => 0,
+      'url' => 'https://emvicy2x.ddev.site/api/',
+      'history' =>    array (
+    ),
+      'cookies' =>    array (
+        'cookies' =>        array (
+        ),
+    ),
+))
+~~~
+
+_perform a remote GET request_
+~~~php
+/** @var \MVC\DataType\DTResponse $oDTResponse */
+$oDTResponse = Request::out(
+    DTRequestOut::create()
+        ->set_eRequestMethod(EnumRequestMethod::GET)
+        ->set_sUrl('https://api.ddev.site/table/address/2/')
+        ->set_aHeader(array(
+            'accept' => Type_Application_json::DESCRIPTION,
+            'apikey' => getenv('apikey')
+        ))
+);
 ~~~

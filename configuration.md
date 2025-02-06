@@ -30,7 +30,7 @@
 
 **Config file**
 
-🛈 configure your settings in a file in the primary module and corresponds to the environment by name: `/modules/Foo/etc/config/Foo/config/develop.php`
+🛈 configure your settings in a file in the primary module and corresponds to the environment by name, e.g.: `/modules/Foo/etc/config/Foo/config/develop.php`
 
 - the configuration file in your primary module always has the last word, as it is read last. Settings made here overwrite all other settings made previously.
 - see: [Creating a primary Module](/2.x/creating-a-module#creating-a-primary-module)

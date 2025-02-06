@@ -28,6 +28,7 @@ _use the following command to create the secondary module `Bar`_
 php emvicy module:create Bar secondary
 ~~~
 
+<!--
 ---
 
 _After creating a primary module, you could start Emvicy's local development server to test the module frontend_
@@ -38,6 +39,7 @@ php emvicy serve
 Call http://127.0.0.1:1969/ and you will see your created module frontend
 
 ![Emvicy Creating a Module](/doc/2.x/getting-started/emvicy-creating-a-module.png)
+-->
 
 ---
 

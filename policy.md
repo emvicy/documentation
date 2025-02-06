@@ -1,6 +1,7 @@
 
 # Policy
 
+- [Quick start](#quick-start)
 - [Enabling Policy Rules](#writing-policy-rules)
   - [Set a single Rule](#set-a-single-rule)
   - [Setting multiple Rules](#setting-multiple-rules)
@@ -14,6 +15,23 @@
   - [Unset multiple Rules](#unset-multiple-rules)
   - [Unbind a Policy Rule from a Route](#unbind-a-policy-rule-from-a-route)
 - [Write methods to be executed by policy](#Write-methods-to-run)
+
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="quick-start"></a>
+## Quick start
+
+~~~php
+\MVC\Policy::set(    
+    '\Foo\Controller\Index',    // <= for this Controller ...    
+    '*',                        // <= ... and any (*) of its method ...
+    array(                      // apply these rules:            
+        '\Foo\Policy\Index::requestMethodHasToMatchRouteMethod',
+    )
+);
+~~~
+- write the commands in a policy file inside your module's policy folder, like `modules/Foo/etc/policy/policy.php`
+- create the Policy Class::method `\Foo\Policy\Index::requestMethodHasToMatchRouteMethod` and write your Policy Logic there
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -245,14 +263,6 @@ module/{module}/Policy/
 _Example: file `module/Foo/Policy/Index.php`_
 ~~~php
 <?php
-/**
- * Index.php
- *
- * @package Emvicy
- * @copyright ueffing.net
- * @author Guido K.B.W. Üffing <info@ueffing.net>
- * @license GNU GENERAL PUBLIC LICENSE Version 3. See application/doc/COPYING
- */
 
 /**
  * @name $FooPolicy
@@ -272,10 +282,11 @@ class Index
      * @return void
      * @throws \ReflectionException
      */
-	public static function requestMethodHasToMatchRouteMethod ()
-	{
+    public static function requestMethodHasToMatchRouteMethod ()
+    {
+        
         $oDTArrayObject = DTArrayObject::create()
-            ->add_aKeyValue(DTKeyValue::create()->set_sKey('sRequestmethod')->set_sValue(\MVC\Request::getCurrentRequest()->get_requestmethod()))
+            ->add_aKeyValue(DTKeyValue::create()->set_sKey('sRequestmethod')->set_sValue(\MVC\Request::in()->get_requestMethod()))
             ->add_aKeyValue(DTKeyValue::create()->set_sKey('aMethodsAssigned')->set_sValue(\MVC\Route::getCurrent()->get_methodsAssigned()))
             ->add_aKeyValue(DTKeyValue::create()->set_sKey('bGrant')->set_sValue(false))
             ->add_aKeyValue(DTKeyValue::create()->set_sKey('sMessage')->set_sValue('access denied'))
@@ -283,7 +294,7 @@ class Index
             ->add_aKeyValue(DTKeyValue::create()->set_sKey('sRedirect')->set_sValue('/404/'))
             ->add_aKeyValue(DTKeyValue::create()->set_sKey('sClosure')->set_sValue(
                 function(\MVC\DataType\DTArrayObject $oDTArrayObject) {
-                    \MVC\Request::redirect($oDTArrayObject->getDTKeyValueByKey('sRedirect')->get_sValue());
+                    \MVC\RequestHelper::redirect($oDTArrayObject->getDTKeyValueByKey('sRedirect')->get_sValue());
                 }
             ))
         ;
@@ -291,10 +302,10 @@ class Index
         // grant access
         if (
             // Route is of type ANY
-            '*' === \MVC\Route::getCurrent()->get_method()
+            '*' === \MVC\Route::getCurrent()->get_requestMethod()
             OR
             // Request and Route methods do match
-            true === in_array(\MVC\Request::getCurrentRequest()->get_requestmethod(), \MVC\Route::getCurrent()->get_methodsAssigned(), true)
+            true === in_array(\MVC\Request::in()->get_requestMethod(), \MVC\Route::getCurrent()->get_methodsAssigned(), true)
         )
         {
             $oDTArrayObject->setDTKeyValueByKey(DTKeyValue::create()->set_sKey('bGrant')->set_sValue(true));
@@ -309,6 +320,7 @@ class Index
         {
             call_user_func($oDTArrayObject->getDTKeyValueByKey('sClosure')->get_sValue(), $oDTArrayObject);
         }
-	}
+    }
 }
+
 ~~~

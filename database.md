@@ -4,8 +4,8 @@
 - [1. Credentials](#1)
 - [2. Creation](#2)
     - [2.1. Create DB Config](#2-1)
-    - [2.2. Creating a concrete Table Class](#2-2)
-    - [2.3. Creating a DBInit class that is used for each DB access](#2-3)
+    - [2.2. DBInit class](#2-2)
+    - [2.3. Table Class](#2-3)
     - [2.4. Let generate an openapi yaml schema file for data type classes](#2-4)
 - [3. Usage](#3)
     - [3.1. create](#3-1)
@@ -39,7 +39,7 @@ MVC_ENV=develop
 db.type=mysql
 db.host=127.0.0.1
 db.port=3306
-db.dbname=Emvicy1x
+db.dbname=Emvicy2x
 db.username=root
 db.password=
 ~~~
@@ -111,128 +111,14 @@ $aConfig['MODULE']['Foo']['DB'] = array(
 );
 ~~~
 
----
+------------------------------------------------------------------------------------------------------------------------
 
-<a id="2-2"></a> 
-### 2.2. Creating a concrete Table Class
+<a id="2-2"></a>
+### 2.2. DBInit class
 
-_PHP Class_
-as a Representation of the DB Table
+class that is used for each DB access
 
-
-_file: `modules/Foo/Model/Table/User.php`_
-~~~php
-<?php
-
-namespace Foo\Model\Table;
-
-use MVC\DB\DataType\DB\Foreign;
-use MVC\DB\Model\Db;
-
-class User extends Db
-{
-    /**
-     * @var array
-     */
-    protected $aField = array();
-
-    /**
-     * @param array $aDbConfig
-     * @throws \ReflectionException
-     */
-    public function __construct(array $aDbConfig = array())
-    {
-        $this->aField = array(
-            'email'     => 'varchar(255)    COLLATE utf8_general_ci NOT NULL UNIQUE',
-            'active'    => "int(1)          DEFAULT '0'             NOT NULL",
-            'uuid'      => "varchar(36)     COLLATE utf8_general_ci NOT NULL UNIQUE COMMENT 'uuid permanent'",
-            'uuidtmp'   => "varchar(36)     COLLATE utf8_general_ci NOT NULL UNIQUE COMMENT 'uuid; changes on create|login'",
-            'password'  => 'varchar(60)     COLLATE utf8_general_ci NOT NULL',
-            'nickname'  => "varchar(10)     COLLATE utf8_general_ci NOT NULL",
-            'forename'  => "varchar(25)     COLLATE utf8_general_ci NOT NULL",
-            'lastname'  => "varchar(25)     COLLATE utf8_general_ci NOT NULL",
-        );
-
-        // basic creation of the table
-        parent::__construct(
-            $this->aField,
-            $aDbConfig
-        );
-    }
-}
-~~~
-
-- creates the Table `FooModelTableUser`
-    - Table has several fields from `email` ... `lastname` as declared in property `$aField`
-        - 🛈 The Table fields `id`, `stampChange` and `stampCreate` are added automatically
-        - do not add these fields by manually
-- generates a DataType Class `\Foo\DataType\DTFooModelTableUser` in `modules/Foo/DataType/`
-
----
-
-**Creating a Table and adding a Foreign Key**
-
-
-_file: `modules/Foo/Model/Table/User.php`_
-~~~php
-<?php
-
-namespace Foo\Model\Table;
-
-use MVC\DB\DataType\DB\Foreign;
-use MVC\DB\Model\Db;
-
-class User extends Db
-{
-    /**
-     * @var array
-     */
-    protected $aField = array();
-
-    /**
-     * @param array $aDbConfig
-     * @throws \ReflectionException
-     */
-    public function __construct(array $aDbConfig = array())
-    {
-        $this->aField = array(
-            'email'     => 'varchar(255)    COLLATE utf8_general_ci NOT NULL UNIQUE',
-            'active'    => "int(1)          DEFAULT '0'             NOT NULL",
-            'uuid'      => "varchar(36)     COLLATE utf8_general_ci NOT NULL UNIQUE COMMENT 'uuid permanent'",
-            'uuidtmp'   => "varchar(36)     COLLATE utf8_general_ci NOT NULL UNIQUE COMMENT 'uuid; changes on create|login'",
-            'password'  => 'varchar(60)     COLLATE utf8_general_ci NOT NULL',
-            'nickname'  => "varchar(10)     COLLATE utf8_general_ci NOT NULL",
-            'forename'  => "varchar(25)     COLLATE utf8_general_ci NOT NULL",
-            'lastname'  => "varchar(25)     COLLATE utf8_general_ci NOT NULL",
-        );
-
-        // basic creation of the table
-        parent::__construct(
-            $this->aField,
-            $aDbConfig
-        );
-        $this->setForeignKey(
-            Foreign::create()
-                ->set_sForeignKey('id_TableGroup')
-                ->set_sReferenceTable('FooModelTableGroup')
-        );
-    }
-}
-~~~
-
-- creates the Table `FooModelTableUser`
-    - Table has several fields from `email` ... `lastname` as declared in property `$aField`
-        - 🛈 The Table fields `id`, `stampChange` and `stampCreate` are added automatically
-        - do not add these fields by manually
-- The foreign key `id_TableGroup` -pointing to table `FooModelTableGroup`- is added by method `set_sForeignKey()`
-- generates a DataType Class `\Foo\DataType\DTFooModelTableUser` in `modules/Foo/DataType/`
-
----
-
-<a id="2-3"></a> 
-### 2.3. Creating a DBInit class that is used for each DB access
-
-_example: `modules/Foo/Model/DB.php`_  
+_example: `modules/Foo/Model/DB.php`_
 ~~~php
 <?php
 
@@ -241,8 +127,8 @@ _example: `modules/Foo/Model/DB.php`_
  * - add a doctype to each static property
  * - these doctypes must contain the vartype information about the certain class
  * @example
- *      @var Foo\Model\TableUser
- *      public static $oFooModelTableUser;
+ *      @var Foo\Model\Table\Example
+ *      public static $oFooModelTableExample;
  * ---
  * [!]  it is important to declare the vartype expanded with a full path
  *      avoid to make use of `use ...` support
@@ -251,21 +137,135 @@ _example: `modules/Foo/Model/DB.php`_
 
 namespace Foo\Model;
 
-use DB\Model\DbInit;
-use DB\Trait\DbInitTrait;
+use MVC\DB\Model\DbInit;
+use MVC\DB\Trait\DbInitTrait;
 
+/**
+ * DB
+ */
 class DB extends DbInit
 {
     use DbInitTrait;
-    
-    /**
-     * @var \Foo\Model\TableUser
+
+    /*
+     * To instantiate all DTTables:
+     * It is sufficient to init this class once: `\Foo\Model\DB::init()`
      */
-    public static $oFooModelTableUser;
+
+    /**
+     * @var \App\Table\Queue
+     */
+    public $oAppTableQueue {get => $this->activate(__PROPERTY__);}
+
+    /**
+     * @var \App\Table\User
+     */
+    public $oAppTableUser {get => $this->activate(__PROPERTY__);}
+
+    /**
+     * @var \App\Table\Group
+     */
+    public $oAppTableGroup {get => $this->activate(__PROPERTY__);}
+}
+
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="2-3"></a> 
+### 2.3. Table Class
+
+_creates DB Table `Bar` in the given module `Foo`._  
+~~~bash
+php emvicy db:createTable Bar Foo
+~~~
+- creates the Table `Bar` (`modules/Foo/Model/Table/Bar.php`)
+- 🛈 The Table fields `id`, `stampChange` and `stampCreate` are always added automatically
+
+implement the Table Class into your DB init class by adding these lines:
+
+~~~php
+/**
+ * @var \Foo\Model\Table\Bar
+ */
+public $oFooModelTableBar {get => $this->activate(__PROPERTY__);}
+~~~
+
+use this command to access the table:
+
+~~~php
+DB::use()->oFooModelTableBar
+~~~
+
+_The created DB Table class file: `modules/Foo/Model/Table/Bar.php`_
+~~~php
+<?php
+
+namespace Foo\Model\Table;
+
+use MVC\DB\Model\Db;
+use MVC\DataType\DTDBWhere;
+use MVC\DataType\DTDBOption;
+use MVC\DataType\DTDBWhereRelation;
+use MVC\DB\Trait\DbInitTrait;
+
+class Bar extends Db
+{
+    use DbInitTrait;
+
+    /**
+     * @var array
+     */
+    protected $aField = array(
+        'uuid'          => "varchar(36)     NOT NULL DEFAULT uuid() COMMENT 'uuid'",
+        "name"          => "varchar(255)    NOT NULL DEFAULT '' COMMENT 'Name'",
+        "description"   => "text            NOT NULL DEFAULT '' COMMENT 'Description'",
+    );
+
+    /**
+     * @param array $aDbConfig
+     * @throws \ReflectionException
+     */
+    public function __construct(array $aDbConfig = array())
+    {
+        parent::__construct(
+            $this->aField,
+            $aDbConfig
+        );
+    }
 }
 ~~~
 
----
+------------------------------------------------------------------------------------------------------------------------
+
+**adding a Foreign Key**
+
+_file: `modules/Foo/Model/Table/Bar.php`_
+~~~php
+/**
+ * @param array $aDbConfig
+ * @throws \ReflectionException
+ */
+public function __construct(array $aDbConfig = array())
+{
+    parent::__construct(
+        $this->aField,
+        $aDbConfig
+    );
+    
+    $this->setForeignKey(
+        Foreign::create()
+            ->set_sForeignKey('id_AppTableGroup')
+            ->set_sReferenceTable('AppTableGroup')
+            ->set_sOnDelete(Foreign::DELETE_CASCADE)
+            ->set_sComment('Group')
+    );      
+}
+~~~
+- The foreign key `id_AppTableGroup` -pointing to table `AppTableGroup`- is added by method `set_sForeignKey()`
+
+------------------------------------------------------------------------------------------------------------------------
+
 
 <a id="2-4"></a>  
 ### 2.4. Let generate an openapi yaml schema file for data type classes

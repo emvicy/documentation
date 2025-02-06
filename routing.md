@@ -1,13 +1,13 @@
 
 # Routing
 
+- [Quick start](#quick-start)
 - [Creating a Route](#Creating-a-Route)
     - [Routing files](#Routing-files)
     - [Writing a Route](#writing-a-Route)
       - [Standard RESTful Request Methods](#Standard-RESTful-Request-Methods)
       - [Any Request Method](#Any-Request-Method")
       - [Mixed Request Methods](#Mixed-Request-Methods)
-    - [Naming the target controller](#Naming-the-target-controller)
     - [Adding additional context information to route](#adding-additional-context-information-to-route)
     - [Placeholder routing](#wildcard-routing)
     - [Routing with Path Params / Variables](#path-params)
@@ -18,11 +18,28 @@
     - [Get a route](#Get-a-route)
         - [Get current route](#Get-current-route)
         - [Get any route](#Get-any-route)
+        - [Get a Route on Tag](#Get-route-on-tag)
     - [Accessing additional context information](#Accessing-additional-context-information)
         - [Get the additional context information of the current route](#Get-the-additional-context-information-of-the-current-route)
         - [Get the additional context information of _any_ route](#Get-the-additional-context-information-of-any-route)
 
----
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="quick-start"></a>
+## Quick start
+
+~~~php
+\MVC\Route::get     ('/', '\Foo\Controller\Index::index');                      // expecting GET
+\MVC\Route::post    ('/', '\Foo\Controller\Index::index');                      // expecting POST
+\MVC\Route::put     ('/', '\Foo\Controller\Index::index');                      // expecting PUT
+\MVC\Route::delete  ('/', '\Foo\Controller\Index::index');                      // expecting DELETE
+
+\MVC\Route::any     ('/', '\Foo\Controller\Index::index');                      // be open for any request method
+\MVC\Route::mix     (['GET', 'POST'], '/',    '\Foo\Controller\Index::index');  // expecting GET or POST
+~~~
+- write the commands in a routing file inside your module's routing folder, like `modules/Foo/etc/routing/frontend.php`
+
+------------------------------------------------------------------------------------------------------------------------
 
 <a id="Creating-a-Route"></a>
 ## Creating a Route
@@ -49,27 +66,14 @@ modules/Foo/etc/routing/
 ~~~
 
 _individual routing files_  
-you can create you own `*.php` routing file, for example `foo.php` and edit your route in that file.
+you can create you own `*.php` routing file, for example `service.php` and edit your routes in that file.
 
 If you want to create routes for an API, it then makes sense to create a file called `api.php` and write all your api routes inside that file.
 
-<br>
+------------------------------------------------------------------------------------------------------------------------
 
 <a id="writing-a-Route"></a>
 ### Writing a Route
-
-_TLDR; Examples_  
-~~~php
-\MVC\Route::get     ('/', '\Foo\Controller\Index::index'); // expecting GET
-\MVC\Route::post    ('/', '\Foo\Controller\Index::index'); // expecting POST
-\MVC\Route::put     ('/', '\Foo\Controller\Index::index'); // expecting PUT
-\MVC\Route::delete  ('/', '\Foo\Controller\Index::index'); // expecting DELETE
-
-\MVC\Route::any     ('/', '\Foo\Controller\Index::index');  // be open for any request method
-\MVC\Route::mix     (['GET', 'POST'], '/',    '\Foo\Controller\Index::index'); // expecting GET or POST
-~~~
-
-<br>
 
 <a id="Standard-RESTful-Request-Methods"></a>
 **Standard RESTful Request Methods**
@@ -80,17 +84,16 @@ _You declare a route with Command `\MVC\Route`:_
 ~~~
 - `{METHOD}`: one of the RESTful request methods `GET`, `POST`, `PUT`, `DELETE`; you declare which RESTful request method is expected for this route
 - `path`: url path
-- `targetController`: the `Module`, `Controller` and `method` the route leads to
+- `targetController`: the `Module`, `Controller` and `method` the route leads to - ⚠ Requirement: It has to be an [Emvicy Controller](/2.x/controller).
 - `additionalInformation` [optional]: any information you may need to process in your target controller (or elsewhere). You can pass string, array, object, bool or whatever you like.
 
 _Example_  
 ~~~php
 \MVC\Route::get('/foo/', '\Foo\Controller\Index::index');
 ~~~
-
-Assuming you are running Emvicy's local development server, you can then call the url `http://127.0.0.1:1969/foo/`
-
-<br>
+- request method here is `GET`
+- path is `/foo/`
+- targetController: leads to Class::method `\Foo\Controller\Index::index`
 
 <a id="Any-Request-Method"></a>
 **Any Request Method**
@@ -108,39 +111,7 @@ _Assign more than one request method to the route with `MIX`_
 \MVC\Route::mix(['GET', 'POST'], '/foo/', '\Foo\Controller\Index::index');
 ~~~
 
-<br>
-
-<a id="Naming-the-target-controller"></a>
-### Naming the target controller
-
-<!--
-You can name the target controller in two ways.
-
-**query notation**
-
-historically conditioned you can still name it with the Emvicy's query notation
-
-~~~php
-\MVC\Route::get('/foo/', 'module=Foo&c=Index&m=index');
-~~~
-- request method here is `GET`
-- path is `/foo/`
-- targetController: leads to => Module `Foo` (module), Controller `Index` (c), Method `index` (m) => (which is Class::method `\Foo\Controller\Index::index`)
- 
-**controller::method notation**
--->
-
-You name the target controller and method info by its class and method names itself.  
-⚠ Requirement: It has to be a MVC Controller.
-
-~~~php
-\MVC\Route::get('/foo/', '\Foo\Controller\Index::index');
-~~~
-- request method here is `GET`
-- path is `/foo/`
-- targetController: leads to Class::method `\Foo\Controller\Index::index`
-
-<br>
+------------------------------------------------------------------------------------------------------------------------
 
 <a id="adding-additional-context-information-to-route"></a>
 ### Adding additional context information to route
@@ -179,8 +150,6 @@ $oDTRoutingAdditional = Route::getCurrent()->get_additional()
 
 see also: [Accessing additional context information](#Accessing-additional-context-information)
 
-<br>
-
 **More complex Example**
 
 In the example `frontend.php` you see a DataType Class `$oDTRoutingAdditional` of Type `\Foo\DataType\DTRoutingAdditional`.
@@ -191,13 +160,7 @@ _Example object DTRoutingAdditional_
 ~~~php
 $oDTRoutingAdditional = \Foo\DataType\DTRoutingAdditional::create()
     ->set_sTitle('Foo')
-    ->set_sLayout('Frontend/layout/index.tpl')
-    ->set_sMainmenu('Frontend/layout/menu.tpl')
-    ->set_sContent('Frontend/content/index.tpl')
-    ->set_sHeader('Frontend/layout/header.tpl')
-    ->set_sNoscript('Frontend/content/_noscript.tpl')
-    ->set_sCookieConsent('Frontend/content/_cookieConsent.tpl')
-    ->set_sFooter('Frontend/layout/footer.tpl')
+    ->set_sTemplate('Frontend/content/index.tpl')
     ->set_aStyle(array (
         '/Emvicy/assets/bootstrap-4.6.2-dist/css/bootstrap.min.css',
         '/Emvicy/assets/font-awesome-4.7.0/css/font-awesome.min.css',
@@ -211,7 +174,7 @@ $oDTRoutingAdditional = \Foo\DataType\DTRoutingAdditional::create()
     ));
 ~~~
 
-_Example routes using `$oDTRoutingAdditional`_
+_Examples routes with `$oDTRoutingAdditional`_
 ~~~php
 /*
  * Routes
@@ -231,7 +194,7 @@ _Example routes using `$oDTRoutingAdditional`_
 );
 ~~~
 
-<br>
+------------------------------------------------------------------------------------------------------------------------
 
 <a id="wildcard-routing"></a>
 ### Placeholder routing
@@ -262,7 +225,7 @@ now you can call the route with further paths
 You can get the tailing path after `/foo/` by accessing Path Params _tail.
 
 ~~~php
-$aPathParam = \MVC\Request::getPathParam()['_tail'];
+$aPathParam = \MVC\Request::in()->get_pathParamArray()['_tail'];
 ~~~
 
 this will give you
@@ -273,7 +236,7 @@ bar/baz/
 
 - see `Request`: [Accessing Path Params / Variables](/2.x/request#Accessing-Path-Params-Variables)
 
-<br>
+------------------------------------------------------------------------------------------------------------------------
 
 <a id="path-params"></a>
 ### Routing with Path Params / Variables
@@ -311,15 +274,52 @@ Valid Requests:
 _Access the Variables_  
 - see `Request`: [Accessing Path Params / Variables](/2.x/request#Accessing-Path-Params-Variables)
 
----
-
-<br>
+------------------------------------------------------------------------------------------------------------------------
 
 <a id="Working-with-Routes"></a>
 ## Working with Routes
 
 <a id="Get-all-routes"></a>
 ### Get all routes
+
+**using emvicy cli command** 
+
+_lists available routes in a markdown table_  
+~~~bash
+php emvicy routes:list
+~~~
+
+_Example Result_  
+
+~~~
+# Route List
+
+| No  | Method  | Methods assigned            | Route                           | Target                                                    | Tag                             |
+|-----|---------|-----------------------------|---------------------------------|-----------------------------------------------------------|---------------------------------|
+| 1   | GET     | GET                         | /                               | \Foo\Controller\Index::index                              | home                            |
+| 2   | *       | *                           | /403/                           | \Foo\Controller\Index::forbidden                          | 403                             |
+| 3   | *       | *                           | /404/                           | \Foo\Controller\Index::notFound                           | 404                             |
+| 4   | *       | *                           | /api/                           | \Foo\Controller\Api\Api::index                            | any-api                         |
+| 5   | *       | *                           | /download/                      | \Foo\Controller\Api\Api::download                         | any-download                    |
+| 6   | GET     | GET                         | /imprint/                       | \Foo\Controller\Index::index                              | imprint                         |
+| 7   | GET     | GET                         | /info/                          | \Foo\Controller\Index::phpinfo                            | info                            |
+| 8   | GET     | GET                         | /privacy-policy/                | \Foo\Controller\Index::index                              | privacyPolicy                   |
+| 9   | GET     | GET                         | /user/                          | \Foo\Controller\Index::user                               | user                            |
+| 10  | GET     | GET                         | /ws/pushtest/                   | \Ws\Controller\Ws::pushtest                               | WsPushTest                      |
+| 11  | GET     | GET                         | /ws/serve/                      | \Ws\Controller\Ws::serve                                  | WsServe                         |
+| 12  | GET     | GET                         | /~/cron/run                     | \App\Controller\Cron::run                                 | get-cron-run                    |
+| 13  | GET     | GET                         | /~/queue/run                    | \App\Controller\Queue::run                                | get-queue-run                   |
+| 14  | GET     | GET                         | /~/queue/worker/Dummy::do/*     | \App\Controller\Queue::workerAutoRouteResolve             | get-queue-worker-dummy-do       |
+| 15  | GET     | GET                         | /~/queue/worker/Email::new/*    | \App\Controller\Queue::workerAutoRouteResolve             | get-queue-worker-email-new      |
+~~~
+
+Available commands for the "routes" namespace:
+
+- routes:array  [rt] `php emvicy routes:array` => lists available routes as array/var_export
+- routes:json   [rtj] `php emvicy routes:json` => lists available routes in JSON format
+- routes:list   [rtl] `php emvicy routes:list` => lists available routes in a markdown table
+
+---
 
 <a id="get-routes-array"></a>
 **Get routes array**
@@ -334,25 +334,32 @@ $aRoute = Route::$aRoute;
 
 _Example Result of `$aRoute` (shortened)_
 ~~~
-array(2) {
-  ["/"]=>
-  object(MVC\DataType\DTRoute)#15 (9) {
-    ["path":protected]=>string(1) "/"
-    ["method":protected]=>string(3) "GET"
-    ["methodsAssigned":protected]=>array(1) {[0]=> string(3) "GET"}
-    ["query":protected]=>string(30) "module=Foo&c=Index&m=index"
-    ["class":protected]=>string(24) "Foo\Controller\Index"
-    ["classFile":protected]=>string(128) "/var/www/Emvicy/modules/Foo/Controller/Index.php"
-    ["module":protected]=>string(7) "Foo"
-    ["c":protected]=>string(5) "Index"
-    ["m":protected]=>string(5) "index"
-    ["additional":protected]=>string(733) "{"sTitle":"Foo","sLayout":"Frontend\/layout\/index.tpl","sMainmenu":"Frontend\/layout\/menu.tpl","sContent":"Frontend\/content\/index.tpl","sHeader":"Frontend\/layout\/header.tpl","sNoscript":"Frontend\/content\/_noscript.tpl","sCookieConsent":"Frontend\/content\/_cookieConsent.tpl","sFooter":"Frontend\/layout\/footer.tpl","aStyle":["\/Emvicy\/assets\/bootstrap-4.6.2-dist\/css\/bootstrap.min.css","\/Emvicy\/assets\/font-awesome-4.7.0\/css\/font-awesome.min.css","\/Emvicy\/styles\/Emvicy.min.css"],"aScript":["\/Emvicy\/assets\/jquery\/3.4.1\/jquery-3.4.1.min.js","\/Emvicy\/assets\/jquery-cookie\/1.4.1\/jquery.cookie.min.js","\/Emvicy\/assets\/bootstrap-4.6.2-dist\/js\/bootstrap.min.js","\/Emvicy\/scripts\/cookieConsent.min.js"]}"
-  }
-  ["/404/"]=>
-  object(MVC\DataType\DTRoute)#17 (9) {
-   ...
- }
-}
+// type: array, items: 15
+[
+    '/' => [
+        \MVC\DataType\DTRoute::__set_state(array(
+              'path' => '/',
+              'requestMethod' => 'GET',
+              'methodsAssigned' => [
+                0 => 'GET',
+            ],
+              'query' => '\\Foo\\Controller\\Index::index',
+              'module' => 'Foo',
+              'class' => '\\Foo\\Controller\\Index',
+              'classFile' => '/var/www/html/modules/Foo/Controller/Index.php',
+              'method' => 'index',
+              'additional' => [
+                \Foo\DataType\DTRoutingAdditional::__set_state(array( 
+                    … 
+                ))
+              ],
+              'tag' => 'home',
+        )],
+    '/user/' => [ 
+        … 
+    ],
+    …        
+]
 ~~~
 
 <a id="get-array-stacked-by-request-methods"></a>
@@ -367,17 +374,25 @@ $aMethod = Route::$aMethod;
 
 _Example Result of `$aMethod`_
 ~~~
-array(2) {
-  ["put"]=>array(1) {
-    [0]=>string(20) "/api/1.0.0/user/:id/"
-  }
-  ["get"]=>array(3) {
-    [0]=>string(1) "/"
-    [1]=>string(5) "/404/"
-    [2]=>string(25) "/api/:id/:name/:address/*"
-  }
-}
+// type: array, items: 2
+[
+    'get' => [
+        0 => '/',
+        1 => '/user/',
+        2 => '/imprint/*',
+        3 => '/privacy-policy/',
+        4 => '/info/',
+    ],
+    '*' => [
+        0 => '/403/',
+        1 => '/404/',
+        2 => '/api/',
+        3 => '/download/',
+    ],
+]
 ~~~
+
+------------------------------------------------------------------------------------------------------------------------
 
 <a id="Get-a-route"></a>
 ### Get a route
@@ -397,18 +412,43 @@ $oDTRoute = \MVC\Route::getCurrent();
 
 _Example Result of `$oDTRoute`_
 ~~~
-object(MVC\DataType\DTRoute)#19 (9) {
-  ["path":protected]=>string(25) "/api/:id/:name/:address/*"
-  ["method":protected]=>string(3) "GET"
-  ["methodsAssigned":protected]=>array(1) {[0]=>string(3) "GET"}
-  ["query":protected]=>string(30) "module=Foo&c=Api&m=index"
-  ["class":protected]=>string(24) "Foo\Controller\Api"
-  ["classFile":protected]=>string(128) "/var/www/Emvicy/modules/Foo/Controller/Api.php"
-  ["module":protected]=>string(7) "Foo"
-  ["c":protected]=>string(5) "Index"
-  ["m":protected]=>string(5) "index"
-  ["additional":protected]=>string(727) "{"sTitle":"API","sLayout":"Frontend\/layout\/index.tpl","sMainmenu":"Frontend\/layout\/menu.tpl","sContent":"Frontend\/content\/foo.tpl","sHeader":"Frontend\/layout\/header.tpl","sNoscript":"Frontend\/content\/_noscript.tpl","sCookieConsent":"Frontend\/content\/_cookieConsent.tpl","sFooter":"Frontend\/layout\/footer.tpl","aStyle":["\/Emvicy\/assets\/bootstrap-4.6.2-dist\/css\/bootstrap.min.css","\/Emvicy\/assets\/font-awesome-4.7.0\/css\/font-awesome.min.css","\/Emvicy\/styles\/Emvicy.min.css"],"aScript":["\/Emvicy\/assets\/jquery\/3.4.1\/jquery-3.4.1.min.js","\/Emvicy\/assets\/jquery-cookie\/1.4.1\/jquery.cookie.min.js","\/Emvicy\/assets\/bootstrap-4.6.2-dist\/js\/bootstrap.min.js","\/Emvicy\/scripts\/cookieConsent.min.js"]}"
-}
+// type: object
+\MVC\DataType\DTRoute::__set_state(array(
+      'path' => '/imprint/',
+      'requestMethod' => 'GET',
+      'methodsAssigned' =>    array (
+        0 => 'GET',
+    ),
+      'query' => '\\Foo\\Controller\\Index::index',
+      'module' => 'Foo',
+      'class' => '\\Foo\\Controller\\Index',
+      'classFile' => '/var/www/html/modules/Foo/Controller/Index.php',
+      'method' => 'index',
+      'additional' =>    \Foo\DataType\DTRoutingAdditional::__set_state(array(
+          'sTitle' => 'Imprint',
+          'sTemplate' => 'Frontend/content/imprint.tpl',
+          'sContent' => '',
+          'aStyle' =>        array (
+            0 => '/Emvicy/assets/bootstrap-5.3.3-dist/css/bootstrap.min.css',
+            1 => '/Emvicy/assets/fontawesome-free-6.7.2-web/css/all.min.css',
+            2 => '/Emvicy/styles/Emvicy.min.css',
+            3 => '/Ws_old/assets/pnotify.min.css',
+            4 => '/Ws_old/assets/pnotify.brighttheme.min.css',
+        ),
+          'aScript' =>        array (
+            0 => '/Emvicy/assets/jquery-3.7.1/jquery-3.7.1.min.js',
+            1 => '/Emvicy/assets/jquery-cookie-1.4.1/jquery.cookie.min.js',
+            2 => '/Emvicy/assets/popper-v2.11.8/popper.min.js',
+            3 => '/Emvicy/assets/bootstrap-5.3.3-dist/js/bootstrap.min.js',
+            4 => '/Emvicy/scripts/cookieConsent.min.js',
+            5 => '/Ws_old/assets/pnotify.min.js',
+            6 => '/Ws_old/assets/pnotify.desktop.min.js',
+            7 => '/Ws_old/scripts/pnotify.min.js',
+            8 => '/Ws/scripts/wss.domain.port.min.js',
+        ),
+    )),
+      'tag' => 'imprint',
+))
 ~~~
 
 As the Result is an object of type `MVC\DataType\DTRoute` you can access all its properties by getter.
@@ -420,11 +460,13 @@ $sClass = \MVC\Route::getCurrent()->get_methodsAssigned();
 
 _Example Result of `$sClass`_  
 ~~~
-array(1) {
-  [0]=>
-  string(3) "GET"
-}
+// type: array, items: 1
+[
+    0 => 'GET',
+]
 ~~~
+
+------------------------------------------------------------------------------------------------------------------------
 
 <a id="Get-any-route"></a>
 #### Get any route
@@ -434,37 +476,71 @@ you can get any route object by accessing public `$aRoute` from class `Route`.
 _Command_
 ~~~php
 // we want the route object of route /404/
-$oRoute = \MVC\Route::$aRoute['/404/'];
+$oRoute = \MVC\Route::$aRoute['/api/'];
 ~~~
 
 _Example Result of `$oRoute`_  
 ~~~
-object(MVC\DataType\DTRoute)#17 (9) {
-  ["path":protected]=>string(5) "/404/"
-  ["method":protected]=>string(3) "GET"
-  ["methodsAssigned":protected]=>array(1) {[0]=>string(3) "GET"}  
-  ["query":protected]=>string(33) "module=Foo&c=Index&m=notFound"
-  ["class":protected]=>string(24) "Foo\Controller\Index"
-  ["classFile":protected]=>string(128) "/var/www/Emvicy/modules/Foo/Controller/Index.php"
-  ["module":protected]=>string(7) "Foo"
-  ["c":protected]=>string(5) "Index"
-  ["m":protected]=>string(8) "notFound"
-  ["additional":protected]=>string(727) "{"sTitle":"404","sLayout":"Frontend\/layout\/index.tpl","sMainmenu":"Frontend\/layout\/menu.tpl","sContent":"Frontend\/content\/404.tpl","sHeader":"Frontend\/layout\/header.tpl","sNoscript":"Frontend\/content\/_noscript.tpl","sCookieConsent":"Frontend\/content\/_cookieConsent.tpl","sFooter":"Frontend\/layout\/footer.tpl","aStyle":["\/Emvicy\/assets\/bootstrap-4.6.2-dist\/css\/bootstrap.min.css","\/Emvicy\/assets\/font-awesome-4.7.0\/css\/font-awesome.min.css","\/Emvicy\/styles\/Emvicy.min.css"],"aScript":["\/Emvicy\/assets\/jquery\/3.4.1\/jquery-3.4.1.min.js","\/Emvicy\/assets\/jquery-cookie\/1.4.1\/jquery.cookie.min.js","\/Emvicy\/assets\/bootstrap-4.6.2-dist\/js\/bootstrap.min.js","\/Emvicy\/scripts\/cookieConsent.min.js"]}"
-}
+// type: object
+\MVC\DataType\DTRoute::__set_state(array(
+      'path' => '/api/',
+      'requestMethod' => '*',
+      'methodsAssigned' =>    array (
+        0 => '*',
+    ),
+      'query' => '\\Foo\\Controller\\Api\\Api::index',
+      'module' => 'Foo',
+      'class' => '\\Foo\\Controller\\Api\\Api',
+      'classFile' => '/var/www/html/modules/Foo/Controller/Api/Api.php',
+      'method' => 'index',
+      'additional' => NULL,
+      'tag' => 'any-api',
+))
 ~~~
 
 As the Result is an object of type `MVC\DataType\DTRoute` you can access all its properties by getter.
 
 _Example_  
 ~~~php
-$sClass = \MVC\Route::$aRoute['/404/']->get_class();
+$sClass = \MVC\Route::$aRoute['/api/']->get_class();
 ~~~
 
 _Example Result of `$sClass`_  
 ~~~
-Foo\Controller\Index
+// type: string
+'\\Foo\\Controller\\Api\\Api'
 ~~~
 
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="Get-route-on-tag"></a>
+#### Get a Route on Tag
+
+_Command_
+~~~bash
+Route::getOnTag('any-download')
+~~~
+
+_Example Result_  
+~~~
+// type: object
+\MVC\DataType\DTRoute::__set_state(array(
+      'path' => '/download/',
+      'requestMethod' => '*',
+      'methodsAssigned' =>    array (
+        0 => '*',
+    ),
+      'query' => '\\Foo\\Controller\\Api\\Api::download',
+      'module' => 'Foo',
+      'class' => '\\Foo\\Controller\\Api\\Api',
+      'classFile' => '/var/www/html/modules/Foo/Controller/Api/Api.php',
+      'method' => 'download',
+      'additional' => NULL,
+      'tag' => 'any-download',
+))
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
 
 <a id="Accessing-additional-context-information"></a>
 ### Accessing additional context information
@@ -482,24 +558,20 @@ _Example Result of `$oDTRoutingAdditional`_
 ~~~
 // type: object
 \Foo\DataType\DTRoutingAdditional::__set_state(array(
-      'sTitle' => 'Foo',
-      'sLayout' => 'Frontend/layout/index.tpl',
-      'sMainmenu' => 'Frontend/layout/menu.tpl',
-      'sContent' => 'Frontend/content/index.tpl',
-      'sHeader' => 'Frontend/layout/header.tpl',
-      'sNoscript' => 'Frontend/content/_noscript.tpl',
-      'sCookieConsent' => 'Frontend/content/_cookieConsent.tpl',
-      'sFooter' => 'Frontend/layout/footer.tpl',
+      'sTitle' => 'Home',
+      'sTemplate' => 'Frontend/content/index.tpl',
+      'sContent' => '',
       'aStyle' =>    array (
-        0 => '/Emvicy/assets/bootstrap-5.3.2-dist/css/bootstrap.min.css',
-        1 => '/Emvicy/assets/fontawesome-free-6.4.2-web/css/all.min.css',
+        0 => '/Emvicy/assets/bootstrap-5.3.3-dist/css/bootstrap.min.css',
+        1 => '/Emvicy/assets/fontawesome-free-6.7.2-web/css/all.min.css',
         2 => '/Emvicy/styles/Emvicy.min.css',
     ),
       'aScript' =>    array (
         0 => '/Emvicy/assets/jquery-3.7.1/jquery-3.7.1.min.js',
         1 => '/Emvicy/assets/jquery-cookie-1.4.1/jquery.cookie.min.js',
-        2 => '/Emvicy/assets/bootstrap-5.3.2-dist/js/bootstrap.min.js',
-        3 => '/Emvicy/scripts/cookieConsent.min.js',
+        2 => '/Emvicy/assets/popper-v2.11.8/popper.min.js',
+        3 => '/Emvicy/assets/bootstrap-5.3.3-dist/js/bootstrap.min.js',
+        4 => '/Emvicy/scripts/cookieConsent.min.js',
     ),
 ))
 ~~~
@@ -520,23 +592,19 @@ _Example Result of `$oDTRoutingAdditional`_
 // type: object
 \Foo\DataType\DTRoutingAdditional::__set_state(array(
       'sTitle' => '404',
-      'sLayout' => 'Frontend/layout/index.tpl',
-      'sMainmenu' => 'Frontend/layout/menu.tpl',
-      'sContent' => 'Frontend/content/404.tpl',
-      'sHeader' => 'Frontend/layout/header.tpl',
-      'sNoscript' => 'Frontend/content/_noscript.tpl',
-      'sCookieConsent' => 'Frontend/content/_cookieConsent.tpl',
-      'sFooter' => 'Frontend/layout/footer.tpl',
+      'sTemplate' => 'Frontend/content/404.tpl',
+      'sContent' => '',
       'aStyle' =>    array (
-        0 => '/Emvicy/assets/bootstrap-5.3.2-dist/css/bootstrap.min.css',
-        1 => '/Emvicy/assets/fontawesome-free-6.4.2-web/css/all.min.css',
+        0 => '/Emvicy/assets/bootstrap-5.3.3-dist/css/bootstrap.min.css',
+        1 => '/Emvicy/assets/fontawesome-free-6.7.2-web/css/all.min.css',
         2 => '/Emvicy/styles/Emvicy.min.css',
     ),
       'aScript' =>    array (
         0 => '/Emvicy/assets/jquery-3.7.1/jquery-3.7.1.min.js',
         1 => '/Emvicy/assets/jquery-cookie-1.4.1/jquery.cookie.min.js',
-        2 => '/Emvicy/assets/bootstrap-5.3.2-dist/js/bootstrap.min.js',
-        3 => '/Emvicy/scripts/cookieConsent.min.js',
+        2 => '/Emvicy/assets/popper-v2.11.8/popper.min.js',
+        3 => '/Emvicy/assets/bootstrap-5.3.3-dist/js/bootstrap.min.js',
+        4 => '/Emvicy/scripts/cookieConsent.min.js',
     ),
 ))
 ~~~
