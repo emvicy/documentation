@@ -4,9 +4,9 @@
 - [1. Credentials](#1)
 - [2. Creation](#2)
     - [2.1. Create DB Config](#2-1)
-    - [2.2. DBInit class](#2-2)
-    - [2.3. Table Class](#2-3)
-    - [2.4. Let generate an openapi yaml schema file for data type classes](#2-4)
+    - [2.2. Table Class](#2-2)
+    - [2.3. Let generate an openapi yaml schema file for data type classes](#2-3)
+    - [2.4. Combine table classes in a collection](#2-4)
 - [3. Usage](#3)
     - [3.1. create](#3-1)
     - [3.2. retrieve](#3-2)
@@ -15,7 +15,9 @@
     - [3.5. count](#3-5)
     - [3.6. checksum](#3-6)
     - [3.7. getFieldInfo](#3-7)
-    - [3.8. SQL](#3-8)
+    - [3.8. PDO](#3-8)
+    - [3.9. SQL](#3-9)
+    - [3.10. Comment](#3-10)
 - [4. Events](#4)
     - [4.1. Logging SQL](#4-1)
 
@@ -44,7 +46,7 @@ db.username=root
 db.password=
 ~~~
 
----
+------------------------------------------------------------------------------------------------------------------------
 
 <a id="2"></a>
 ## Creation
@@ -113,67 +115,8 @@ $aConfig['MODULE']['Foo']['DB'] = array(
 
 ------------------------------------------------------------------------------------------------------------------------
 
-<a id="2-2"></a>
-### 2.2. DBInit class
-
-class that is used for each DB access
-
-_example: `modules/Foo/Model/DB.php`_
-~~~php
-<?php
-
-/**
- * - register your db table classes as static properties.
- * - add a doctype to each static property
- * - these doctypes must contain the vartype information about the certain class
- * @example
- *      @var Foo\Model\Table\Example
- *      public static $oFooModelTableExample;
- * ---
- * [!]  it is important to declare the vartype expanded with a full path
- *      avoid to make use of `use ...` support
- *      otherwise the classes could not be read correctly
- */
-
-namespace Foo\Model;
-
-use MVC\DB\Model\DbInit;
-use MVC\DB\Trait\DbInitTrait;
-
-/**
- * DB
- */
-class DB extends DbInit
-{
-    use DbInitTrait;
-
-    /*
-     * To instantiate all DTTables:
-     * It is sufficient to init this class once: `\Foo\Model\DB::init()`
-     */
-
-    /**
-     * @var \App\Table\Queue
-     */
-    public $oAppTableQueue {get => $this->activate(__PROPERTY__);}
-
-    /**
-     * @var \App\Table\User
-     */
-    public $oAppTableUser {get => $this->activate(__PROPERTY__);}
-
-    /**
-     * @var \App\Table\Group
-     */
-    public $oAppTableGroup {get => $this->activate(__PROPERTY__);}
-}
-
-~~~
-
-------------------------------------------------------------------------------------------------------------------------
-
-<a id="2-3"></a> 
-### 2.3. Table Class
+<a id="2-2"></a> 
+### 2.2. Table Class
 
 _creates DB Table `Bar` in the given module `Foo`._  
 ~~~bash
@@ -182,19 +125,10 @@ php emvicy db:createTable Bar Foo
 - creates the Table `Bar` (`modules/Foo/Model/Table/Bar.php`)
 - 🛈 The Table fields `id`, `stampChange` and `stampCreate` are always added automatically
 
-implement the Table Class into your DB init class by adding these lines:
+use then this command to access the table directly:
 
 ~~~php
-/**
- * @var \Foo\Model\Table\Bar
- */
-public $oFooModelTableBar {get => $this->activate(__PROPERTY__);}
-~~~
-
-use this command to access the table:
-
-~~~php
-DB::use()->oFooModelTableBar
+\Foo\Model\Table\Bar::init()
 ~~~
 
 _The created DB Table class file: `modules/Foo/Model/Table/Bar.php`_
@@ -267,10 +201,11 @@ public function __construct(array $aDbConfig = array())
 ------------------------------------------------------------------------------------------------------------------------
 
 
-<a id="2-4"></a>  
-### 2.4. Let generate an openapi yaml schema file for data type classes
+<a id="2-3"></a>  
+### 2.3. Let generate an openapi yaml schema file for data type classes
 
-This builds an openapi.yaml `DTTables.yaml` in the primary module's DataType folder based on data type classes of the DB tables.
+This builds an openapi.yaml `DTTables.yaml` in the primary module's DataType folder based 
+on data type classes of the DB tables.
 
 if not already exists, create a file `db.php` in the event folder of your Emvicy module and declare the bindings as follows.
 
@@ -300,44 +235,126 @@ _example: `/modules/Foo/etc/event/db.php`_
 ]);
 ~~~
 
----
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="2-4"></a>
+### 2.4. Combine table classes in a collection
+
+**create DB table collection class**
+
+_creates DB table collection class `Account` in the given module `Foo` under `/Foo/Model/`_  
+~~~bash
+php emvicy db:createTableClassCollection Account Foo
+~~~
+- the prefix `DB` is added to the class name if missing
+- in this example `Account` will become `DBAccount`
+
+_created DB table collection class `/Foo/Model/DBAccount.php`_   
+~~~php
+<?php
+
+/**
+ * - add your db table classes as public properties
+ * - add a doctype to each property, containing the var type information about the certain class
+ * @example
+ *      @var Foo\Model\Table\Example
+ *      public $oFooModelTableExample;
+ * ---
+ * [!]  it is important to declare the var type expanded with a full path
+ *      avoid to make use of `use ...` support
+ *      otherwise the classes could not be read correctly
+ */
+
+namespace Foo\Model;
+
+use MVC\DB\Model\DbInit;
+use MVC\DB\Trait\DbInitTrait;
+
+class DBBar extends DbInit
+{
+    use DbInitTrait;
+
+    /*
+     * To instantiate all tables:
+     * It is sufficient to get object vars of DB class once: `get_object_vars(\Foo\Model\DB::init());`
+     */
+}
+~~~
+
+**implement any Table Class**
+
+
+implement any Table Class into your DB collection class by adding as a property:
+
+_Example: `modules/Foo/Model/DBAccount.php`_
+~~~php
+<?php
+
+namespace Foo\Model;
+
+use MVC\DB\Model\DbInit;
+use MVC\DB\Trait\DbInitTrait;
+
+/**
+ * DB
+ */
+class DBAccount extends DbInit
+{
+    use DbInitTrait;
+
+    /*
+     * To instantiate all tables:
+     * It is sufficient to get object vars of DB class once: `get_object_vars(\Foo\Model\DB::init());`
+     */
+     
+    /**
+     * @var \App\Table\User
+     */
+    public $oAppTableUser {get => $this->activate(__PROPERTY__);}
+
+    /**
+     * @var \App\Table\Group
+     */
+    public $oAppTableGroup {get => $this->activate(__PROPERTY__);}
+}
+~~~
+
+**Access Db table collection**
+
+_access DB table collection class and its tables via `use` command_    
+~~~php
+DBAccount::use()
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
 
 <a id="3"></a>
 ## 3. Usage
 
-In your main **Controller** class just create a new Instanciation of your DBInit class.
-A good place is the `__construct()` method.
+access your table classes and table collection classes from everywhere - even from frontend templates:
 
+_Example: access a table class directly_  
 ~~~php
-namespace Foo\Controller;
-
-use Foo\Model\DB;
-
-public function __construct ()
-{
-    DB::init();
-}
+\App\Table\User::init()
 ~~~
 
-after that you can access your TableClass from everywhere - even from frontend templates:
-
-
-_Usage_
+_Example: access a table class via table collection_
 ~~~php
-DB::$oFooModelTableUser->...<method>...
+\Foo\Model\Table\DB::use()->oAppTableUser
 ~~~
+
 
 <a id="3-1"></a>  
 ### 3.1. create
 
 therefore an object of its related Datatype must be instanciated and given to the method `create`.
-Here e.g. with Datatype "DTFooModelTableUser" to TableClass "modules/Foo/Model/Table/User":
+Here e.g. with Datatype "DTAppTableUser" to TableClass "modules/Foo/Model/Table/User":
 
 _example `create`: put data into table_  
 ~~~php
 // create DataType object
-$oDTFooModelTableUser = DTFooModelTableUser::create()
-    ->set_id_TableGroup(1)
+$oDTAppTableUser = \App\DataType\DTAppTableUser::create()
+    ->set_id_AppTableGroup(1)
     ->set_email('foo@example.com')
     ->set_password('...password...')
     ->set_forename('foo')
@@ -348,14 +365,14 @@ $oDTFooModelTableUser = DTFooModelTableUser::create()
     ->set_active(1);
         
 // put DataType object into Table and get updated object back
-/** @var \Foo\DataType\DTFooModelTableUser $oDTFooModelTableUser */
-$oDTFooModelTableUser = DB::$oFooModelTableUser->create(
-    $oDTFooModelTableUser
+/** @var \App\DataType\DTAppTableUser $oDTAppTableUser */
+$oDTAppTableUser = DB::use()->oAppTableUser->create(
+    $oDTAppTableUser
 );
 
-// on success, `$oDTFooModelTableUser` now has an id (auto increment of database table) set
+// on success, `$oDTAppTableUser` now has an id (auto increment of database table) set
 // on fail, id = 0
-$iId = $oDTFooModelTableUser->get_id();
+$iId = $oDTAppTableUser->get_id();
 ~~~
 
 ---
@@ -367,17 +384,18 @@ $iId = $oDTFooModelTableUser->get_id();
 
 _example `getOnId`: get Object from table where `id=2`_  
 ~~~php
-/** @var \Foo\DataType\DTFooModelTableUser $oDTFooModelTableUser */
-$oDTFooModelTableUser = DB::$oFooModelTableUser->getOnId(2);
+/** @var \App\DataType\DTAppTableUser $oDTAppTableUser */
+$oDTAppTableUser = DB::use()->oAppTableUser->getOnId(1)
 ~~~
+
 _example `getOnId`: get `email` from table where `id=2`_    
 ~~~php
 /** @var string $sEmail */
-$sEmail = DB::$oFooModelTableUser->getOnId(2, DTFooModelTableUser::getPropertyName_email()); # using name helper
+$sEmail = DB::use()->oAppTableUser->getOnId(2, DTAppTableUser::getPropertyName_email()); # using name helper
 ~~~
 ~~~php
 /** @var string $sEmail */
-$sEmail = DB::$oFooModelTableUser->getOnId(2, 'email'); # plain text
+$sEmail = DB::use()->oAppTableUser->getOnId(2, 'email'); # plain text
 ~~~
 
 ---
@@ -386,9 +404,9 @@ $sEmail = DB::$oFooModelTableUser->getOnId(2, 'email'); # plain text
 
 _example `retrieveTupel`: get Object from table where `id=2`_
 ~~~php
-/** @var \Foo\DataType\DTFooModelTableUser $oDTFooModelTableUser */
-$oDTFooModelTableUser = DB::$oFooModelTableUser->retrieveTupel(
-    DTFooModelTableUser::create()->set_id(2)
+/** @var \App\DataType\DTAppTableUser $oDTAppTableUser */
+$oDTAppTableUser = DB::use()->oAppTableUser->retrieveTupel(
+    DTAppTableUser::create()->set_id(2)
 );
 ~~~
 
@@ -398,22 +416,22 @@ $oDTFooModelTableUser = DB::$oFooModelTableUser->retrieveTupel(
 
 _example `retrieve`: get all Datasets_
 ~~~php
-/** @var \Foo\DataType\DTFooModelTableUser[] $aDTFooModelTableUser */
-$aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve();
+/** @var \App\DataType\DTAppTableUser[] $aDTAppTableUser */
+$aDTAppTableUser = DB::use()->oAppTableUser->retrieve();
 ~~~
 
 _example `retrieve`: get specific Datasets_
 ~~~php
-/** @var \Foo\DataType\DTFooModelTableUser[] $aDTFooModelTableUser */
-$aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve(
+/** @var \App\DataType\DTAppTableUser[] $aDTAppTableUser */
+$aDTAppTableUser = DB::use()->oAppTableUser->retrieve(
     [ // where using name helper
-        DTDBWhere::create()->set_sKey( DTFooModelTableUser::getPropertyName_email() )->set_sRelation('LIKE')->set_sValue('%example%')
+        DTDBWhere::create()->set_sKey( DTAppTableUser::getPropertyName_email() )->set_sRelation('LIKE')->set_sValue('%example%')
     ]
 );
 ~~~
 ~~~php
-/** @var \Foo\DataType\DTFooModelTableUser[] $aDTFooModelTableUser */
-$aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve(
+/** @var \App\DataType\DTAppTableUser[] $aDTAppTableUser */
+$aDTAppTableUser = DB::use()->oAppTableUser->retrieve(
     [ // where
         DTDBWhere::create()->set_sKey('email')->set_sRelation('LIKE')->set_sValue('%example%')
     ]
@@ -422,10 +440,10 @@ $aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve(
 
 _example `retrieve`: get Datasets with options_
 ~~~php
-/** @var \Foo\DataType\DTFooModelTableUser[] $aDTFooModelTableUser */
-$aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve(
+/** @var \App\DataType\DTAppTableUser[] $aDTAppTableUser */
+$aDTAppTableUser = DB::use()->oAppTableUser->retrieve(
     [ // where
-        DTDBWhere::create()->set_sKey( DTFooModelTableUser::getPropertyName_email() )->set_sRelation('LIKE')->set_sValue('%example%')
+        DTDBWhere::create()->set_sKey( DTAppTableUser::getPropertyName_email() )->set_sRelation('LIKE')->set_sValue('%example%')
     ],
     [ // option
         DTDBOption::create()->set_sValue('ORDER BY `email` ASC'),
@@ -436,8 +454,8 @@ $aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve(
 
 _example `retrieve`: get first 30 Datasets (LIMIT 0,30)_
 ~~~php
-/** @var \Foo\DataType\DTFooModelTableUser[] $aDTFooModelTableUser */
-$aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve(aDTDBOption: [
+/** @var \App\DataType\DTAppTableUser[] $aDTAppTableUser */
+$aDTAppTableUser = DB::use()->oAppTableUser->retrieve(aDTDBOption: [
     DTDBOption::create()->set_sValue('LIMIT 0, 30')
 ]);
 ~~~
@@ -450,15 +468,15 @@ $aDTFooModelTableUser = DB::$oFooModelTableUser->retrieve(aDTDBOption: [
 _example `updateTupel`: update Object in table where `id=2`_
 ~~~php
 // retrieve User object with id=2
-/** @var \Foo\DataType\DTFooModelTableUser $oDTFooModelTableUser */
-$oDTFooModelTableUser = DB::$oFooModelTableUser->getOnId(2);
+/** @var \App\DataType\DTAppTableUser $oDTAppTableUser */
+$oDTAppTableUser = DB::use()->oAppTableUser->getOnId(2);
 
 // modify User object
-$oDTFooModelTableUser->set_nickname('ABC');
+$oDTAppTableUser->set_nickname('ABC');
 
 // update tupel with modified object
-$bSuccess = DB::$oFooModelTableUser->updateTupel(
-    $oDTFooModelTableUser
+$bSuccess = DB::use()->oAppTableUser->updateTupel(
+    $oDTAppTableUser
 );
 ~~~
 
@@ -466,8 +484,8 @@ $bSuccess = DB::$oFooModelTableUser->updateTupel(
 _shortened example `updateTupel`: update this specific Tupel - identified by `id`_
 ~~~php
 /** @var boolean $bSuccess */
-$bSuccess = DB::$oFooModelTableUser->updateTupel(
-    DB::$oFooModelTableUser->retrieveTupel( DTFooModelTableUser::create()->set_id(2) )->set_nickname('ABC')
+$bSuccess = DB::use()->oAppTableUser->updateTupel(
+    DB::use()->oAppTableUser->retrieveTupel( DTAppTableUser::create()->set_id(2) )->set_nickname('ABC')
 );
 ~~~
 -->
@@ -475,20 +493,20 @@ $bSuccess = DB::$oFooModelTableUser->updateTupel(
 _example `update`: update **all** Tupel with data defined in **set** (array) which are affected by the **where** clause (array)_
 ~~~php
 /** @var boolean $bSuccess */
-$bSuccess = DB::$oFooModelTableUser->update(
+$bSuccess = DB::use()->oAppTableUser->update(
     [ // set
-        DTDBSet::create()->set_sKey( DTFooModelTableUser::getPropertyName_active() )->set_sValue(0),
-        DTDBSet::create()->set_sKey( DTFooModelTableUser::getPropertyName_email() )->set_sValue('bar@example.com')
+        DTDBSet::create()->set_sKey( DTAppTableUser::getPropertyName_active() )->set_sValue(0),
+        DTDBSet::create()->set_sKey( DTAppTableUser::getPropertyName_email() )->set_sValue('bar@example.com')
     ],
     [ // where
-        DTDBWhere::create()->set_sKey( DTFooModelTableUser::getPropertyName_email() )->set_sRelation('LIKE')->set_sValue('%example.com')
+        DTDBWhere::create()->set_sKey( DTAppTableUser::getPropertyName_email() )->set_sRelation('LIKE')->set_sValue('%example.com')
     ]
 );
 ~~~
 
 _update via SQL Statement_  
 ~~~php
-DB::$oPDO->query("UPDATE `FooModelTableUser` SET `active` = '0' WHERE `email` = 'foo@example.com'");
+DB::use()->oDbPDO->query("UPDATE `AppTableUser` SET `active` = '0' WHERE `email` = 'foo@example.com'");
 ~~~
 - see also: [Database Events](/2.x/events#database_events), and [Database - 3.8. SQL](#3-8)
 
@@ -500,56 +518,60 @@ DB::$oPDO->query("UPDATE `FooModelTableUser` SET `active` = '0' WHERE `email` = 
 _`deleteTupel`: delete this **one** specific Tupel - identified **only** by **`id`** (id is required; other values do not have an effect)_
 ~~~php
 // delete User object (you retrieved before)
-$bSuccess = DB::$oFooModelTableUser->deleteTupel(
-    $oDTFooModelTableUser
+$bSuccess = DB::use()->oAppTableUser->deleteTupel(
+    $oDTAppTableUser
 );
 
 // example deleting by setting object explicitly
-$bSuccess = DB::$oFooModelTableUser->deleteTupel(
-    DTFooModelTableUser::create()->set_id(2)
+$bSuccess = DB::use()->oAppTableUser->deleteTupel(
+    DTAppTableUser::create()->set_id(2)
 );
 ~~~
 
 _`delete`: delete **all** Tupel which are affected by the **where** clause (array)_
 ~~~php
 // example setting key and value directly
-$bSuccess = DB::$oFooModelTableUser->delete([ // array of where clauses
+$bSuccess = DB::use()->oAppTableUser->delete([ // array of where clauses
     DTDBWhere::create()->set_sKey('id')->set_sValue(2),
     DTDBWhere::create()->set_sKey('active')->set_sValue(0),
 ]);
 
 // example setting the key using Property getter
-$bSuccess = DB::$oFooModelTableUser->delete([ // array of where clauses
-    DTDBWhere::create()->set_sKey(DTFooModelTableUser::getPropertyName_id())->set_sValue(2),
-    DTDBWhere::create()->set_sKey(DTFooModelTableUser::getPropertyName_active())->set_sValue(0),
+$bSuccess = DB::use()->oAppTableUser->delete([ // array of where clauses
+    DTDBWhere::create()->set_sKey(DTAppTableUser::getPropertyName_id())->set_sValue(2),
+    DTDBWhere::create()->set_sKey(DTAppTableUser::getPropertyName_active())->set_sValue(0),
 ]);
 
 // example setting the key using Property getter; take values from User object (you retrieved before)
-$bSuccess = DB::$oFooModelTableUser->delete([ // array of where clauses
-    DTDBWhere::create()->set_sKey(DTFooModelTableUser::getPropertyName_id())->set_sValue($oDTFooModelTableUser->get_id()),
-    DTDBWhere::create()->set_sKey(DTFooModelTableUser::getPropertyName_active())->set_sValue($oDTFooModelTableUser->get_active()),
+$bSuccess = DB::use()->oAppTableUser->delete([ // array of where clauses
+    DTDBWhere::create()->set_sKey(DTAppTableUser::getPropertyName_id())->set_sValue($oDTAppTableUser->get_id()),
+    DTDBWhere::create()->set_sKey(DTAppTableUser::getPropertyName_active())->set_sValue($oDTAppTableUser->get_active()),
 ]);
 ~~~
+
+------------------------------------------------------------------------------------------------------------------------
 
 <a id="3-5"></a>  
 ### 3.5. count
 
 ~~~php
 // Amount of all Datasets
-$iAmount = DB::$oFooModelTableUser->count();
+$iAmount = DB::use()->oAppTableUser->count();
 
 // Amount of specific Datasets
-$iAmount = DB::$oFooModelTableUser->count([
-    DTDBWhere::create()->set_sKey( DTFooModelTableUser::getPropertyName_email() )->set_sRelation('LIKE')->set_sValue('%example.com')
+$iAmount = DB::use()->oAppTableUser->count([
+    DTDBWhere::create()->set_sKey( DTAppTableUser::getPropertyName_email() )->set_sRelation('LIKE')->set_sValue('%example.com')
 ]);
 ~~~
+
+------------------------------------------------------------------------------------------------------------------------
 
 <a id="3-6"></a>  
 ### 3.6. checksum
 
 ~~~php
 // Returns a checksum of the table
-$iChecksum = DB::$oFooModelTableUser->checksum();
+$iChecksum = DB::use()->oAppTableUser->checksum();
 ~~~
 ~~~
 // type: integer
@@ -565,7 +587,7 @@ returns array with table fields info
 _get info of certain field `email`_  
 ~~~php
 // get info of certain field `email`
-$aFieldInfo = DB::$oFooModelTableUser->getFieldInfo('email');
+$aFieldInfo = DB::use()->oAppTableUser->getFieldInfo('email');
 ~~~
 _example return_  
 ~~~
@@ -589,7 +611,7 @@ _example return_
 _get info of all fields_  
 ~~~php
 // get info of all fields
-$aFieldInfo = DB::$oFooModelTableUser->getFieldInfo();
+$aFieldInfo = DB::use()->oAppTableUser->getFieldInfo();
 ~~~
 _example return (shortened)_  
 ~~~
@@ -627,40 +649,72 @@ _example return (shortened)_
 ]
 ~~~
 
-<a id="3-8"></a>  
-#### 3.8. SQL
+------------------------------------------------------------------------------------------------------------------------
+
+
+<a id="3-8"></a>
+#### 3.8. PDO
+
+**address PDO**
+
+_using a table collection class_  
+~~~php
+DB::use()->oDbPDO->fetchAll("SELECT * FROM `AppTableUser`")
+~~~
+
+_otherwise this always works; get PDO object from Framework's Db class_  
+~~~php
+\MVC\DB\Model\Db::getDbPdo()->fetchAll("SELECT * FROM `AppTableUser`")
+~~~
+
+**fetchAll**
+
+_returns the result as array_  
+~~~php
+DB::use()->oDbPDO->fetchAll("SELECT * FROM `AppTableUser`")
+~~~
+
+_returns the result as an array of DataType objects_  
+~~~php
+DB::use()->oAppTableUser->fetchAll("SELECT * FROM `AppTableUser`", true)
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="3-9"></a>  
+#### 3.9. SQL
 
 _`fetchRow`: select a single tupel (a row)_
 ~~~php
-/** @var \Foo\DataType\DTFooModelTableUser $oDTFooModelTableUser */
-$oDTFooModelTableUser = DTFooModelTableUser::create(
-    DB::$oPDO->fetchRow("SELECT * FROM `FooModelTableUser` WHERE id = '2'")
+/** @var \App\DataType\DTAppTableUser $oDTAppTableUser */
+$oDTAppTableUser = DTAppTableUser::create(
+    DB::use()->oDbPDO->fetchRow("SELECT * FROM `AppTableUser` WHERE id = '2'")
 );
 ~~~
 - here we select the entry which id = 2
-- we put in into the table's Datatype object of type `\Foo\DataType\DTFooModelTableUser`
+- we put in into the table's Datatype object of type `\App\DataType\DTAppTableUser`
 
 ---
 
 _`fetchAll`: select all tupel (multiple rows)_
 ~~~php
-/** @var \Foo\DataType\DTFooModelTableUser[] $aDTFooModelTableUser */
-$aDTFooModelTableUser = array_map(
+/** @var \App\DataType\DTAppTableUser[] $aDTAppTableUser */
+$aDTAppTableUser = array_map(
     function($aData){
-        return DTFooModelTableUser::create($aData);
+        return DTAppTableUser::create($aData);
     },
-    DB::$oPDO->fetchAll("SELECT * FROM `FooModelTableUser` WHERE email LIKE '%example.com'")
+    DB::use()->oDbPDO->fetchAll("SELECT * FROM `AppTableUser` WHERE email LIKE '%example.com'")
 );
 ~~~
 - here we select all entries which email is like '%example.com'
 - we map them all into the table's Datatype object
-- so we get an array of type `DTFooModelTableUser[]`
+- so we get an array of type `DTAppTableUser[]`
 
 ---
 
 _`query`: insert_  
 ~~~php
-DB::$oPDO->query("INSERT INTO  `FooModelTableUser` 
+DB::use()->oDbPDO->query("INSERT INTO  `AppTableUser` 
     (`stampChange`,`stampCreate`,`id_TableGroup`,`email`,`active`,`uuid`,`uuidtmp`,`password`,`nickname`,`forename`,`lastname`) 
     VALUES ('2023-12-01 18:53:33',
             '2023-12-01 18:53:33',
@@ -677,11 +731,37 @@ DB::$oPDO->query("INSERT INTO  `FooModelTableUser`
 
 _`query`: update_
 ~~~php
-DB::$oPDO->query("UPDATE `FooModelTableUser` SET `active` = '0' WHERE `email` = 'foo@example.com'");
+DB::use()->oDbPDO->query("UPDATE `AppTableUser` SET `active` = '0' WHERE `email` = 'foo@example.com'");
 ~~~
 
+------------------------------------------------------------------------------------------------------------------------
 
----
+<a id="3-10"></a>
+#### 3.10. Comment
+
+**read comment from a DB Table Field**
+
+_from Table `AppTableUser`, read the comment of field `nickname`_  
+~~~php
+DB::use()->oAppTableUser->getComment('nickname')
+~~~
+~~~
+// type: string
+'Abbreviation'
+~~~
+
+**read any DocComment from Db table collection class**
+
+_from Table `oAppTableUser`, read the value of DocComment `@var`_  
+~~~php
+DB::use()->getDocCommentValueOfProperty('oAppTableUser', '@var')
+~~~
+~~~
+// type: string
+'\\App\\Table\\User'
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
 
 <a id="4"></a> 
 ## 4. Events
