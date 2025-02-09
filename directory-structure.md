@@ -123,3 +123,37 @@ modules/{moduleName}/
 │           └── menu.tpl
 ~~~
 - You may find further Information in Topic [Frontend](/2.x/frontend)
+
+---
+
+_`modules/Foo/`_  
+~~~
+├── Controller
+├── DataType
+├── Model
+│   ├── DB
+│   │   ├── Collection
+│   │   └── Table
+│   └── Worker
+├── Policy
+├── Test
+│   ├── Feature
+│   └── Unit
+├── View
+├── etc
+│   ├── _INSTALL
+│   │   └── public
+│   ├── config
+│   │   └── Foo
+│   │       ├── config
+│   │       └── vendor
+│   ├── doc
+│   ├── event
+│   ├── policy
+│   ├── routing
+│   └── smartyPlugins
+└── templates
+    └── Frontend
+        ├── content
+        └── layout
+~~~

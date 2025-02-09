@@ -5,8 +5,8 @@
 - [2. Creation](#2)
     - [2.1. Create DB Config](#2-1)
     - [2.2. Table Class](#2-2)
-    - [2.3. Let generate an openapi yaml schema file for data type classes](#2-3)
-    - [2.4. Combine table classes in a collection](#2-4)
+    - [2.3. Table Collection](#2-3)
+    - [2.4. Let generate an openapi yaml schema file for data type classes](#2-4)
 - [3. Usage](#3)
     - [3.1. create](#3-1)
     - [3.2. retrieve](#3-2)
@@ -120,32 +120,33 @@ $aConfig['MODULE']['Foo']['DB'] = array(
 
 _creates DB Table `Bar` in the given module `Foo`._  
 ~~~bash
-php emvicy db:createTable Bar Foo
+php emvicy db:table Bar Foo
 ~~~
-- creates the Table `Bar` (`modules/Foo/Model/Table/Bar.php`)
+- creates the Table `Bar` in `modules/Foo/Model/DB/Table/Bar.php`
+- creates the Trait `TraitBar` in `modules/Foo/Model/DB/Collection/TraitBar.php`
 - 🛈 The Table fields `id`, `stampChange` and `stampCreate` are always added automatically
 
-use then this command to access the table directly:
+use this command to access the table directly:
 
 ~~~php
-\Foo\Model\Table\Bar::init()
+\Foo\Model\DB\Table\Bar::init()
 ~~~
 
-_The created DB Table class file: `modules/Foo/Model/Table/Bar.php`_
+_The created DB Table class file: `modules/Foo/Model/DB/Table/Bar.php`_
 ~~~php
 <?php
 
-namespace Foo\Model\Table;
+namespace Foo\Model\DB\Table;
 
 use MVC\DB\Model\Db;
 use MVC\DataType\DTDBWhere;
 use MVC\DataType\DTDBOption;
 use MVC\DataType\DTDBWhereRelation;
-use MVC\DB\Trait\DbInitTrait;
+use MVC\DB\Trait\TraitDbInit;
 
 class Bar extends Db
 {
-    use DbInitTrait;
+    use TraitDbInit;
 
     /**
      * @var array
@@ -200,11 +201,93 @@ public function __construct(array $aDbConfig = array())
 
 ------------------------------------------------------------------------------------------------------------------------
 
+<a id="2-3"></a>
+### 2.3. Table Collection
 
-<a id="2-3"></a>  
-### 2.3. Let generate an openapi yaml schema file for data type classes
+Combining table classes in a table collection class.
 
-This builds an openapi.yaml `DTTables.yaml` in the primary module's DataType folder based 
+**create DB table collection class**
+
+_creates DB table collection class `DBAccount` in the given module `Foo` under `/Foo/Model/DB/Collection/`_  
+~~~bash
+php emvicy db:tableCollection Account Foo
+~~~
+- the prefix `DB` is added to the class name if missing
+- in this example `Account` will become `DBAccount`
+
+_created DB table collection class `/Foo/Model/DB/Collection/DBAccount.php`_   
+~~~php
+<?php
+
+/**
+ * - add your db table classes as public properties
+ * - add a doctype to each property, containing the var type information about the certain class
+ * @example
+ *      @var Foo\Model\Table\Example
+ *      public $oFooModelTableExample;
+ * ---
+ * [!]  it is important to declare the var type expanded with a full path
+ *      avoid to make use of `use ...` support
+ *      otherwise the classes could not be read correctly
+ */
+
+namespace Foo\Model\DB\Collection;
+
+use MVC\DB\Model\DbCollection;
+use MVC\DB\Trait\TraitDbInit;
+
+class DBAccount extends DbInit
+{
+    use TraitDbInit;
+
+    #-------------------------------------------------------------------------------------------------------------------
+    # tables
+    
+}
+~~~
+
+**implement any Table Class**
+
+
+implement any Table Class into your DB collection class by adding its corresponding Trait.
+
+_Example: `modules/Foo/Model/DBAccount.php`_
+~~~php
+<?php
+
+namespace Foo\Model;
+
+use MVC\DB\Model\DbCollection;
+use MVC\DB\Trait\TraitDbInit;
+
+/**
+ * DB
+ */
+class DBAccount extends DbInit
+{
+    use TraitDbInit;
+
+    #-------------------------------------------------------------------------------------------------------------------
+    # tables
+     
+    use TraitBar;
+}
+~~~
+
+**Access Db table collection**
+
+_access DB table collection class and its tables via `use` command_    
+~~~php
+DBAccount::use()
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+<a id="2-4"></a>
+### 2.4. Let generate an openapi yaml schema file for data type classes
+
+This builds an openapi.yaml `DTTables.yaml` in the primary module's DataType folder based
 on data type classes of the DB tables.
 
 if not already exists, create a file `db.php` in the event folder of your Emvicy module and declare the bindings as follows.
@@ -227,103 +310,12 @@ _example: `/modules/Foo/etc/event/db.php`_
                 // generate /modules/{MODULE}/DataType/DTTables.yaml
                 $sYamlFile = \MVC\DB\Model\Openapi::createDTYamlOnDTClasses(
                     // pass instance of your concrete DB Class
-                    \Foo\Model\DB::init()
+                    \Foo\Model\DB\Collection\DB::init()
                 );
             }
         },
     ],
 ]);
-~~~
-
-------------------------------------------------------------------------------------------------------------------------
-
-<a id="2-4"></a>
-### 2.4. Combine table classes in a collection
-
-**create DB table collection class**
-
-_creates DB table collection class `Account` in the given module `Foo` under `/Foo/Model/`_  
-~~~bash
-php emvicy db:createTableClassCollection Account Foo
-~~~
-- the prefix `DB` is added to the class name if missing
-- in this example `Account` will become `DBAccount`
-
-_created DB table collection class `/Foo/Model/DBAccount.php`_   
-~~~php
-<?php
-
-/**
- * - add your db table classes as public properties
- * - add a doctype to each property, containing the var type information about the certain class
- * @example
- *      @var Foo\Model\Table\Example
- *      public $oFooModelTableExample;
- * ---
- * [!]  it is important to declare the var type expanded with a full path
- *      avoid to make use of `use ...` support
- *      otherwise the classes could not be read correctly
- */
-
-namespace Foo\Model;
-
-use MVC\DB\Model\DbInit;
-use MVC\DB\Trait\DbInitTrait;
-
-class DBBar extends DbInit
-{
-    use DbInitTrait;
-
-    /*
-     * To instantiate all tables:
-     * It is sufficient to get object vars of DB class once: `get_object_vars(\Foo\Model\DB::init());`
-     */
-}
-~~~
-
-**implement any Table Class**
-
-
-implement any Table Class into your DB collection class by adding as a property:
-
-_Example: `modules/Foo/Model/DBAccount.php`_
-~~~php
-<?php
-
-namespace Foo\Model;
-
-use MVC\DB\Model\DbInit;
-use MVC\DB\Trait\DbInitTrait;
-
-/**
- * DB
- */
-class DBAccount extends DbInit
-{
-    use DbInitTrait;
-
-    /*
-     * To instantiate all tables:
-     * It is sufficient to get object vars of DB class once: `get_object_vars(\Foo\Model\DB::init());`
-     */
-     
-    /**
-     * @var \App\Table\User
-     */
-    public $oAppTableUser {get => $this->activate(__PROPERTY__);}
-
-    /**
-     * @var \App\Table\Group
-     */
-    public $oAppTableGroup {get => $this->activate(__PROPERTY__);}
-}
-~~~
-
-**Access Db table collection**
-
-_access DB table collection class and its tables via `use` command_    
-~~~php
-DBAccount::use()
 ~~~
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -655,28 +647,14 @@ _example return (shortened)_
 <a id="3-8"></a>
 #### 3.8. PDO
 
-**address PDO**
-
 _using a table collection class_  
 ~~~php
-DB::use()->oDbPDO->fetchAll("SELECT * FROM `AppTableUser`")
+DB::use()->oDbPDO
 ~~~
 
 _otherwise this always works; get PDO object from Framework's Db class_  
 ~~~php
-\MVC\DB\Model\Db::getDbPdo()->fetchAll("SELECT * FROM `AppTableUser`")
-~~~
-
-**fetchAll**
-
-_returns the result as array_  
-~~~php
-DB::use()->oDbPDO->fetchAll("SELECT * FROM `AppTableUser`")
-~~~
-
-_returns the result as an array of DataType objects_  
-~~~php
-DB::use()->oAppTableUser->fetchAll("SELECT * FROM `AppTableUser`", true)
+\MVC\DB\Model\Db::getDbPdo()
 ~~~
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -684,7 +662,9 @@ DB::use()->oAppTableUser->fetchAll("SELECT * FROM `AppTableUser`", true)
 <a id="3-9"></a>  
 #### 3.9. SQL
 
-_`fetchRow`: select a single tupel (a row)_
+**fetchRow**
+
+_select a single tupel (a row)_  
 ~~~php
 /** @var \App\DataType\DTAppTableUser $oDTAppTableUser */
 $oDTAppTableUser = DTAppTableUser::create(
@@ -696,23 +676,23 @@ $oDTAppTableUser = DTAppTableUser::create(
 
 ---
 
-_`fetchAll`: select all tupel (multiple rows)_
+**fetchAll**
+
+_returns the result as regular array_
 ~~~php
-/** @var \App\DataType\DTAppTableUser[] $aDTAppTableUser */
-$aDTAppTableUser = array_map(
-    function($aData){
-        return DTAppTableUser::create($aData);
-    },
-    DB::use()->oDbPDO->fetchAll("SELECT * FROM `AppTableUser` WHERE email LIKE '%example.com'")
-);
+DB::use()->oDbPDO->fetchAll("SELECT * FROM `AppTableUser`")
 ~~~
-- here we select all entries which email is like '%example.com'
-- we map them all into the table's Datatype object
-- so we get an array of type `DTAppTableUser[]`
 
----
+_returns the result as an array of DataType objects_
+~~~php
+DB::use()->oAppTableUser->fetchAll("SELECT * FROM `AppTableUser`", true)
+~~~
+- the result gets mapped into the table's Datatype object
+- so here we get an array of type `DTAppTableUser[]`
 
-_`query`: insert_  
+**query**
+
+_insert_  
 ~~~php
 DB::use()->oDbPDO->query("INSERT INTO  `AppTableUser` 
     (`stampChange`,`stampCreate`,`id_TableGroup`,`email`,`active`,`uuid`,`uuidtmp`,`password`,`nickname`,`forename`,`lastname`) 
@@ -729,7 +709,7 @@ DB::use()->oDbPDO->query("INSERT INTO  `AppTableUser`
 );
 ~~~
 
-_`query`: update_
+_update_
 ~~~php
 DB::use()->oDbPDO->query("UPDATE `AppTableUser` SET `active` = '0' WHERE `email` = 'foo@example.com'");
 ~~~

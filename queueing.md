@@ -1,67 +1,20 @@
  
 # Queueing
 
-- [Declare a Job](queue-job)
 - [`push`](#push)
 - [`pop`](#pop)
 - [`popOnId`](#popOnId)
+- [Declare a Job](queue-job)
 - [Config](#Config)
 
-This requires a Database setup.
-
-------------------------------------------------------------------------------------------------------------------------
-
-<a id="queue-job"></a>
-## Declare a Job
-
-_create a DT Queue Object_  
-~~~php
-/** @var \App\DataType\DTAppTableQueue $oDTAppTableQueue */
-$oDTAppTableQueue = \App\DataType\DTAppTableQueue::create()
-    ->set_key('foo')
-    ->set_value('bar')
-;
-~~~
-
-_adding a second key_  
-~~~php
-/** @var \App\DataType\DTAppTableQueue $oDTAppTableQueue */
-$oDTAppTableQueue = \App\DataType\DTAppTableQueue::create()
-    ->set_key('foo')
-    ->set_value('bar')
-    ->set_key2('optional')
-;
-~~~
-
-_adding description_  
-~~~php
-/** @var \App\DataType\DTAppTableQueue $oDTAppTableQueue */
-$oDTAppTableQueue = \App\DataType\DTAppTableQueue::create()
-    ->set_key('foo')
-    ->set_value('bar')
-    ->set_description('this is a description')
-;
-~~~
-
-_adding expirySeconds_  
-~~~php
-/** @var \App\DataType\DTAppTableQueue $oDTAppTableQueue */
-$oDTAppTableQueue = \App\DataType\DTAppTableQueue::create()
-    ->set_key('foo')
-    ->set_value('bar')
-    ->set_expirySeconds(3600)            
-;
-~~~
-- the job expires after the given amounts of seconds and cannot be taken by `Queue::pop` then. 
-        
+🛈 This requires a Database setup.
+       
 ------------------------------------------------------------------------------------------------------------------------
 
 <a id="push"></a>
 ## `push`
 
-pushes a Job to the Queue.
-
-_create a Job, and push it to Queue_
+_pushes a Job to the Queue_
 ~~~php
 /** @var \App\DataType\DTAppTableQueue $oDTAppTableQueue */
 $oDTAppTableQueue = \MVC\Queue::push(
@@ -89,7 +42,7 @@ $oDTAppTableQueue = \MVC\Queue::pop('foo');
 <a id="popOnId"></a>
 ## `popOnId`
 
-_takes a specific Job from queue identified by `id`_
+_takes a specific Job from queue identified by `id` (field `id` in table)_
 ~~~php
 /** @var \App\DataType\DTAppTableQueue $oDTAppTableQueue */
 $oDTAppTableQueue = \MVC\Queue::popOnId(1182);
@@ -100,7 +53,7 @@ $oDTAppTableQueue = \MVC\Queue::popOnId(1182);
 <a id="next"></a>
 ## `next`
 
-next does not take a job from the queue; it just informs.
+next does not pop (take) a job from the queue; it just informs.
 
 _gives the next 5 Jobs_
 ~~~php
@@ -119,6 +72,50 @@ $oDTAppTableQueue = \MVC\Queue::next(
 )
 ~~~
 
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="queue-job"></a>
+## Declare a Job
+
+_create a DT Queue Object_
+~~~php
+/** @var \App\DataType\DTAppTableQueue $oDTAppTableQueue */
+$oDTAppTableQueue = \App\DataType\DTAppTableQueue::create()
+    ->set_key('foo')
+    ->set_value('bar')
+;
+~~~
+
+_adding a second key_
+~~~php
+/** @var \App\DataType\DTAppTableQueue $oDTAppTableQueue */
+$oDTAppTableQueue = \App\DataType\DTAppTableQueue::create()
+    ->set_key('foo')
+    ->set_value('bar')
+    ->set_key2('optional')
+;
+~~~
+
+_adding description_
+~~~php
+/** @var \App\DataType\DTAppTableQueue $oDTAppTableQueue */
+$oDTAppTableQueue = \App\DataType\DTAppTableQueue::create()
+    ->set_key('foo')
+    ->set_value('bar')
+    ->set_description('this is a description')
+;
+~~~
+
+_adding expirySeconds_
+~~~php
+/** @var \App\DataType\DTAppTableQueue $oDTAppTableQueue */
+$oDTAppTableQueue = \App\DataType\DTAppTableQueue::create()
+    ->set_key('foo')
+    ->set_value('bar')
+    ->set_expirySeconds(3600)            
+;
+~~~
+- the job expires after the given amounts of seconds and cannot be taken by `Queue::pop` then.
 
 ------------------------------------------------------------------------------------------------------------------------
 
