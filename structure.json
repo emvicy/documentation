@@ -17,6 +17,7 @@
     "Events":"events.md",
     "Database ⛁":"database.md",
     "Queueing":"queueing.md",
+    "Worker":"worker.md",
     "Process":"process.md",
     "Cron":"cron.md",
     "CLI Wrapping":"cli-wrapping.md",
