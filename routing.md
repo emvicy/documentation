@@ -290,10 +290,7 @@ php emvicy routes:list
 ~~~
 
 _Example Result_  
-
 ~~~
-# Route List
-
 | No  | Method  | Methods assigned            | Route                           | Target                                                    | Tag                             |
 |-----|---------|-----------------------------|---------------------------------|-----------------------------------------------------------|---------------------------------|
 | 1   | GET     | GET                         | /                               | \Foo\Controller\Index::index                              | home                            |
@@ -301,16 +298,16 @@ _Example Result_
 | 3   | *       | *                           | /404/                           | \Foo\Controller\Index::notFound                           | 404                             |
 | 4   | *       | *                           | /api/                           | \Foo\Controller\Api\Api::index                            | any-api                         |
 | 5   | *       | *                           | /download/                      | \Foo\Controller\Api\Api::download                         | any-download                    |
-| 6   | GET     | GET                         | /imprint/                       | \Foo\Controller\Index::index                              | imprint                         |
+| 6   | GET     | GET                         | /imprint/*                      | \Foo\Controller\Index::index                              | imprint                         |
 | 7   | GET     | GET                         | /info/                          | \Foo\Controller\Index::phpinfo                            | info                            |
 | 8   | GET     | GET                         | /privacy-policy/                | \Foo\Controller\Index::index                              | privacyPolicy                   |
 | 9   | GET     | GET                         | /user/                          | \Foo\Controller\Index::user                               | user                            |
 | 10  | GET     | GET                         | /ws/pushtest/                   | \Ws\Controller\Ws::pushtest                               | WsPushTest                      |
 | 11  | GET     | GET                         | /ws/serve/                      | \Ws\Controller\Ws::serve                                  | WsServe                         |
 | 12  | GET     | GET                         | /~/cron/run                     | \App\Controller\Cron::run                                 | get-cron-run                    |
-| 13  | GET     | GET                         | /~/queue/run                    | \App\Controller\Queue::run                                | get-queue-run                   |
-| 14  | GET     | GET                         | /~/queue/worker/Dummy::do/*     | \App\Controller\Queue::workerAutoRouteResolve             | get-queue-worker-dummy-do       |
-| 15  | GET     | GET                         | /~/queue/worker/Email::new/*    | \App\Controller\Queue::workerAutoRouteResolve             | get-queue-worker-email-new      |
+| 13  | GET     | GET                         | /~/queue/worker/Dummy::do/*     | \App\Controller\Queue::workerAutoRouteResolve             | get-queue-worker-dummy-do       |
+| 14  | GET     | GET                         | /~/queue/worker/Email::new/*    | \App\Controller\Queue::workerAutoRouteResolve             | get-queue-worker-email-new      |
+| 15  | GET     | GET                         | /~/queue/worker/run             | \App\Controller\Queue::workerRun                          | get-queue-worker-run            |
 ~~~
 
 Available commands for the "routes" namespace:

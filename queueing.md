@@ -12,7 +12,6 @@
 - [`getAmount`](#getAmount)
 - [`expire`](#expire)
 - [Queue Config](#Queue-Config)
-- [Queue run](#Queue-run)
 
 🛈 This requires a [Database](/2.x/database) setup.
        
@@ -211,16 +210,16 @@ _config_
 ~~~php
 MVC_QUEUE: {
 
-    // prefix for AutoRoutes                      /~                     /queue
+    // prefix for AutoRoutes
     $aConfig['MVC_QUEUE_ROUTE_PREFIX'] = $aConfig['MVC_ROUTE_PREFIX'] . '/queue';
 
     // Route for running Queue; calling Worker on Jobs
     // @see modules/{module}/etc/config/{module}/config/_queue.php
     // @see modules/{module}/etc/routing/service.php
-    $aConfig['MVC_QUEUE_RUN'] = $aConfig['MVC_QUEUE_ROUTE_PREFIX'] . '/run';
+    $aConfig['MVC_QUEUE_RUN'] = $aConfig['MVC_QUEUE_ROUTE_PREFIX'] . '/worker/run';
 
     // Class::method responsible for running Queue
-    $aConfig['MVC_QUEUE_RUN_CLASSMETHOD'] = '\App\Controller\Queue::run';
+    $aConfig['MVC_QUEUE_RUN_CLASSMETHOD'] = '\App\Controller\Queue::workerRun';
 
     // Worker Route Structure
     $aConfig['MVC_QUEUE_WORKER_AUTO_ROUTE_PREFIX'] = $aConfig['MVC_QUEUE_ROUTE_PREFIX'] . '/worker';
@@ -232,21 +231,3 @@ MVC_QUEUE: {
     $aConfig['MVC_QUEUE_RUNTIME_SECONDS'] = 300;
 }
 ~~~
-
-
-------------------------------------------------------------------------------------------------------------------------
-
-<a id="Queue-run"></a>
-## Queue run
-
-If Queue config not changed, the route is `/~/queue/run`.
-
-This route is saved to the variable `$aConfig['MVC_QUEUE_RUN']`. 
-
-check `php emvicy routes:list` and watch out for queue routes.
-
-| No  | Method  | Methods assigned | Route           | Target                        | Tag            |
-|-----|---------|------------------|-----------------|-------------------------------|----------------|
-| 13  | GET     | GET              | `/~/queue/run`  | `\App\Controller\Queue::run`  | get-queue-run  |
-
-
