@@ -94,7 +94,7 @@ _`etc/routing/service.php`_
 \MVC\Worker::workerAutoRoute();
 
 // adds a route for calling worker getting queue jobs done
-//              '/~/queue/run'                    '\App\Controller\Queue::run'
+//              '/~/queue/worker/run'             '\App\Controller\Queue::run'
 \MVC\Route::GET(\MVC\Config::get_MVC_QUEUE_RUN(), \MVC\Config::get_MVC_QUEUE_RUN_CLASSMETHOD());
 
 #-------------------------------------------------------------------------------------------------------------------
@@ -115,7 +115,7 @@ _Example output of `php emvicy routes:list`_
 
 | No  | Method  | Methods assigned | Route                           | Target                                           | Tag                         |
 |-----|---------|------------------|---------------------------------|--------------------------------------------------|-----------------------------|
-| 14  | GET     | GET              | `/~/queue/worker/Dummy::do/*`   | `\App\Controller\Queue::workerAutoRouteResolve`  | get-queue-worker-dummy-do   |
+| 14  | GET     | GET              | `/~/queue/worker/Bar::do/*`   | `\App\Controller\Queue::workerAutoRouteResolve`  | get-queue-worker-dummy-do   |
 
 **special routes**
 
