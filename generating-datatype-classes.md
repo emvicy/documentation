@@ -8,9 +8,10 @@ Then just run the Generator and it will create the Class for you.
 - [Configuration](#Configuration)
   - [Array Notation](#array_config)
   - [Object Notation](#object_config)
+- [Creation](#Creation)
 - [Note regarding php data types](#Hint)
 
----
+------------------------------------------------------------------------------------------------------------------------
 
 <a id="Configuration"></a>
 ## Configuration
@@ -19,21 +20,7 @@ Write your own Configurations.
 
 _Place for DataType Generating Configurations; (assuming module `Foo`)_  
 ~~~
-/modules/Foo/etc/config/DataType/
-~~~
-
-There is already a Configuration file `datatype.php`
-
-~~~
-/modules/Foo/etc/config/DataType/datatype.php
-~~~
-
-Best way to start is to extend this file.  
-After you made your edits, just run the file on command line
-
-~~~bash
-cd /modules/Foo/etc/config/DataType;
-php myDataTypeClass.php
+modules/Foo/etc/config/Foo/config/_datatype.php
 ~~~
 
 <a id="array_config"></a>
@@ -172,7 +159,26 @@ $oDTConfig = \MVC\DataType\DTConfig::create()
 $oDTGenerator = \MVC\Generator\DataType::create()->initConfigObject($oDTConfig);
 ~~~
 
----
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="Creation"></a>
+## Creation
+
+create DataType class files for your module by executing this command:
+
+_creates datatype classes for module `Foo`_
+~~~bash
+php emvicy datatype:module Foo
+~~~
+
+create DataType class files for all modules by executing this command:
+
+_creates datatype classes for all modules_
+~~~bash
+php emvicy datatype:all
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
 
 <a id="Hint"></a>
 ## Note regarding php data types

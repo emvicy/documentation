@@ -1,9 +1,16 @@
 
 # Logging
 
+- [Log a message into a Logfile](#log-a-message-into-a-logfile)
 - [Configuration](#configuration)
+  - [Logging on/off](#Logging-on-off)
+  - [Log file places](#Log-file-places)
+  - [Log details](#Log-details)
 
 ------------------------------------------------------------------------------------------------------------------------
+
+<a id="log-a-message-into-a-logfile"></a>
+## Log a message into a Logfile
 
 _default path for logfiles_  
 ~~~
@@ -23,6 +30,7 @@ _write into another logfile_
 
 All Log Entries show:  
 - Date and Time
+- process id (pid)
 - Host
 - Environment
 - IP Address
@@ -39,44 +47,46 @@ Extra LogInfos for Events
 
 _Example_    
 ~~~bash
-2023-07-25 16:08:43     foo.local       develop 127.0.0.1       2023072516084364bfd76bbbfa8     ...........no.session...........        1       /application/init/util/bootstrap.php, 111       ##########      new Request     apache2handler  GET /
+2025-02-12 13:11:43  12345  localhost develop  0.0.0.0  2023072516084364bfd76bbbfa8  ...........no.session...........  1  /modules/Cdm/etc/event/request.php, 45  object(MVC\DataType\DTRequestIn)#343 (18) { … }
 ~~~
 
----
+------------------------------------------------------------------------------------------------------------------------
 
 <a id="configuration"></a>
 ## Configuration
 
 Preferably change the settings in the [environment configuration file](/2.x/configuration#Modules-environment-config-file) of your module according to your needs.
 
-_Settings for Logging_  
+it is recommended to set a logrotate mechanism for these logfiles as they may grow quickly.
+
+<a id="Logging-on-off"></a>
+**Logging on/off**
+
+_Example `modules/Foo/etc/config/Foo/config/develop.php`_  
 ~~~php
-/**-----------------------------------------------------------------------------------------------------------------
- * Log
- * consider a logrotate mechanism for these logfiles as they may grow quickly
- */
-$aConfig['MVC_LOG_SQL'] = true;                 // logging enabled true|false
-$aConfig['MVC_LOG_EVENT'] = true;               // logging enabled true|false
-// logging of each simple "RUN" event into MVC_LOG_FILE_EVENT
-// remember:
-// - events marked as "RUN": fired events without any listener (nothing happens)
-// - events marked as "RUN+": fired events with bonded listeners / closures to be executed
-// be aware that setting this to "true" would produce much data in the logfile (consider using logrotate!)
-// anyway this might be useful for a develop environment, as it helps debugging and understanding
-$aConfig['MVC_LOG_EVENT_RUN'] = false;          // logging enabled true|false
-$aConfig['MVC_EVENT_LOG_RUN'] = $aConfig['MVC_LOG_EVENT_RUN']; /** @deprecated use instead: MVC_LOG_EVENT_RUN */
-$aConfig['MVC_LOG_POLICY'] = true;              // logging enabled true|false
-$aConfig['MVC_LOG_ERROR'] = true;               // logging enabled true|false
-$aConfig['MVC_LOG_NOTICE'] = true;              // logging enabled true|false
-$aConfig['MVC_LOG_WARNING'] = true;             // logging enabled true|false
-$aConfig['MVC_LOG_REQUEST'] = true;            // logging enabled true|false
-$aConfig['MVC_LOG_DEFAULT'] = true;             // logging enabled true|false
-$aConfig['MVC_LOG_ROUTEINTERVALL'] = true;      // logging enabled true|false
+$aConfig['MVC_LOG_SQL'] = true;
+$aConfig['MVC_LOG_CRON'] = true;
+$aConfig['MVC_LOG_EVENT'] = false;
+$aConfig['MVC_LOG_ERROR'] = true;               // recommended to set to true for ALL environments
+$aConfig['MVC_LOG_QUEUE'] = true;
+$aConfig['MVC_LOG_NOTICE'] = true;
+$aConfig['MVC_LOG_POLICY'] = true;
+$aConfig['MVC_LOG_PROCESS'] = true;
+$aConfig['MVC_LOG_WARNING'] = true;
+$aConfig['MVC_LOG_REQUEST'] = true;
+$aConfig['MVC_LOG_DEFAULT'] = true;
+$aConfig['MVC_LOG_EVENT_RUN'] = false;
+$aConfig['MVC_LOG_AUTOLOADER'] = false;         // recommended to set to true for develop environments only: Log autoloader actions
+$aConfig['MVC_LOG_ROUTEINTERVALL'] = false;      // recommended to set to true for develop environments only: Log Route Intervall actions
+$aConfig['MVC_LOG_FORCE_LINEBREAK'] = true;     // force linebreaks in logfiles no matter what, improves readability of logs but blows up logfile
+~~~
 
-$aConfig['MVC_LOG_FORCE_LINEBREAK'] = false;    // force linebreaks in logfiles no matter what
+<a id="Log-file-places"></a>
+**Log file places**
 
-// Log file places
+to change Log file places overwrite these settings from [Emvicy config](/2.x/configuration#Emvicy-config-folder) in your module's config files:
 
+~~~php
 $aConfig['MVC_LOG_FILE_DIR'] = $aConfig['MVC_APPLICATION_PATH'] . '/log/';          # trailing slash required
 $aConfig['MVC_LOG_FILE_DEFAULT'] = $aConfig['MVC_LOG_FILE_DIR'] . 'default.log';
 $aConfig['MVC_LOG_FILE_ERROR'] = $aConfig['MVC_LOG_FILE_DIR'] . 'error.log';
@@ -93,7 +103,14 @@ $aConfig['MVC_LOG_FILE_ROUTEINTERVALL'] = $aConfig['MVC_LOG_FILE_DIR'] . 'route_
 // as long as the db user is going to write and not the webserver user
 // 2) consider a logrotate mechanism for this logfile as it may grow quickly
 $aConfig['MVC_LOG_FILE_DB_DIR'] = '/tmp/';
+~~~
 
+<a id="Log-details"></a>
+**Log details**
+
+to define control log details you could overwrite these settings from [Emvicy config](/2.x/configuration#Emvicy-config-folder) in your module's config files:
+
+~~~php
 // control log details
 $aConfig['MVC_LOG_DETAIL'] = [
     'date' => true,

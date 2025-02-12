@@ -1,37 +1,258 @@
 
 # DataType Classes
 
-- [`DTRoute`](#DTRoute)
-- [`DTRequestIn`](#DTRequestIn)
-- [`DTFileinfo`](#DTFileinfo)
+- [`DTArrayObject`](#DTArrayObject)
+- [`DTKeyValue`](#DTKeyValue)
+- [`DTClass`](#DTClass)
+- [`DTConfig`](#DTConfig)
+- [`DTConstant`](#DTConstant)
+- [`DTCronTask`](#DTCronTask)
+- [`DTDBOption`](#DTDBOption)
+- [`DTDBSet`](#DTDBSet)
+- [`DTDBWhere`](#DTDBWhere)
+- [`DTDBWhereRelation`](#DTDBWhereRelation)
 - [`DTEventContext`](#DTEventContext)
+- [`DTFileinfo`](#DTFileinfo)
+- [`DTFileUpload`](#DTFileUpload)
+- [`DTProperty`](#DTProperty)
+- [`DTRequestIn`](#DTRequestIn)
+- [`DTRequestOut`](#DTRequestOut)
+- [`DTResponse`](#DTResponse)
+- [`DTRoute`](#DTRoute)
+- [`DTRoutingAdditional`](#DTRoutingAdditional)
 
----
+all these classes resides in `\MVC\DataType\`
 
-<a id="DTRoute"></a>
-## `DTRoute`
+------------------------------------------------------------------------------------------------------------------------
 
-- This Class is used to store Route Information.
-- An object of this class gets being returned by `Route::getCurrent()` (see [/2.x/routing#Get-current-route](/2.x/routing#Get-current-route))
+<a id="DTArrayObject"></a>
+## `DTArrayObject`
 
-~~~php
-/** @var \MVC\DataType\DTRoute $oDTRoute */
-$oDTRoute = \MVC\Route::getCurrent();
-~~~
-~~~
-object(MVC\DataType\DTRoute)#15 (9) {
-    ["path":protected]=>string(1) "/"
-    ["method":protected]=>string(3) "GET"
-    ["methodsAssigned":protected]=>array(1) {[0]=> string(3) "GET"}
-    ["query":protected]=>string(30) "module=Foo&c=Index&m=index"
-    ["class":protected]=>string(24) "Foo\Controller\Index"
-    ["classFile":protected]=>string(128) "/var/www/Emvicy/modules/Foo/Controller/Index.php"
-    ["module":protected]=>string(7) "Foo"
-    ["c":protected]=>string(5) "Index"
-    ["m":protected]=>string(5) "index"
-    ["additional":protected]=>string(0) ""
+~~~bash
+ MVC\DataType\DTArrayObject {#91 ▼
+  #aKeyValue: []
 }
 ~~~
+
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="DTKeyValue"></a>
+## `DTKeyValue`
+
+~~~bash
+ MVC\DataType\DTKeyValue {#91 ▼
+  #sKey: ""
+  #iIndex: null
+  #sValue: null
+  #mOptional1: null
+  #mOptional2: null
+  #mOptional3: null
+}
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="DTClass"></a>
+## `DTClass`
+
+~~~bash
+ MVC\DataType\DTClass {#91 ▼
+  #name: ""
+  #file: ""
+  #extends: ""
+  #namespace: ""
+  #trait: []
+  #constant: []
+  #property: []
+  #createHelperMethods: true
+}
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="DTConfig"></a>
+## `DTConfig`
+
+~~~bash
+ MVC\DataType\DTConfig {#91 ▼
+  #dir: ""
+  #unlinkDir: false
+  #class: []
+}
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="DTConstant"></a>
+## `DTConstant`
+
+~~~bash
+ MVC\DataType\DTConstant {#91 ▼
+  #key: ""
+  #value: null
+  #visibility: ""
+}
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="DTCronTask"></a>
+## `DTCronTask`
+
+~~~bash
+ MVC\DataType\DTCronTask {#91 ▼
+  #sRoute: ""
+  #iIntervall: 60
+  #sStaging: ""
+  #sCommand: ""
+  #iPid: 0
+}
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="DTDBOption"></a>
+## `DTDBOption`
+
+~~~bash
+ MVC\DataType\DTDBOption {#91 ▼
+  #sValue: ""
+}
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="DTDBSet"></a>
+## `DTDBSet`
+
+~~~bash
+ MVC\DataType\DTDBSet {#91 ▼
+  #sKey: ""
+  #sValue: null
+}
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="DTDBWhere"></a>
+## `DTDBWhere`
+
+~~~bash
+ MVC\DataType\DTDBWhere {#91 ▼
+  #sKey: ""
+  #sRelation: "="
+  #sValue: ""
+}
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="DTDBWhereRelation"></a>
+## `DTDBWhereRelation`
+
+~~~bash
+ MVC\DataType\DTDBWhereRelation {#91}
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="DTEventContext"></a>
+## `DTEventContext`
+
+- This Class provides various information about the context of an event.
+- An object of this class is passed to executed Closures in `Event::bind()`
+
+~~~bash
+MVC\DataType\DTEventContext {#91 ▼
+  #sEvent: ""
+  #sEventOrigin: ""
+  #mRunPackage: ""
+  #aBonded: []
+  #sBondedBy: ""
+  #sCalledIn: ""
+  #oCallback: null
+  #sCallbackDumped: ""
+  #sMessage: ""
+}
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="DTFileinfo"></a>
+## `DTFileinfo`
+
+- This Class is used to store File Information.
+- An object of this class gets being returned by [File::info()](/2.x/file#info)
+
+~~~php
+/** @var \MVC\DataType\DTFileinfo $oDTFileinfo */
+$oDTFileinfo = \MVC\File::info(__FILE__);
+~~~
+
+~~~bash
+ MVC\DataType\DTFileinfo {#91 ▼
+  #dirname: ""
+  #basename: ""
+  #path: ""
+  #is_file: false
+  #is_dir: false
+  #extension: ""
+  #filename: ""
+  #name: ""
+  #passwd: ""
+  #uid: 0
+  #gid: 0
+  #filemtime: 0
+  #filectime: 0
+  #filesize: 0
+  #gecos: ""
+  #dir: ""
+  #shell: ""
+  #mimetype: ""
+}
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="DTFileUpload"></a>
+## `DTFileUpload`
+
+~~~bash
+ MVC\DataType\DTFileUpload {#91 ▼
+  #name: []
+  #full_path: []
+  #type: []
+  #tmp_name: []
+  #error: []
+  #size: []
+}
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="DTProperty"></a>
+## `DTProperty`
+
+~~~bash
+ MVC\DataType\DTProperty {#91 ▼
+  #key: ""
+  #var: "string"
+  #value: null
+  #visibility: "protected"
+  #static: false
+  #setter: true
+  #getter: true
+  #explicitMethodForValue: false
+  #listProperty: true
+  #createStaticPropertyGetter: true
+  #setValueInConstructor: true
+  #forceCasting: false
+  #required: false
+  #addMyMVCEvents: true
+}
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
 
 <a id="DTRequestIn"></a>
 ## `DTRequestIn`
@@ -44,9 +265,32 @@ object(MVC\DataType\DTRoute)#15 (9) {
 $oDTRequestIn = \MVC\Request::in();
 ~~~
 
-_Example_  
+_`$oDTRequestIn`_  
+~~~bash
+ MVC\DataType\DTRequestIn {#91 ▼
+  #requestMethod: ""
+  #full: ""
+  #protocol: ""
+  #scheme: ""
+  #requestUri: ""
+  #path: ""
+  #host: ""
+  #pathArray: []
+  #pathParamArray: []
+  #query: ""
+  #queryArray: []
+  #headerArray: []
+  #input: ""
+  #ip: ""
+  #cookieArray: []
+  #isSecure: false
+  #isCli: false
+  #isHttp: false
+}
 ~~~
-// type: object
+
+_Example_
+~~~
 \MVC\DataType\DTRequestIn::__set_state(array(
       'requestMethod' => 'GET',
       'full' => 'https://emvicy2x.ddev.site/imprint/foo/bar/baz?a=b',
@@ -104,66 +348,148 @@ _Example_
 ))
 ~~~
 
-<a id="DTFileinfo"></a>
-## `DTFileinfo`
+------------------------------------------------------------------------------------------------------------------------
 
-- This Class is used to store File Information.
-- An object of this class gets being returned by [File::info()](/2.x/file#info)
+<a id="DTRequestOut"></a>
+## `DTRequestOut`
+
+~~~bash
+ MVC\DataType\DTRequestOut {#91 ▼
+  #eRequestMethod: null
+  #sUrl: ""
+  #aHeader: []
+  #aData: []
+  #aOption: []
+}
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="DTResponse"></a>
+## `DTResponse`
+
+~~~bash
+ MVC\DataType\DTResponse {#91 ▼
+  #body: ""
+  #raw: ""
+  #headers: []
+  #status_code: 0
+  #protocol_version: 0
+  #success: false
+  #redirects: 0
+  #url: ""
+  #history: []
+  #cookies: []
+}
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="DTRoute"></a>
+## `DTRoute`
+
+- This Class is used to store Route Information.
+- An object of this class gets being returned by `Route::getCurrent()` (see [/2.x/routing#Get-current-route](/2.x/routing#Get-current-route))
 
 ~~~php
-/** @var \MVC\DataType\DTFileinfo $oDTFileinfo */
-$oDTFileinfo = \MVC\File::info(__FILE__);
+/** @var \MVC\DataType\DTRoute $oDTRoute */
+$oDTRoute = \MVC\Route::getCurrent();
 ~~~
-~~~
-object(MVC\DataType\DTFileinfo)#84 (16) {
-  ["dirname":protected]=>string(151) "/var/www/Emvicy/modules/Doc/Controller"
-  ["basename":protected]=>string(9) "Index.php"
-  ["path":protected]=>string(161) "/var/www/Emvicy/modules/Doc/Controller/Index.php"
-  ["is_file":protected]=>bool(true)
-  ["is_dir":protected]=>bool(false)
-  ["extension":protected]=>string(3) "php"
-  ["filename":protected]=>string(5) "Index"
-  ["name":protected]=>string(6) "admin1"
-  ["passwd":protected]=>string(1) "x"
-  ["uid":protected]=>int(1000)
-  ["gid":protected]=>int(1000)
-  ["gecos":protected]=>string(9) "admin1,,,"
-  ["dir":protected]=>string(12) "/var/www"
-  ["shell":protected]=>string(9) "/bin/bash"
-  ["filemtime":protected]=>int(1666350030)
-  ["filectime":protected]=>int(1666350030)
-  ["mimetype":protected]=>string(10) "text/x-php"
+
+_`$oDTRoute`_  
+~~~bash
+ MVC\DataType\DTRoute {#91 ▼
+  #path: ""
+  #requestMethod: ""
+  #methodsAssigned: []
+  #query: ""
+  #module: ""
+  #class: ""
+  #classFile: ""
+  #method: ""
+  #additional: null
+  #tag: ""
 }
 ~~~
 
-<a id="DTEventContext"></a>
-## `DTEventContext`
-
-- This Class provides various information about the context of an event.
-- An object of this class is passed to executed Closures in `Event::bind()`
-
+_Example_  
 ~~~
-object(MVC\DataType\DTEventContext)#78 (9) {
-  ["sEvent":protected]=>string(0) ""
-  ["sEventOrigin":protected]=> string(0) ""
-  ["mRunPackage":protected]=> string(0) ""
-  ["aBonded":protected]=> array(0) {}
-  ["sBondedBy":protected]=>string(0) ""
-  ["sCalledIn":protected]=>string(0) ""
-  ["oCallback":protected]=>NULL
-  ["sCallbackDumped":protected]=>string(0) ""
-  ["sMessage":protected]=>string(0) ""
+\MVC\DataType\DTRoute::__set_state(array(
+      'path' => '/',
+      'requestMethod' => 'GET',
+      'methodsAssigned' =>    array (
+        0 => 'GET',
+    ),
+      'query' => '\\Foo\\Controller\\Index::index',
+      'module' => 'Foo',
+      'class' => '\\Foo\\Controller\\Index',
+      'classFile' => '/var/www/html/modules/Foo/Controller/Index.php',
+      'method' => 'index',
+      'additional' =>    \Foo\DataType\DTRoutingAdditional::__set_state(array(
+          'sTitle' => 'Home',
+          'sTemplate' => 'Frontend/content/index.tpl',
+          'sContent' => '',
+          'aStyle' =>        array (
+            0 => '/Emvicy/assets/bootstrap-5.3.3-dist/css/bootstrap.min.css',
+            1 => '/Emvicy/assets/fontawesome-free-6.7.2-web/css/all.min.css',
+            2 => '/Emvicy/styles/Emvicy.min.css',
+            3 => '/Ws_old/assets/pnotify.min.css',
+            4 => '/Ws_old/assets/pnotify.brighttheme.min.css',
+        ),
+          'aScript' =>        array (
+            0 => '/Emvicy/assets/jquery-3.7.1/jquery-3.7.1.min.js',
+            1 => '/Emvicy/assets/jquery-cookie-1.4.1/jquery.cookie.min.js',
+            2 => '/Emvicy/assets/popper-v2.11.8/popper.min.js',
+            3 => '/Emvicy/assets/bootstrap-5.3.3-dist/js/bootstrap.min.js',
+            4 => '/Emvicy/scripts/cookieConsent.min.js',
+            5 => '/Ws_old/assets/pnotify.min.js',
+            6 => '/Ws_old/assets/pnotify.desktop.min.js',
+            7 => '/Ws_old/scripts/pnotify.min.js',
+            8 => '/Ws/scripts/wss.domain.port.min.js',
+        ),
+    )),
+      'tag' => 'home',
+))
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="DTRoutingAdditional"></a>
+## `DTRoutingAdditional`
+
+~~~bash
+ MVC\DataType\DTRoutingAdditional {#91 ▼
+  #sTitle: ""
+  #sTemplate: ""
+  #sContent: ""
+  #aStyle: []
+  #aScript: []
 }
 ~~~
 
----
-
-## `DTArrayObject`
-## `DTKeyValue`
-## `DTClass`
-## `DTConfig`
-## `DTConstant`
-## `DTProperty`
-
-
-
+_Example_  
+~~~
+\Foo\DataType\DTRoutingAdditional::__set_state(array(
+      'sTitle' => 'Home',
+      'sTemplate' => 'Frontend/content/index.tpl',
+      'sContent' => '',
+      'aStyle' =>    array (
+        0 => '/Emvicy/assets/bootstrap-5.3.3-dist/css/bootstrap.min.css',
+        1 => '/Emvicy/assets/fontawesome-free-6.7.2-web/css/all.min.css',
+        2 => '/Emvicy/styles/Emvicy.min.css',
+        3 => '/Ws_old/assets/pnotify.min.css',
+        4 => '/Ws_old/assets/pnotify.brighttheme.min.css',
+    ),
+      'aScript' =>    array (
+        0 => '/Emvicy/assets/jquery-3.7.1/jquery-3.7.1.min.js',
+        1 => '/Emvicy/assets/jquery-cookie-1.4.1/jquery.cookie.min.js',
+        2 => '/Emvicy/assets/popper-v2.11.8/popper.min.js',
+        3 => '/Emvicy/assets/bootstrap-5.3.3-dist/js/bootstrap.min.js',
+        4 => '/Emvicy/scripts/cookieConsent.min.js',
+        5 => '/Ws_old/assets/pnotify.min.js',
+        6 => '/Ws_old/assets/pnotify.desktop.min.js',
+        7 => '/Ws_old/scripts/pnotify.min.js',
+        8 => '/Ws/scripts/wss.domain.port.min.js',
+    ),
+))
+~~~

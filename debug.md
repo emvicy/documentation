@@ -99,7 +99,7 @@ _Examples_
 
 *equals `var_export()`, except that arrays are noted with square brackets `[ ]`*      
 ~~~php
-Debug::varExport($GLOBALS['aConfig'];
+Debug::varExport($GLOBALS['aConfig']);
 ~~~
 
 *equals `var_export()`*  
@@ -134,8 +134,8 @@ _Result of `$aDebug`_
 ~~~
 // type: array, items: 4
 [
-    'sFile' => '/var/www/htdocs/Emvicy/application/library/MVC/Reflex.php',
-    'sLine' => 153,
+    'sFile' => '/var/www/html/application/library/MVC/Reflex.php',
+    'sLine' => 140,
     'sClass' => 'MVC\\Reflex',
     'sFunction' => 'reflect',
 ]
