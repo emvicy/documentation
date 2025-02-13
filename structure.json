@@ -42,7 +42,6 @@
     "Header": "header.md",
     "Http\\Status": "http-status.md",
     "Lock": "lock.md",
-    "logrotate": "logrotate.md",
     "Maintenance": "maintenance.md",
     "Media\\Type": "media-type.md",
     "Menu": "menu.md",

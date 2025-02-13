@@ -18,18 +18,19 @@
 <a id="Request-in"></a>
 ## `in()` - get Information about incoming Request
 
-_Example **GET** Request_
+_the `in()` method returns an object of DataType class `DTRequestIn` representing the incoming Request_  
+
+_method_
 ~~~
-http://mymvc.ueffing.local/foo/bar/?a=1;b=2;c=3
+public static function in() : DTRequestIn
 ~~~
 
-_`in()` returns `DTRequestIn` object representing the incoming Request_  
+_usage_  
 ~~~php
 $oDTRequestIn = \MVC\Request::in();
 ~~~
+- As it gives you an object of DataType class `MVC\DataType\DTRequestIn`, you can access all key/values by getter and setter.
 - see [/2.x/datatype-classes#DTRequestIn](/2.x/datatype-classes#DTRequestIn)
-
-As it gives you an object of type `MVC\DataType\DTRequestIn`, you can access all key/values by getter and setter.
 
 _For example_  
 ~~~php
@@ -126,7 +127,7 @@ string(10) "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Geck
 
 _Example **PUT** Request_
 ~~~bash
-curl -X PUT http://mymvc.ueffing.local/api/1.0.0/user/1969/ -H "Content-Type: application/json" -d '{"key": "value"}'
+curl -X PUT https://emvicy2x.ddev.site/api/1.0/foo/bar/ -H "Content-Type: application/json" -d '{"key": "value"}'
 ~~~
 
 _Command_
@@ -152,7 +153,7 @@ _Example route_
 - _for more Information about setting up such routes, see [Routing with Path Params / Variables](/2.x/routing#path-params)_
 
 _Example Request_
-- `/api/1/Foo/Bar/what/else/`
+- `/api/1.0/foo/bar/what/else/`
 
 <a id="Get-all-Variables"></a>
 **Get all Variables**
@@ -178,13 +179,25 @@ _Example Result of `$aPathParam`_
 
 _Command_
 ~~~php
-$aPathParam = \MVC\Request::in()->get_pathParamArray()['name']
+$aPathParam = \MVC\Request::in()->get_pathParamArray()['name'];
 ~~~
 
 _Example Result of `$sPathParam`_
 ~~~
 Foo
 ~~~
+
+You can pass this function to the `get` function of Emvicy to receive an alternative value if the key you are looking for does not exist
+
+_Command_
+~~~php
+$aPathParam = get(\MVC\Request::in()->get_pathParamArray()['forename'], 'n/a');
+~~~
+_Result_  
+~~~
+n/a
+~~~
+
 
 <a id="Get-the-overlapping-string-on-wildcard-route-paths"></a>
 **Get the overlapping string on wildcard route paths**

@@ -22,27 +22,27 @@ $oDTFileinfo = File::info(__FILE__);
 ~~~
 
 _return Datatype object `$oDTFileinfo` (see [DTFileinfo](/2.x/datatype-classes#DTFileinfo))_  
-~~~
-// type: object
-\MVC\DataType\DTFileinfo::__set_state(array(
-      'dirname' => '/var/www/htdocs/Emvicy/modules/Foo/Controller',
-      'basename' => 'Index.php',
-      'path' => '/var/www/htdocs/Emvicy/modules/Foo/Controller/Index.php',
-      'is_file' => true,
-      'is_dir' => false,
-      'extension' => 'php',
-      'filename' => 'Index',
-      'name' => 'admin1',
-      'passwd' => 'x',
-      'uid' => 1000,
-      'gid' => 1000,
-      'gecos' => 'admin1,,,',
-      'dir' => '/var/www',
-      'shell' => '/bin/bash',
-      'filemtime' => 1703679863,
-      'filectime' => 1703679863,
-      'mimetype' => 'text/x-php',
-))
+~~~bash
+ MVC\DataType\DTFileinfo {#91 ▼
+  #dirname: "/var/www/html/modules/Foo/Controller"
+  #basename: "Index.php"
+  #path: "/var/www/html/modules/Foo/Controller/Index.php"
+  #is_file: true
+  #is_dir: false
+  #extension: "php"
+  #filename: "Index"
+  #name: "admin1"
+  #passwd: "x"
+  #uid: 1000
+  #gid: 1000
+  #filemtime: 1739435042
+  #filectime: 1739435042
+  #filesize: 7562
+  #gecos: ""
+  #dir: "/home/admin1"
+  #shell: "/bin/bash"
+  #mimetype: "text/x-php"
+}
 ~~~
 
 _Example: get Extension_  

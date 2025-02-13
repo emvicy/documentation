@@ -55,7 +55,7 @@ _Example_
 <a id="configuration"></a>
 ## Configuration
 
-Preferably change the settings in the [environment configuration file](/2.x/configuration#Modules-environment-config-file) of your module according to your needs.
+Preferably change the settings in your module's [environment configuration file](/2.x/configuration#Modules-environment-config-file) according to your needs.
 
 it is recommended to set a logrotate mechanism for these logfiles as they may grow quickly.
 
@@ -84,7 +84,7 @@ $aConfig['MVC_LOG_FORCE_LINEBREAK'] = true;     // force linebreaks in logfiles 
 <a id="Log-file-places"></a>
 **Log file places**
 
-to change Log file places overwrite these settings from [Emvicy config](/2.x/configuration#Emvicy-config-folder) in your module's config files:
+to change Log file places overwrite these settings from [Emvicy config](/2.x/configuration#Emvicy-config-folder) in your module's [environment configuration file](/2.x/configuration#Modules-environment-config-file):
 
 ~~~php
 $aConfig['MVC_LOG_FILE_DIR'] = $aConfig['MVC_APPLICATION_PATH'] . '/log/';          # trailing slash required
@@ -108,7 +108,7 @@ $aConfig['MVC_LOG_FILE_DB_DIR'] = '/tmp/';
 <a id="Log-details"></a>
 **Log details**
 
-to define control log details you could overwrite these settings from [Emvicy config](/2.x/configuration#Emvicy-config-folder) in your module's config files:
+to define control log details you could overwrite these settings from [Emvicy config](/2.x/configuration#Emvicy-config-folder) in your module's [environment configuration file](/2.x/configuration#Modules-environment-config-file):
 
 ~~~php
 // control log details

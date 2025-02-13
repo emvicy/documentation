@@ -3,10 +3,12 @@
 
 Following iana's 'Hypertext Transfer Protocol (HTTP) Status Code Registry' <a href="https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml" target="_blank"> https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml </a>
 
-Emvicy provides single classes for each of the 64 Status Codes.
+Emvicy provides single classes for each of the 64 Status Codes. Each class comes with:
 
-- Each class has the Status Code in its name
-- Each class has the Description in its name
+- Status Code _and_ Description in its class name (e.g. `Status_Accepted_202`)
+- constant `CODE`, containing the (int) Http Status Code value
+- constant `DESCRIPTION`, containing the (string) Http Status Code Description 
+- static method `header()`, which sends a header with CODE and DESCRIPTION
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

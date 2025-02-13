@@ -21,6 +21,13 @@ gets data from cache by key.
 Cache::getCache(string $sKey = '')
 ~~~
 
+_Command_  
+~~~php
+$mCacheContent = Cache::getCache('myUniqueCacheKey');
+~~~
+
+
+
 ---
 
 <a id="saveCache"></a>
