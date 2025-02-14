@@ -35,17 +35,21 @@ _Example: log current request object to debug.log when on develop environment_
 
 \MVC\Event::processBindConfigStack([
 
-    'mvc.request.getCurrentRequest.after' => [ // Event
-    
-        function (\MVC\DataType\DTArrayObject $oDTArrayObject) { // Closure
-        
-            // get request object
-            $oDTRequestCurrent = $oDTArrayObject->getDTKeyValueByKey('oDTRequestCurrent')->get_sValue();
+    /**
+     * after current request was get
+     */
+    'mvc.request.in.after' => [
+        /*
+         * logging requests
+         */
+        function(\MVC\DataType\DTRequestIn $oDTRequestIn, \MVC\DataType\DTEventContext $oDTEventContext) {
 
-            if ('develop' === \MVC\Config::get_MVC_ENV())
+            if (false === \MVC\Config::get_MVC_LOG_REQUEST())
             {
-                \MVC\Log::write($oDTRequestCurrent, 'debug.log');
+                return false;
             }
+
+            \MVC\Log::write(php_sapi_name () . ' ' . $oDTRequestIn->get_requestMethod() . ' ' . $oDTRequestIn->get_full(), \MVC\Config::get_MVC_LOG_FILE_REQUEST());
         },
     ],
 ]);
@@ -137,7 +141,7 @@ _Examples: with placeholder `*` - listens to all events whose event names match_
 
 _Example: bind a closure to a concrete Controller::method_ 
 ~~~php
-\MVC\Event::bind('\{module}\Controller\Index::foo', function (\MVC\DataType\DTArrayObject $oDTArrayObject, \MVC\DataType\DTEventContext $oDTEventContext) {
+\MVC\Event::bind('\Foo\Controller\Index::foo', function (\MVC\DataType\DTArrayObject $oDTArrayObject, \MVC\DataType\DTEventContext $oDTEventContext) {
     info($oDTArrayObject);
     display($oDTEventContext);
 });
@@ -249,92 +253,111 @@ _Example: delete *all* Events_
 | Event Name                                            | `Event::bind` perforemd in                                   | `Event::run` located in                                                                                 | value passed                                                    |
 |-------------------------------------------------------|--------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------|
 | app.controller.__construct.before                     |                                                              | `\App\Controller::__construct`                                                                          | `\MVC\DataType\DTRequestCurrent $oDTRequestCurrent`             |
-| mvc.event.init.after                                  |                                                              | `\MVC\Event::init`                                                                                      |                                                                 |
-| policy.index.requestMethodHasToMatchRouteMethod.after | modules/{module}/etc/event/policy.php                        | `\{module}\Policy\Index::requestMethodHasToMatchRouteMethod`                                            | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
+| app.controller.__destruct                             |                                                              | `\App\Controller::__destruct`                                                                           |                                                                 |
+| app.controller.cron.__destruct                        |                                                              | `\App\Controller\Cron::__destruct`                                                                      |                                                                 |
+| app.controller.cron.run.maintenance                   |                                                              | `\App\Controller\Cron::run`                                                                             |                                                                 |
+| app.controller.cron.run.warning                       |                                                              | `\App\Controller\Cron::run`                                                                             | `string $sWarningText`                                          |
+| app.controller.cron.run.after                         |                                                              | `\App\Controller\Cron::run`                                                                             | `string pid: $iPid, $sRoute`                                    |
+| app.controller.queue.worker                           |                                                              |                                                                                                         |                                                                 |
+| app.controller.queue.__destruct                       |                                                              |                                                                                                         |                                                                 |
+| app.model.menu.build.before                           |                                                              |                                                                                                         |                                                                 |
+| app.model.menu.build.after                            |                                                              |                                                                                                         |                                                                 |
+| app.table.queue.push.before                           |                                                              |                                                                                                         |                                                                 |
+| app.table.queue.push.after                            |                                                              |                                                                                                         |                                                                 |
+| app.table.queue.pop.before                            |                                                              |                                                                                                         |                                                                 |
+| app.table.queue.pop.after                             |                                                              |                                                                                                         |                                                                 |
+| app.table.queue.popall.before                         |                                                              |                                                                                                         |                                                                 |
+| app.table.queue.popall.after                          |                                                              |                                                                                                         |                                                                 |
+| app.table.queue.expire.before                         |                                                              |                                                                                                         |                                                                 |
+| app.table.queue.expire.after                          |                                                              |                                                                                                         |                                                                 |
 | mvc.application.construct.after                       |                                                              | `\MVC\Application::__construct`                                                                         |                                                                 |
+| mvc.application.destruct.before                       |                                                              | `\MVC\Application::__destruct`                                                                          | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
+| mvc.application.maintenance                           |                                                              |                                                                                                         |                                                                 |
 | mvc.application.setSession.before                     | modules/{module}/etc/event/default.php                       | `\MVC\Application::initSession`                                                                         |                                                                 |
 | mvc.application.setSession.after                      |                                                              | `\MVC\Application::initSession`                                                                         | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
-| mvc.application.destruct.before                       |                                                              | `\MVC\Application::__destruct`                                                                          | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
+| mvc.worker.after                                      |                                                              |                                                                                                         |                                                                 |
+| mvc.event.init.after                                  |                                                              | `\MVC\Event::init`                                                                                      |                                                                 |
 | mvc.controller.init.before                            | `\MVC\Request::getCurrentRequest`                            | `\MVC\Controller::init`                                                                                 |                                                                 |
 | mvc.controller.init.after                             |                                                              | `\MVC\Controller::init`                                                                                 | `$bSuccess`                                                     |
 | mvc.controller.runTargetClassPreconstruct.after       |                                                              | `\MVC\Controller::runTargetClassPreconstruct`                                                           | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
 | mvc.controller.destruct.before                        |                                                              | `\MVC\Controller::__destruct`                                                                           | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
+| mvc.debug.stop.after                                  | modules/{module}/etc/event/default.php                       | `\MVC\Debug::stop`                                                                                      | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
 | mvc.error                                             | `\MVC\Error::init`<br>modules/{module}/etc/event/default.php | `\MVC\Controller::runTargetClassPreconstruct`<br>`\MVC\Request::getUriProtocol`<br>`\MVC\Policy::apply` | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
-| mvc.policy.init.before                                |                                                              | `\MVC\Policy::init`                                                                                     |                                                                 |
+| mvc.lock.create                                       |                                                              | `\MVC\Lock::create`                                                                                     | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
 | mvc.policy.init.after                                 |                                                              | `\MVC\Policy::init`                                                                                     |                                                                 |
-| mvc.policy.set.before                                 |                                                              | `\MVC\Policy::set`                                                                                      | `array $aPolicy` _all declared policies_                        |
+| mvc.policy.init.before                                |                                                              | `\MVC\Policy::init`                                                                                     |                                                                 |
 | mvc.policy.set.after                                  |                                                              | `\MVC\Policy::set`                                                                                      | `array $aPolicy` _all declared policies_                        |
-| mvc.policy.unset.before                               |                                                              | `\MVC\Policy::unset`                                                                                    | `array $aPolicy` _all declared policies_                        |
+| mvc.policy.set.before                                 |                                                              | `\MVC\Policy::set`                                                                                      | `array $aPolicy` _all declared policies_                        |
 | mvc.policy.unset.after                                |                                                              | `\MVC\Policy::unset`                                                                                    | `array $aPolicy` _all declared policies_                        |
+| mvc.policy.unset.before                               |                                                              | `\MVC\Policy::unset`                                                                                    | `array $aPolicy` _all declared policies_                        |
 | mvc.policy.apply.before                               |                                                              | `\MVC\Policy::apply`                                                                                    | `array $aPolicy` _matching policy rules on the current request_ |
 | mvc.policy.apply.execute                              |                                                              | `\MVC\Policy::apply`                                                                                    | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
+| mvc.process.callRouteAsync.after                      |                                                              |                                                                                                         |                                                                 |
+| mvc.process.callRouteAsync.before                     |                                                              |                                                                                                         |                                                                 |
 | mvc.reflex.reflect.before                             |                                                              | `\MVC\Reflex::reflect`                                                                                  | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
-| mvc.reflex.reflect.targetObject.before                | modules/{module}/etc/event/default.php                       | `\MVC\Reflex::reflect`                                                                                  | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
 | mvc.reflex.reflect.targetObject.after                 | modules/{module}/etc/event/default.php                       | `\MVC\Reflex::reflect`                                                                                  | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
+| mvc.reflex.reflect.targetObject.before                | modules/{module}/etc/event/default.php                       | `\MVC\Reflex::reflect`                                                                                  | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
 | mvc.reflex.destruct.before                            |                                                              | `\MVC\Reflex::__destruct`                                                                               | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
-| mvc.route.init.before                                 |                                                              | `\MVC\Route::init`                                                                                      |                                                                 |
-| mvc.route.init.after                                  |                                                              | `\MVC\Route::init`                                                                                      |                                                                 |
-| `$sControllerClassName :: $sMethod`                   |                                                              | `\MVC\Reflex::reflect`                                                                                  |                                                                 |
-| mvc.request.getCurrentRequest.after                   |                                                              | `\MVC\Request::getCurrentRequest`                                                                       | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
+| mvc.request.in.after                                  |                                                              | `\MVC\Request::in`                                                                                      | `\MVC\DataType\DTRequestIn $oDTRequestIn`                       |
+| mvc.request.out.before                                |                                                              |                                                                                                         |                                                                 |
+| mvc.request.out.after                                 |                                                              |                                                                                                         |                                                                 |
 | mvc.request.redirect                                  |                                                              | `\MVC\Request::redirect`                                                                                | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
-| mvc.routeintervall.intervall.before                   | modules/{module}/etc/event/routeintervall.php                | `\MVC\RouteIntervall::intervall`                                                                        | `\MVC\DataType\DTCronTask $oDTCronTask`                         |
+| mvc.route.init.after                                  |                                                              | `\MVC\Route::init`                                                                                      |                                                                 |
+| mvc.route.init.before                                 |                                                              | `\MVC\Route::init`                                                                                      |                                                                 |
 | mvc.routeintervall.intervall.after                    | modules/{module}/etc/event/routeintervall.php                | `\MVC\RouteIntervall::intervall`                                                                        | `\MVC\DataType\DTCronTask $oDTCronTask`                         |
-| mvc.routeintervall.intervall.skip                     | modules/{module}/etc/event/routeintervall.php                | `\MVC\RouteIntervall::intervall`                                                                        | `\MVC\DataType\DTCronTask $oDTCronTask`                         |
+| mvc.routeintervall.intervall.before                   | modules/{module}/etc/event/routeintervall.php                | `\MVC\RouteIntervall::intervall`                                                                        | `\MVC\DataType\DTCronTask $oDTCronTask`                         |
 | mvc.routeintervall.intervall.end                      | modules/{module}/etc/event/routeintervall.php                | `\MVC\RouteIntervall::intervall`                                                                        | `\MVC\DataType\DTCronTask $oDTCronTask`                         |
+| mvc.routeintervall.intervall.skip                     | modules/{module}/etc/event/routeintervall.php                | `\MVC\RouteIntervall::intervall`                                                                        | `\MVC\DataType\DTCronTask $oDTCronTask`                         |
+| mvc.view.echoOut.off                                  | `\MVC\View::__construct`                                     |                                                                                                         |                                                                 |
+| mvc.view.echoOut.on                                   | `\MVC\View::__construct`                                     |                                                                                                         |                                                                 |
+| mvc.view.render.after                                 |                                                              | `\MVC\View::render`                                                                                     | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
+| mvc.view.render.off                                   | `\MVC\View::__construct`                                     |                                                                                                         |                                                                 |
+| mvc.view.render.on                                    | `\MVC\View::__construct`                                     |                                                                                                         |                                                                 |
 | mvc.view.render.before                                | `\MVC\InfoTool::__construct`                                 | `\MVC\View::render`                                                                                     | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
 | mvc.view.renderString.before                          |                                                              | `\MVC\View::renderString`                                                                               | `$sTemplateString`                                              |
 | mvc.view.renderString.after                           |                                                              | `\MVC\View::renderString`                                                                               | `$sRendered`                                                    |
-| mvc.view.render.after                                 |                                                              | `\MVC\View::render`                                                                                     | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
-| mvc.debug.stop.after                                  | modules/{module}/etc/event/default.php                       | `\MVC\Debug::stop`                                                                                      | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
-| mvc.lock.create                                       |                                                              | `\MVC\Lock::create`                                                                                     | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
-| mvc.view.echoOut.off                                  | `\MVC\View::__construct`                                     |                                                                                                         |                                                                 |
-| mvc.view.echoOut.on                                   | `\MVC\View::__construct`                                     |                                                                                                         |                                                                 |
-| mvc.view.render.off                                   | `\MVC\View::__construct`                                     |                                                                                                         |                                                                 |
-| mvc.view.render.on                                    | `\MVC\View::__construct`                                     |                                                                                                         |                                                                 |
+| policy.index.requestMethodHasToMatchRouteMethod.after | modules/{module}/etc/event/policy.php                        | `\{module}\Policy\Index::requestMethodHasToMatchRouteMethod`                                            | `\MVC\DataType\DTArrayObject $oDTArrayObject`                   |
+| `$sControllerClassName :: $sMethod`                   |                                                              | `\MVC\Reflex::reflect`                                                                                  |                                                                 |
 
 <a id="database_events"></a>  
 ### Database Events
 
-| Event Name                                 | `Event::bind` perforemd in          | `Event::run` located in               | value passed                                        |
-|--------------------------------------------|-------------------------------------|---------------------------------------|-----------------------------------------------------|
-| mvc.db.model.dbinit.construct.after        |                                     |                                       |                                                     |
-| mvc.db.model.dbpdo.fetchRow.sql            | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\DbPDO::fetchRow`       | `string $sSql`                                      |
-| mvc.db.model.dbpdo.fetchAll.sql            | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\DbPDO::fetchAll`       | `string $sSql`                                      |
-| mvc.db.model.dbpdo.query.sql               | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\DbPDO::query`          | `string $sSql`                                      |
-| mvc.db.model.db.construct.before           |                                     | `\MVC\DB\Model\Db::__construct`       | `\MVC\DataType\DTValue $oDTValue`                   |
-| mvc.db.model.db.construct.saveCache        | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::__construct`       |                                                     |
-| mvc.db.model.db.create.before              | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::create`            | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
-| mvc.db.model.db.create.sql                 | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::create`            | `string $sSql`                                      |
-| mvc.db.model.db.create.after               |                                     | `\MVC\DB\Model\Db::create`            | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
-| mvc.db.model.db.createTable.before         |                                     | `\MVC\DB\Model\Db::createTable`       | `\MVC\DataType\DTValue $oDTValue`                   |
-| mvc.db.model.db.createTable.after          |                                     | `\MVC\DB\Model\Db::createTable`       | `\MVC\DataType\DTValue $oDTValue`                   |
-| mvc.db.model.db.createTable.sql            | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::createTable`       | `string $sSql`                                      |
-| mvc.db.model.db.insert.sql                 | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::synchronizeFields` | `string $sSql`                                      |
-| mvc.db.model.db.retrieveTupel.before       |                                     | `\MVC\DB\Model\Db::retrieveTupel`     | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
-| mvc.db.model.db.retrieve.before            |                                     | `\MVC\DB\Model\Db::retrieve`          | `\MVC\DataType\DTValue $oDTValue`                   |
-| mvc.db.model.db.retrieve.sql               | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::retrieve`          | `string $sSql`                                      |
-| mvc.db.model.db.retrieve.after             |                                     | `\MVC\DB\Model\Db::retrieve`          | `\MVC\DataType\DTValue $oDTValue`                   |
-| mvc.db.model.db.count.before               |                                     | `\MVC\DB\Model\Db::count`             | `\MVC\DataType\DTValue $oDTValue`                   |
-| mvc.db.model.db.count.sql                  |                                     | `\MVC\DB\Model\Db::count`             | `string $sSql`                                      |
-| mvc.db.model.db.updateTupel.before         |                                     | `\MVC\DB\Model\Db::updateTupel`       | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
-| mvc.db.model.db.updateTupel.after          |                                     | `\MVC\DB\Model\Db::updateTupel`       | `\MVC\DataType\DTValue $oDTValue`                   |
-| mvc.db.model.db.updateTupel.fail           |                                     | `\MVC\DB\Model\Db::updateTupel`       | `\MVC\DataType\DTValue $oDTValue`                   |
-| mvc.db.model.db.updateTupel.success        |                                     | `\MVC\DB\Model\Db::updateTupel`       | `\MVC\DataType\DTValue $oDTValue`                   |
-| ~~mvc.db.model.db.update.before~~          | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::update`            | `\MVC\DataType\DTValue $oDTValue`                   |
-| mvc.db.model.db.{tableName}.update.before  | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::update`            | `\MVC\DataType\DTValue $oDTValue`                   |
-| ~~mvc.db.model.db.update.sql~~             | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::update`            | `string $sSql`                                      |
-| mvc.db.model.db.{tableName}.update.sql     | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::update`            | `string $sSql`                                      |
-| ~~mvc.db.model.db.update.fail~~            |                                     | `\MVC\DB\Model\Db::update`            | `\MVC\DataType\DTValue $oDTValue`                   |
-| mvc.db.model.db.{tableName}.update.fail    |                                     | `\MVC\DB\Model\Db::update`            | `\MVC\DataType\DTValue $oDTValue`                   |
-| ~~mvc.db.model.db.update.success~~         |                                     | `\MVC\DB\Model\Db::update`            | `\MVC\DataType\DTValue $oDTValue`                   |
-| mvc.db.model.db.{tableName}.update.success |                                     | `\MVC\DB\Model\Db::update`            | `\MVC\DataType\DTValue $oDTValue`                   |
-| mvc.db.model.db.deleteTupel.before         |                                     | `\MVC\DB\Model\Db::deleteTupel`       | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
-| mvc.db.model.db.delete.before              |                                     | `\MVC\DB\Model\Db::delete`            | `\MVC\DataType\DTValue $oDTValue`                   |
-| mvc.db.model.db.delete.sql                 | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::delete`            | `string $sSql`                                      |
-| mvc.db.model.db.synchronizeFields.after    |                                     | `\MVC\DB\Model\Db::synchronizeFields` |                                                     |
-| mvc.db.model.db.dropIndices.after          |                                     | `\MVC\DB\Model\Db::dropIndices`       |                                                     |
-
-_striked events are `deprecated`_
+| Event Name                                 | `Event::bind` perforemd in          | `Event::run` located in                    | value passed                                        |
+|--------------------------------------------|-------------------------------------|--------------------------------------------|-----------------------------------------------------|
+| mvc.db.model.db.construct.before           |                                     | `\MVC\DB\Model\Db::__construct`            | `\MVC\DataType\DTValue $oDTValue`                   |
+| mvc.db.model.db.construct.saveCache        | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::__construct`            |                                                     |
+| mvc.db.model.db.count.before               |                                     | `\MVC\DB\Model\Db::count`                  | `\MVC\DataType\DTValue $oDTValue`                   |
+| mvc.db.model.db.count.sql                  |                                     | `\MVC\DB\Model\Db::count`                  | `string $sSql`                                      |
+| mvc.db.model.db.create.before              | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::create`                 | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
+| mvc.db.model.db.create.sql                 | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::create`                 | `string $sSql`                                      |
+| mvc.db.model.db.create.after               |                                     | `\MVC\DB\Model\Db::create`                 | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
+| mvc.db.model.db.createTable.before         |                                     | `\MVC\DB\Model\Db::createTable`            | `\MVC\DataType\DTValue $oDTValue`                   |
+| mvc.db.model.db.createTable.after          |                                     | `\MVC\DB\Model\Db::createTable`            | `\MVC\DataType\DTValue $oDTValue`                   |
+| mvc.db.model.db.createTable.sql            | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::createTable`            | `string $sSql`                                      |
+| mvc.db.model.db.delete.before              |                                     | `\MVC\DB\Model\Db::delete`                 | `\MVC\DataType\DTValue $oDTValue`                   |
+| mvc.db.model.db.delete.sql                 | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::delete`                 | `string $sSql`                                      |
+| mvc.db.model.db.deleteTupel.before         |                                     | `\MVC\DB\Model\Db::deleteTupel`            | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
+| mvc.db.model.db.dropIndices.after          |                                     | `\MVC\DB\Model\Db::dropIndices`            |                                                     |
+| mvc.db.model.db.insert.sql                 | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::synchronizeFields`      | `string $sSql`                                      |
+| mvc.db.model.db.retrieve.after             |                                     | `\MVC\DB\Model\Db::retrieve`               | `\MVC\DataType\DTValue $oDTValue`                   |
+| mvc.db.model.db.retrieve.before            |                                     | `\MVC\DB\Model\Db::retrieve`               | `\MVC\DataType\DTValue $oDTValue`                   |
+| mvc.db.model.db.retrieve.sql               | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::retrieve`               | `string $sSql`                                      |
+| mvc.db.model.db.retrieveTupel.before       |                                     | `\MVC\DB\Model\Db::retrieveTupel`          | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
+| mvc.db.model.db.updateTupel.after          |                                     | `\MVC\DB\Model\Db::updateTupel`            | `\MVC\DataType\DTValue $oDTValue`                   |
+| mvc.db.model.db.updateTupel.before         |                                     | `\MVC\DB\Model\Db::updateTupel`            | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
+| mvc.db.model.db.updateTupel.fail           |                                     | `\MVC\DB\Model\Db::updateTupel`            | `\MVC\DataType\DTValue $oDTValue`                   |
+| mvc.db.model.db.updateTupel.success        |                                     | `\MVC\DB\Model\Db::updateTupel`            | `\MVC\DataType\DTValue $oDTValue`                   |
+| mvc.db.model.db.{tableName}.update.before  | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::update`                 | `\MVC\DataType\DTValue $oDTValue`                   |
+| mvc.db.model.db.{tableName}.update.fail    |                                     | `\MVC\DB\Model\Db::update`                 | `\MVC\DataType\DTValue $oDTValue`                   |
+| mvc.db.model.db.{tableName}.update.sql     | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::update`                 | `string $sSql`                                      |
+| mvc.db.model.db.{tableName}.update.success |                                     | `\MVC\DB\Model\Db::update`                 | `\MVC\DataType\DTValue $oDTValue`                   |
+| mvc.db.model.db.setForeignKey.before       |                                     | `\MVC\DB\Model\Db::setForeignKey`          |                                                     |
+| mvc.db.model.db.setForeignKey.after        |                                     | `\MVC\DB\Model\Db::setForeignKey`          |                                                     |
+| mvc.db.model.db.synchronizeFields.after    |                                     | `\MVC\DB\Model\Db::synchronizeFields`      |                                                     |
+| mvc.db.model.dbpdo.fetchRow.sql            | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\DbPDO::fetchRow`            | `string $sSql`                                      |
+| mvc.db.model.dbpdo.fetchAll.sql            | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\DbPDO::fetchAll`            | `string $sSql`                                      |
+| mvc.db.model.dbpdo.query.sql               | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\DbPDO::query`               | `string $sSql`                                      |
+| mvc.db.model.dbcollection.construct.after  |                                     | `\MVC\DB\Model\DbCollection::__construct`  | `Registry::get(Db::$sRegistryKeyDbPDO)`             |
 
 ---
 
@@ -349,8 +372,7 @@ _wait for database coming up before binding to one (or more) certain events_
 // bind to those events
 \MVC\Event::processBindConfigStack([
 
-    // WHEN Database has been built...
-    'mvc.db.model.dbinit.construct.after' => [
+    'mvc.db.model.dbcollection.construct.after' => [
     
         function () {
             // ...bind to those events
@@ -381,7 +403,7 @@ _wait for database coming up before binding to a certain event, run a further ev
     ],
                 
     // WHEN Database has been built...
-    'mvc.db.model.dbinit.construct.after' => [
+    'mvc.db.model.dbcollection.construct.after' => [
     
         function () {
             // ...bind to those events

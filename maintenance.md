@@ -31,3 +31,7 @@ $bMaintenance = \MVC\Application::isMaintenance();
 ~~~
 - returns `true` if the file `/maintenance` exists in Base Path
 - returns `false` if the file `/maintenance` does **not** exist in Base Path
+
+**Events fired**
+
+- `mvc.application.maintenance`
