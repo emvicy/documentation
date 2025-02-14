@@ -1,15 +1,22 @@
 
 # Http\Status
 
-Following iana's 'Hypertext Transfer Protocol (HTTP) Status Code Registry' <a href="https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml" target="_blank"> https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml </a>
+- [Status Class](#status-class)
+- [HTTP Status Codes List](#http-status-codes-list)
 
-Emvicy provides single classes for each of the 64 Status Codes. Each class comes with:
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+<a id="status-class"></a>
+## Status Class
+
+Following iana's **Hypertext Transfer Protocol (HTTP) Status Code Registry** List <a href="https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml" target="_blank">www.iana.org/assignments/http-status-codes/http-status-codes.xhtml</a>
+
+Emvicy provides single classes for each of the > 60 Status Codes. Each class comes with:
 
 - Status Code _and_ Description in its class name (e.g. `Status_Accepted_202`)
 - constant `CODE`, containing the (int) Http Status Code value
 - constant `DESCRIPTION`, containing the (string) Http Status Code Description 
 - static method `header()`, which sends a header with CODE and DESCRIPTION
-
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -37,14 +44,25 @@ class Status_Accepted_202
 }
 ~~~
 
-- `Status_Accepted_202::header()`: sends a header with CODE and DESCRIPTION
-- `Status_Accepted_202::CODE`: 202
-- `Status_Accepted_202::DESCRIPTION`: 'Accepted'
+_sends a header with (int) CODE (string) DESCRIPTION_  
+~~~php
+\MVC\Http\Status_Accepted_202::header();
+~~~
 
+_contains (int) `202`_  
+~~~php
+\MVC\Http\Status_Accepted_202::CODE;
+~~~
 
+_contains (string) `Accepted`_  
+~~~php
+\MVC\Http\Status_Accepted_202::DESCRIPTION;
+~~~
 
-----
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+<a id="http-status-codes-list"></a>
+## HTTP Status Codes List
 
 | Value   | Description                                                                         | Reference                                                |
 |---------|-------------------------------------------------------------------------------------|----------------------------------------------------------|

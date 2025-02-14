@@ -56,7 +56,6 @@
     "Email": "module_email.md",
     "OpenApi": "module_openapi.md",
     "Paginator": "module_paginator.md",
-    "SSE": "module_sse.md",
     "Ws": "module_ws.md"
   }
 }
