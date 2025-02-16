@@ -250,7 +250,7 @@ Header::init()->Set_Cookie(
     sPath: '/',
     sSameSite: 'None; Partitioned',
     bSecure: true,
-    bHttpOnly: true,
+    bHttpOnly: true
 );
 ~~~
 
