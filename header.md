@@ -239,18 +239,18 @@ Header::init()->Last_Modified(
 ## `Set_Cookie`
 
 ~~~
-public function Set_Cookie(string $sName, string $sValue, int $iExpireUnixTimestamp = 0, string $sPath = '/', string $sDomain = '', bool $bSecure = false, bool $bHttpOnly = false) : Header
+public function Set_Cookie(string $sName, string $sValue, int $iExpireUnixTimestamp = 0, string $sPath = '/', string $sDomain = '', string $sSameSite = '', bool $bSecure = false, bool $bHttpOnly = false) : Header
 ~~~
 
 ~~~php
 Header::init()->Set_Cookie(
     sName: 'Name',
     sValue: 'value',
-    bSecure: true,
+    iExpireUnixTimestamp: new \DateTime("+ 1 day")->getTimestamp(),
     sPath: '/',
     sSameSite: 'None; Partitioned',
+    bSecure: true,
     bHttpOnly: true,
-    iExpireUnixTimestamp: new \DateTime("+ 1 day")->getTimestamp()
 );
 ~~~
 
