@@ -40,8 +40,8 @@ _`$iPid`_
 
 **Events**
 
-- `mvc.process.callRouteAsync.before`; containing the route `$sRoute`
-- `mvc.process.callRouteAsync.after`; containing `array('sRoute' => $sRoute, 'iPid' => $iPid)`
+- `mvc.process.callRoute.before`; containing the route `$sRoute`
+- `mvc.process.callRoute.after`; containing `array('sRoute' => $sRoute, 'iPid' => $iPid)`
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -345,12 +345,12 @@ _`modules/Foo/etc/event/process.php`_
             \MVC\Process::destruct();
         }
     ],
-    'mvc.process.callRouteAsync.before' => [
+    'mvc.process.callRoute.before' => [
         function (string $sRoute) {
 //            \MVC\Log::write($sRoute, \MVC\Config::get_MVC_LOG_FILE_PROCESS());
         },
     ],
-    'mvc.process.callRouteAsync.after' => [
+    'mvc.process.callRoute.after' => [
         function (array $aInfo) {
             \MVC\Log::write(json_encode($aInfo), \MVC\Config::get_MVC_LOG_FILE_PROCESS());
         },
