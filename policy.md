@@ -33,6 +33,21 @@
 - write the commands in a policy file inside your module's policy folder, like `modules/Foo/etc/policy/policy.php`
 - create the Policy Class::method `\Foo\Policy\Index::requestMethodHasToMatchRouteMethod` and write your Policy Logic there
 
+**create Policy class**
+
+~~~bash
+php emvicy policy:create Index Foo
+~~~
+- creates a Policy class `Index` in the module `Foo`
+
+
+**list Policies**
+
+~~~bash
+php emvicy policy:list
+~~~
+- list available Policy configurations in a markdown table
+
 ------------------------------------------------------------------------------------------------------------------------
 
 <a id="writing-policy-rules"></a>
