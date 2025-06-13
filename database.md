@@ -657,6 +657,37 @@ _otherwise this always works; get PDO object from Framework's Db class_
 \MVC\DB\Model\Db::getDbPdo()
 ~~~
 
+<a id="3-8-1"></a>
+##### 3.8.1 prepared Statements
+
+_sql_  
+~~~php
+$sSql = "
+    SELECT 
+        USR.* 
+    FROM `AppTableUser` AS USR
+    WHERE 1
+        AND USR.email = :email
+        AND USR.password = :password
+";
+~~~
+
+_php code_  
+~~~php
+$oStmt = DB::use()->oDbPDO->prepare($sSql);
+$oStmt->bindValue(':email', $sEmail, \PDO::PARAM_STR);
+$oStmt->bindValue(':password', $sPassword, \PDO::PARAM_STR);
+$oStmt->execute();
+$oStmt->setFetchMode(\PDO::FETCH_ASSOC);
+/** @var array $aAppTableUser */
+$aAppTableUser = $oStmt->fetch();
+
+// optional:
+// put the Result Array into the table's DataType class to get a proper DataType object
+/** @var DTAppTableUser $oDTAppTableUser */
+$oDTAppTableUser = DTAppTableUser::create($aAppTableUser);
+~~~
+
 ------------------------------------------------------------------------------------------------------------------------
 
 <a id="3-9"></a>  
