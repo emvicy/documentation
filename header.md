@@ -284,7 +284,6 @@ Only the "Basic" authentication method is supported. See the `header()` function
 
 Be aware this is state-less.
 
-And you must manage any check of `PHP_AUTH_USER` and `PHP_AUTH_PW` yourself.  
 see <a href="https://www.php.net/manual/en/features.http-auth.php" target="_blank">www.php.net/manual/en/features.http-auth.php</a>
 
 ~~~
@@ -293,7 +292,9 @@ public function WWW_Authenticate(string $sBasicRealm = 'Authentication')
 
 ~~~php
 Header::init()->WWW_Authenticate(
-    sBasicRealm: 'Authentication'
+    sBasicRealm: 'Authentication',
+    sAuthUser: 'foo',       // required user 
+    sAuthPassword: 'bar'    // required password
 );
 ~~~
 - [HTTP Authentication example](#HTTP-Authentication-example)
@@ -384,19 +385,11 @@ in the controller method you want to protect, place the following code
  */
 public function index(DTRequestIn $oDTRequestIn, DTRoute $oDTRoute)
 {
-    $sAuthUser = 'foo';
-    $sPassword = 'bar';
-
-    // as long as user/password is not correct, the auth prompt occurs 
-    if (
-        false === (true === isset($_SERVER['PHP_AUTH_USER']) && true === isset($_SERVER['PHP_AUTH_PW'])) ||
-        false === (($_SERVER['PHP_AUTH_USER'] === $sAuthUser) && ($_SERVER['PHP_AUTH_PW'] === $sPassword))
-    )
-    {
-        unset($_SERVER['PHP_AUTH_USER']);
-        unset($_SERVER['PHP_AUTH_PW']);
-        Header::init()->WWW_Authenticate();
-    }
+    Header::init()->WWW_Authenticate(
+        sBasicRealm: 'Authentication',
+        sAuthUser: 'foo',       // required user 
+        sAuthPassword: 'bar'    // required password
+    );
 
     view()->autoAssign();
 }
