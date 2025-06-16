@@ -25,6 +25,7 @@ This class offers a range of ready-made headers.
 - [`X_Accel_Buffering`](#X_Accel_Buffering)
 - [Examples](#Examples)
   - [Provide a file for download](#download)
+  - [HTTP Authentication example](#HTTP-Authentication-example)
 
 ------------------------------------------------------------------------------------------------------------------------
 
