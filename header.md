@@ -355,7 +355,6 @@ Header::init()->X_Accel_Buffering(sStatus: 'no');
 <a id="download"></a>
 ### Provide a file for download
 
-
 ~~~php
 Header::init()
     ->Content_Disposition_Attachment('robots.txt')
@@ -368,8 +367,39 @@ Header::init()
 echo file_get_contents('/var/www/html/public/robots.txt');
 ~~~
 
+---
 
+<a id="HTTP-Authentication-example"></a>
+### HTTP Authentication example
 
+in the controller method you want to protect, place the following code
+
+~~~php
+/**
+ * @param \MVC\DataType\DTRequestIn $oDTRequestIn
+ * @param \MVC\DataType\DTRoute     $oDTRoute
+ * @return void
+ * @throws \ReflectionException
+ */
+public function index(DTRequestIn $oDTRequestIn, DTRoute $oDTRoute)
+{
+    $sAuthUser = 'foo';
+    $sPassword = 'bar';
+
+    // as long as user/password is not correct, the auth prompt occurs 
+    if (
+        false === (true === isset($_SERVER['PHP_AUTH_USER']) && true === isset($_SERVER['PHP_AUTH_PW'])) ||
+        false === (($_SERVER['PHP_AUTH_USER'] === $sAuthUser) && ($_SERVER['PHP_AUTH_PW'] === $sPassword))
+    )
+    {
+        unset($_SERVER['PHP_AUTH_USER']);
+        unset($_SERVER['PHP_AUTH_PW']);
+        Header::init()->WWW_Authenticate();
+    }
+
+    view()->autoAssign();
+}
+~~~
 
 
 

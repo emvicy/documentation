@@ -16,6 +16,7 @@
     - [3.6. checksum](#3-6)
     - [3.7. getFieldInfo](#3-7)
     - [3.8. PDO](#3-8)
+      - [3.8.1 prepared Statements](#3-8-1)
     - [3.9. SQL](#3-9)
     - [3.10. Comment](#3-10)
 - [4. Events](#4)
