@@ -287,7 +287,7 @@ Be aware this is state-less.
 see <a href="https://www.php.net/manual/en/features.http-auth.php" target="_blank">www.php.net/manual/en/features.http-auth.php</a>
 
 ~~~
-public function WWW_Authenticate(string $sBasicRealm = 'Authentication')
+public function WWW_Authenticate(string $sBasicRealm = 'Authentication', string $sAuthUser = '', string $sAuthPassword = '')
 ~~~
 
 ~~~php
