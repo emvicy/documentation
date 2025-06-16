@@ -288,15 +288,15 @@ And you must manage any check of `PHP_AUTH_USER` and `PHP_AUTH_PW` yourself.
 see <a href="https://www.php.net/manual/en/features.http-auth.php" target="_blank">www.php.net/manual/en/features.http-auth.php</a>
 
 ~~~
-public function WWW_Authenticate(string $sBasicRealm = 'Authentication', string $sUrlAuthFails = '')
+public function WWW_Authenticate(string $sBasicRealm = 'Authentication')
 ~~~
 
 ~~~php
 Header::init()->WWW_Authenticate(
-    sBasicRealm: 'My Realm',
-    sUrlAuthFails: '/403/'
+    sBasicRealm: 'Authentication'
 );
 ~~~
+- [HTTP Authentication example](#HTTP-Authentication-example)
 
 ------------------------------------------------------------------------------------------------------------------------
 
