@@ -1,19 +1,41 @@
 
 # File
 
-- [info](#info)
 - [getMimeType](#getMimeType)
+- [info](#info)
+- [saveIntoTemp](#saveIntoTemp)
 - [secureFilePath](#secureFilePath)
+- [temp](#temp)
 
 ---
 
-<a id="info"></a>
-## `info`
+## `getMimeType` <a id="getMimeType"></a>
+
+returns mimetype of a given file.
+
+~~~
+File::getMimeType(string $sFileAbsolute = '') : string
+~~~
+
+_Example_
+~~~php
+$sMimeType = File::getMimeType(__FILE__);
+~~~
+
+_Result_
+~~~
+// type: string
+'text/x-php'
+~~~
+
+---
+
+## `info` <a id="info"></a>
 
 get infos about a file via `stat`, `posix_getpwuid`, `pathinfo`.
 
 ~~~
-info(string $sFilePathAbs = '') : DTFileinfo
+File::info(string $sFilePathAbs = '') : DTFileinfo
 ~~~
 
 _Example_  
@@ -57,35 +79,32 @@ php
 
 ---
 
-<a id="getMimeType"></a>
-## `getMimeType`
+## `saveIntoTemp` <a id="saveIntoTemp"></a>
 
-returns mimetype of a given file.
+writes data into a -temporary- file; returns absolute path to that file.
 
 ~~~
-getMimeType(string $sFileAbsolute = '') : string
+File::saveIntoTemp(mixed $mData = null, string $sPrefix = '', string $sSuffix = '') : string
 ~~~
 
 _Example_  
 ~~~php
-$sMimeType = File::getMimeType(__FILE__);
-~~~
+$sFileAbs = File::saveIntoTemp(
+    'some Foo Bar Data'
+);
 
-_Result_
-~~~
-// type: string
-'text/x-php'
+// "/tmp/temp.ff4kdvv5i07o0AaUnYi"
+dump($sFileAbs);
 ~~~
 
 ---
 
-<a id="secureFilePath"></a>
-## `secureFilePath`
+## `secureFilePath` <a id="secureFilePath"></a>
 
 removes doubleDot+Slashes (../) from string, replaces multiple forwardSlashes (//) from string by a single forwardSlash.
 
 ~~~
-secureFilePath(string $sAbsoluteFilePath = '', bool $bIgnoreProtocols = false) : string
+File::secureFilePath(string $sAbsoluteFilePath = '', bool $bIgnoreProtocols = false) : string
 ~~~
 
 _Example_  
@@ -99,3 +118,20 @@ _Result_
 'var/www/htdocs/Emvicy/modules/Foo/Controller/Index.php'
 ~~~
 
+---
+
+## `temp` <a id="temp"></a>
+
+creates a -temporary- file; returns absolute path to that file.
+
+~~~
+File::temp(string $sPrefix = '', string $sSuffix = '') : string
+~~~
+
+_Example_
+~~~php
+$sFileAbs = File::temp();
+
+// "/tmp/temp.ff4kdvv5i07o0AaUnYi"
+dump($sFileAbs);
+~~~

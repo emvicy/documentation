@@ -19,6 +19,7 @@
       - [3.8.1 prepared Statements](#3-8-1)
     - [3.9. SQL](#3-9)
     - [3.10. Comment](#3-10)
+    - [3.11. multiple Databases](#3-11)
 - [4. Events](#4)
     - [4.1. Logging SQL](#4-1)
 
@@ -653,10 +654,13 @@ _using a table collection class_
 DB::use()->oDbPDO
 ~~~
 
-_otherwise this always works; get PDO object from Framework's Db class_  
-~~~php
-\MVC\DB\Model\Db::getDbPdo()
-~~~
+[//]: # (_otherwise this always works; get PDO object from Framework's Db class_  )
+
+[//]: # (~~~php)
+
+[//]: # (\MVC\DB\Model\Db::getDbPdo&#40;&#41;)
+
+[//]: # (~~~)
 
 <a id="3-8-1"></a>
 ##### 3.8.1 prepared Statements
@@ -772,6 +776,63 @@ DB::use()->getDocCommentValueOfProperty('oAppTableUser', '@var')
 // type: string
 '\\App\\Table\\User'
 ~~~
+
+------------------------------------------------------------------------------------------------------------------------
+
+#### 3.11. multiple Databases <a id="3-11"></a>
+
+1. create a config for the database you want to add
+2. create a separate DB Collection Class e.g. `DB2` for the DB (see [2.3. Table Collection](/2.x/database#2-3))
+3. pass the config to the new `DB2::use()` method
+
+⚠ remote DBs can only be accessed by PDO / native SQL
+
+_create a config for the database you want to add_
+~~~php
+$aConfig['MODULE']['Foo']['DB2'] = array(
+
+    'db' => array(
+        'type' => getenv('db2.type'),
+        'host' => getenv('db2.host'),
+        'port' => getenv('db2.port'),
+        'username' => getenv('db2.username'),
+        'password' => getenv('db2.password'),
+        'dbname' => getenv('db2.dbname'),
+        'charset' => 'utf8',
+    ),
+    'caching' => array(
+        'enabled' => true,
+        'lifetime' => '1', # minutes
+    ),
+    'logging' => array(
+        'log_output' => 'FILE',
+
+        // consider to turn it on for develop and test environments only
+        'general_log' => 'OFF',
+
+        // 1) make sure write access is given to the folder
+        // as long as the db user is going to write and not the webserver user
+        // 2) consider a logrotate mechanism for this logfile as it may grow quickly
+        'general_log_file' => $aConfig['MVC_LOG_FILE_DB_DIR'] . getenv('db2.dbname') . '_' . getenv('MVC_ENV') . '.log',
+    ),
+);
+~~~
+
+_create a separate DB Collection Class e.g. `DB2` for the DB_  
+~~~bash
+php emvicy db:tableCollection DB2 Foo
+~~~
+
+_pass the config to the new `DB2::use()` method_  
+~~~php
+$aResult = DB2::use(Config::MODULE()['DB2'])
+  ->oDbPDO
+  ->fetchAll("
+    SELECT * FROM `AppTableUser`
+  ")
+~~~
+
+
 
 ------------------------------------------------------------------------------------------------------------------------
 

@@ -1,8 +1,39 @@
 
 # Closure
 
+- [dump](#dump)
 - [is](#check-on-closure)
 - [toString](#closure-to-string)
+
+---
+
+<a id="dump"></a>
+## `dump`
+
+converts a closure into a string.
+
+~~~
+Closure::dump(\Closure $oClosure, bool $bShrink = true) : string
+~~~
+
+_Example_
+~~~php
+// closure 
+$oClosure = function () use ($oDTRequestIn, $oDTRoute) {
+    display($oDTRequestIn);
+    display($oDTRoute);
+};
+
+// dump
+$sClosure = Closure::dump($oClosure);
+~~~
+
+_Content of `$sClosure`_  
+~~~
+// type: string
+'function () use ($oDTRequestIn, $oDTRoute) { display($oDTRequestIn); display($oDTRoute); }'
+~~~
+
 
 ---
 

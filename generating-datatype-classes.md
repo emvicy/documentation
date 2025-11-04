@@ -13,8 +13,7 @@ Then just run the Generator and it will create the Class for you.
 
 ------------------------------------------------------------------------------------------------------------------------
 
-<a id="Configuration"></a>
-## Configuration
+## Configuration <a id="Configuration"></a>
 
 Write your own Configurations.
 
@@ -23,50 +22,51 @@ _Place for DataType Generating Configurations; (assuming module `Foo`)_
 modules/Foo/etc/config/Foo/config/_datatype.php
 ~~~
 
-<a id="array_config"></a>
-### Configuration as Array
+### Configuration as Array <a id="array_config"></a>
 
 _Example file `modules/Foo/etc/config/DataType/datatype.php`_    
 ~~~php
 <?php
 
 /**
- * @usage php datatype.php
- *          Classes created by this script are placed into folder: `/modules/{module}/DataType/`
+ * @usage php emvicy datatype:all
+ *        php emvicy datatype:module Foo 
+ *        Classes created by this script are placed into folder: `/modules/{module}/DataType/`
  */
-
-#---------------------------------------------------------------
-require_once realpath(__DIR__ . '/../../../../../') . '/application/init/util/bootstrap.php';
-\MVC\Config::init(get($GLOBALS['aConfig'], array()));
-\MVC\Cache::init(\MVC\Config::get_MVC_CACHE_CONFIG());
-\MVC\Cache::autoDeleteCache('DataType', 0);
 
 #---------------------------------------------------------------
 #  Defining DataType Classes
 
-$sDataTypeDir = realpath(__DIR__ . '/../../../') . '/DataType';
-$sNamespace = str_replace('/', '\\', substr($sDataTypeDir, strlen(\MVC\Config::get_MVC_MODULES_DIR() . '/')));
+$sThisModuleDir = realpath(__DIR__ . '/../../../../');
+$sThisModuleName = basename($sThisModuleDir);
+$sThisModuleDataTypeDir = $sThisModuleDir . '/DataType';
+$sThisModuleNamespace = str_replace('/', '\\', substr($sThisModuleDataTypeDir, strlen($aConfig['MVC_MODULES_DIR'] . '/')));
 
 // base setup
 $aDataType = array(
-    'dir' => $sDataTypeDir,
+
+    // directory
+    'dir' => $sThisModuleDataTypeDir,
+
+    // remove complete dir before new creation
     'unlinkDir' => false,
 
     // enable creation of events in datatype methods
     'createEvents' => true,
+
+    'class' => array(),
 );
 
 // classes
-$aDataType['class'][] = array(
-    // ! mandatory
-    'name' => 'DTFoo',
-    'file' => 'DTFoo.php',
+$aDataType['class']['DTFoo'] = array(    
+    'name' => 'DTFoo',      # mandatory
+    'file' => 'DTFoo.php',  # mandatory
 
     // optional; no need to even note the key here if not used
-    'extends' => '',
+    'extends' => '', # e.g. '\MVC\DataType\DTRoutingAdditional'
 
     // optional; no need to even note the key here if not used
-    'namespace' => \MVC\Config::get_MVC_MODULE_CURRENT_NAME() . '\DataType',
+    'namespace' => $sThisModuleNamespace,
 
     // optional; add some useful Helper Methods like '__toString()` method (default: true)
     'createHelperMethods' => true,
@@ -80,20 +80,15 @@ $aDataType['class'][] = array(
         )
     ),
 
-    // ! mandatory
     'property' => array(
-        array('key' => 'sKey'               , 'var' => 'string'),
-        array('key' => 'deliverable'        , 'var' => 'int'),
-        array('key' => 'aJsonContext'       , 'var' => 'array'),
-        array('key' => 'bSuccess'           , 'var' => 'bool'),
         array(
-            'key' => 'foo',
-            'var' => 'string', 
+            'key' => 'sFoo',   # mandatory
+            'var' => 'string', # mandatory  
 
             // optional property settings
+            'nullable' => true,
             'value' => 'bar',
-            'forceCasting' => true,
-            'visibility' => 'protected'                    
+            'visibility' => 'protected',                    
             'static' => false,
             'setter' => true,
             'getter' => true,
@@ -101,18 +96,27 @@ $aDataType['class'][] = array(
             'listProperty' => true,
             'createStaticPropertyGetter' => true,
             'setValueInConstructor' => true,
+            'forceCasting' => true,
+            'required' => true,
+            'addMyMVCEvents' => true,
         ),
+        array('key' => 'sKey'               , 'var' => 'string'),
+        array('key' => 'iDeliverable'       , 'var' => 'int'),
+        array('key' => 'aJsonContext'       , 'var' => 'array'),
+        array('key' => 'bSuccess'           , 'var' => 'bool'),
     )
 );
 
 #---------------------------------------------------------------
-#  create!
+# copy settings to module's config
+# in your code you can access this datatype config by: \MVC\Config::MODULE()['DATATYPE'];
 
-\MVC\Generator\DataType::create()->initConfigArray($aDataType);
+$aConfig['MODULE'][$sThisModuleName]['DATATYPE'] = $aDataType;
 ~~~
 
-<a id="object_config"></a>
-### Configuration as Object
+------------------------------------------------------------------------------------------------------------------------
+
+### Configuration as Object <a id="object_config"></a>
 
 You can also create a DataType class the object way. 
 
@@ -120,14 +124,15 @@ _Example_
 ~~~php
 // config
 $oDTConfig = \MVC\DataType\DTConfig::create()
-    ->set_dir(\MVC\Config::get_MVC_MODULES_DIR() . '/' . \MVC\Config::get_MVC_MODULE_CURRENT_NAME() . '/DataType/')
+    ->set_dir(\MVC\Config::get_MVC_MODULES_DIR() . '/' . \MVC\Config::get_MVC_MODULE_PRIMARY_NAME() . '/DataType/')
     ->set_unlinkDir(false)
-    ->add_DTClass(
-
+    ->set_createEvents(true)
+    ->add_class(
         \MVC\DataType\DTClass::create()
             ->set_name('DTFoo')
             ->set_file('DTFoo.php')
-            ->set_namespace(\MVC\Config::get_MVC_MODULE_CURRENT_NAME() . '\DataType')
+            ->set_extends('\MVC\DataType\DTRoutingAdditional')
+            ->set_namespace(\MVC\Config::get_MVC_MODULE_PRIMARY_NAME() . '\DataType')
             ->set_createHelperMethods(true)
             ->add_DTConstant(
                 \MVC\DataType\DTConstant::create()
@@ -139,30 +144,31 @@ $oDTConfig = \MVC\DataType\DTConfig::create()
                 \MVC\DataType\DTProperty::create()
                     ->set_key('bSuccess')
                     ->set_var('bool')
-                    ->set_value(true)
 
                     // optional property settings
-                    ->set_forceCasting(true)
+                    ->set_nullable(true)
+                    ->set_value(true)
                     ->set_visibility('protected')
                     ->set_static(false)
                     ->set_setter(true)
                     ->set_getter(true)
+                    ->set_explicitMethodForValue(false)
                     ->set_listProperty(true)
                     ->set_createStaticPropertyGetter(true)
                     ->set_setValueInConstructor(true)
-                    ->set_explicitMethodForValue(false)
+                    ->set_forceCasting(true)
+                    ->set_required(true)
+                    ->set_addMyMVCEvents(true)
             )
     )
 ;
-
 // generate
 $oDTGenerator = \MVC\Generator\DataType::create()->initConfigObject($oDTConfig);
 ~~~
 
 ------------------------------------------------------------------------------------------------------------------------
 
-<a id="Creation"></a>
-## Creation
+## Creation <a id="Creation"></a>
 
 create DataType class files for your module by executing this command:
 
@@ -180,8 +186,7 @@ php emvicy datatype:all
 
 ------------------------------------------------------------------------------------------------------------------------
 
-<a id="Hint"></a>
-## Note regarding php data types
+## Note regarding php data types <a id="Hint"></a>
 
 - use `bool`, not ~~`boolean`~~
 - use `int`, not ~~`integer`~~

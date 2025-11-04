@@ -1,23 +1,46 @@
 
 # Strings
 
+- [createPassword](#createPassword)
 - [cutOff](#cutOff)
+- [getJson](#getJson)
 - [highlight_html](#highlight_html)
 - [isJson](#isJson)
 - [isMarkup](#isMarkup)
 - [isUtf8](#isUtf8)
+- [isUuid4](#isUuid4)
+- [markdown](#markdown)
 - [removeDoubleDotSlashesFromString](#removeDoubleDotSlashesFromString)
 - [replaceMultipleForwardSlashesByOneFromString](#replaceMultipleForwardSlashesByOneFromString)
 - [seofy](#seofy)
 - [tidy](#tidy)
 - [ulli](#ulli)
 - [uuid4](#uuid4)
-- [createPassword](#createPassword)
 
 ---
 
-<a id="cutOff"></a>
-## `cutOff`
+## `createPassword` <a id="createPassword"></a>
+
+creates a password up to 57 chars.  
+Makes sure that at least 4 characters contain one of each lower, upper, int, special char.
+
+~~~
+Strings::createPassword(int $iMaxLength = 15, string $sCharSpecial = '#*!$.') : string
+~~~
+
+_Example_
+~~~php
+$sPassword = Strings::createPassword();
+~~~
+
+_Result_
+~~~
+$cZY/iZncdgWwC8
+~~~
+
+---
+
+## `cutOff` <a id="cutOff"></a>
 
 cuts off a string at given limit, appends a custom string if string to cut off is longer than limit, can purify broken markup string before return.
 
@@ -43,8 +66,32 @@ _Result of `$sString`_
 
 ---
 
-<a id="highlight_html"></a>
-## `highlight_html`
+## `getJson` <a id="getJson"></a>
+
+parses JSON out of a mixed String and returns Array with detected JSON.
+
+~~~
+Strings::getJson(string $sString = '', bool $bReturnValidJsonOnly = true) : array
+~~~
+
+_Example_  
+~~~php
+$sString = 'foo bar {"john": "doe"} baz example {"jane":"baz"} whatever';
+$aJson = Strings::getJson($sString);
+~~~
+
+_Result of `$aJson`_
+~~~html
+// type: array, items: 2
+[
+    0 => '{"john": "doe"}',
+    1 => '{"jane":"baz"}',
+]
+~~~
+
+---
+
+## `highlight_html` <a id="highlight_html"></a>
 
 returns `$sTag`-encapsulated, highlighted html markup.
 
@@ -70,8 +117,7 @@ _Result of `$sString`_
 
 ---
 
-<a id="isJson"></a>
-## `isJson`
+## `isJson` <a id="isJson"></a>
 
 checks whether a string is json.
 
@@ -89,8 +135,7 @@ $bIsJson = Strings::isJson(
 
 ---
 
-<a id="isMarkup"></a>
-## `isMarkup`
+## `isMarkup` <a id="isMarkup"></a>
 
 checks whether a string contains markup.
 
@@ -108,8 +153,7 @@ $bIsMarkup = Strings::isMarkup(
 
 ---
 
-<a id="isUtf8"></a>
-## `isUtf8`
+## `isUtf8` <a id="isUtf8"></a>
 
 checks whether a string is utf8.
 
@@ -117,28 +161,98 @@ checks whether a string is utf8.
 Strings::isUtf8(string $sString = '') : bool
 ~~~
 
+_Example_
+~~~php
+// true
+$bIsUtf8 = Strings::isUtf8('Straßenfest in München !');
+~~~
+
 ---
 
-<a id="removeDoubleDotSlashesFromString"></a>
-## `removeDoubleDotSlashesFromString`
+## `isUuid4` <a id="isUuid4"></a>
+
+checks whether a param is a valid uuid Version4 string.
+
+~~~
+Strings::isUuid4(mixed $sUuid4): bool
+~~~
+
+_Example_  
+~~~php
+// true
+$bIsUuid4 = Strings::isUuid4('6c07e320-b33d-4ce0-9fae-96c59861d51f');
+~~~
+   
+---
+
+## `markdown` <a id="markdown"></a>
+
+converts markdown syntax into markup.
+
+~~~php
+echo Strings::markdown(
+    "# Header\n\n- one\n- two\n- three\n- four"
+);
+~~~
+
+_Result_  
+~~~html
+<h1>Header</h1>
+<ul>
+<li>one</li>
+<li>two</li>
+<li>three</li>
+<li>four</li>
+</ul>
+~~~
+
+---
+
+## `removeDoubleDotSlashesFromString` <a id="removeDoubleDotSlashesFromString"></a>
+
+removes all doubleDot+Slashes (`../`) from a string.
 
 ~~~
 Strings::removeDoubleDotSlashesFromString(string $sString = '') : string
 ~~~
 
+_Example_  
+~~~php
+// string containing multiple `../` 
+$sString = '../../../path/to/foo/';
+
+// remove
+$sString = Strings::removeDoubleDotSlashesFromString($sString);
+
+// Result: path/to/foo/
+var_dump($sString);
+~~~
+
 ---
 
-<a id="replaceMultipleForwardSlashesByOneFromString"></a>
-## `replaceMultipleForwardSlashesByOneFromString`
+## `replaceMultipleForwardSlashesByOneFromString` <a id="replaceMultipleForwardSlashesByOneFromString"></a>
+
+replaces multiple forwardSlashes (e.g.: `//`, `///`, `////`, etc.) from string by a single forwardSlash.  
 
 ~~~
 Strings::replaceMultipleForwardSlashesByOneFromString(string $sString = '', bool $bIgnoreProtocols = false) : string
 ~~~
 
+_Example_
+~~~php
+// string containing multiple `../` 
+$sString = '../../../path//to///foo////';
+
+// remove
+$sString = Strings::replaceMultipleForwardSlashesByOneFromString($sString);
+
+// Result: '../../../path/to/foo/'
+var_dump($sString);
+~~~
+
 ---
 
-<a id="seofy"></a>
-## `seofy`
+## `seofy` <a id="seofy"></a>
 
 replaces special chars, umlauts by `-` (or given char).
 
@@ -156,11 +270,9 @@ _Result_
 strassenfest-in-muenchen
 ~~~
 
-
 ---
 
-<a id="tidy"></a>
-## `tidy`
+## `tidy` <a id="tidy"></a>
 
 cleans up a string by removing newlines, multiple whitespaces.
 
@@ -184,8 +296,7 @@ _Result_
 
 ---
 
-<a id="ulli"></a>
-## `ulli`
+## `ulli` <a id="ulli"></a>
 
 creates a markup html `<ul>/<li>` list on given data (string|array).
 
@@ -214,8 +325,7 @@ _Result of `$sUlli`_
 
 ---
 
-<a id="uuid4"></a>
-## `uuid4`
+## `uuid4` <a id="uuid4"></a>
 
 returns a random uuid Version4 string (8-4-4-4-12).
 
@@ -231,26 +341,4 @@ $sUuid = Strings::uuid4();
 _Result_  
 ~~~
 889abaf2-461d-42a1-86f4-07eb3e9876a5
-~~~
-
----
-
-<a id="createPassword"></a>
-## `createPassword`
-
-creates a password up to 57 chars.  
-Makes sure that at least 4 characters contain one of each lower, upper, int, special char.
-
-~~~
-Strings::createPassword(int $iMaxLength = 15, string $sCharSpecial = '#*!$.') : string
-~~~
-
-_Example_
-~~~php
-$sPassword = Strings::createPassword();
-~~~
-
-_Result_
-~~~
-$cZY/iZncdgWwC8
 ~~~
