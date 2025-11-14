@@ -50,6 +50,7 @@
     "Registry": "registry.md",
     "RouteIntervall": "route-intervall.md",
     "Session": "session.md",
+    "Smarty PlugIns": "smarty-plugins.md",
     "Strings": "strings.md",
     "Traits": "traits.md"
   },

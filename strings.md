@@ -1,7 +1,7 @@
 
 # Strings
 
-- [createPassword](#createPassword)
+- [~~createPassword~~](#createPassword)
 - [cutOff](#cutOff)
 - [getJson](#getJson)
 - [highlight_html](#highlight_html)
@@ -9,7 +9,9 @@
 - [isMarkup](#isMarkup)
 - [isUtf8](#isUtf8)
 - [isUuid4](#isUuid4)
-- [markdown](#markdown)
+- [~~markdown~~](#markdown)
+- [parsedown](#parsedown)
+- [random](#random)
 - [removeDoubleDotSlashesFromString](#removeDoubleDotSlashesFromString)
 - [replaceMultipleForwardSlashesByOneFromString](#replaceMultipleForwardSlashesByOneFromString)
 - [seofy](#seofy)
@@ -19,24 +21,9 @@
 
 ---
 
-## `createPassword` <a id="createPassword"></a>
+## ~~`createPassword`~~ <a id="createPassword"></a>
 
-creates a password up to 57 chars.  
-Makes sure that at least 4 characters contain one of each lower, upper, int, special char.
-
-~~~
-Strings::createPassword(int $iMaxLength = 15, string $sCharSpecial = '#*!$.') : string
-~~~
-
-_Example_
-~~~php
-$sPassword = Strings::createPassword();
-~~~
-
-_Result_
-~~~
-$cZY/iZncdgWwC8
-~~~
+@deprecated use instead: [Strings::random()](#random)
 
 ---
 
@@ -185,25 +172,113 @@ $bIsUuid4 = Strings::isUuid4('6c07e320-b33d-4ce0-9fae-96c59861d51f');
    
 ---
 
-## `markdown` <a id="markdown"></a>
+## ~~`markdown`~~ <a id="markdown"></a>
+
+@deprecated use instead: [Strings::parsedown()](#parsedown)
 
 converts markdown syntax into markup.
 
+---
+
+## `parsedown` <a id="parsedown"></a>
+
+converts "markdown" syntax into markup.
+
+~~~
+Strings::parsedown(string $sMarkdown) : string
+~~~
+
+_Example_  
 ~~~php
-echo Strings::markdown(
-    "# Header\n\n- one\n- two\n- three\n- four"
-);
+$sMarkup = Strings::parsedown("# Hello World\n- one\n- two\n- three");
 ~~~
 
 _Result_  
 ~~~html
-<h1>Header</h1>
+<h1>Hello World</h1>
 <ul>
-<li>one</li>
-<li>two</li>
-<li>three</li>
-<li>four</li>
+    <li>one</li>
+    <li>two</li>
+    <li>three</li>
 </ul>
+~~~
+
+
+
+---
+
+## `random` <a id="random"></a>
+
+creates a random string.
+
+~~~
+Strings::random(
+        int $iLength = 16,
+        string $sCharSpecial = '#*!$.',
+        int $iMandatoryStringLower = 1,
+        int $iMandatoryStringUpper = 1,
+        int $iMandatoryInt = 1,
+        int $iMandatorySpecial = 1,
+        string $sCharLower = 'abcdefghijklmnopqrstuvwxyz',
+        string $sCharUpper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+        string $sCharInt = '123467890'
+    ) : string
+~~~
+
+**Examples**
+
+_create a 16 char random string;  
+it contains at least (for minimum): 1 lower a-z char, 1 upper A-Z char, 1 int number, 1 special char_
+~~~php
+$sRandom = Strings::random();
+~~~
+~~~
+// type: string
+$cZY/iZncdgWwC83
+~~~
+
+_create a 16 char random string;  
+it contains at least 7 int numbers for minimum_
+~~~php
+$sRandom = Strings::random(
+    iMandatoryInt: 7
+);
+~~~
+~~~
+// type: string
+1du72U*4c096hS43
+~~~
+
+_create a 5 char random string;  
+but only lower a-z chars_
+~~~php
+$sRandom = Strings::random(
+    iLength: 5,
+    iMandatoryStringLower: 5,
+    iMandatoryStringUpper: 0,
+    iMandatoryInt: 0,
+    iMandatorySpecial: 0,
+);
+~~~
+~~~
+// type: string
+khvsf
+~~~
+
+_create a 5 char random string;  
+but only upper A-Z chars_
+~~~php
+$sRandom = Strings::random(
+    iLength: 5,
+    iMandatoryStringLower: 0,
+    iMandatoryStringUpper: 5,
+    iMandatoryInt: 0,
+    iMandatorySpecial: 0,
+);
+~~~
+~~~
+// type: string
+TGMPD
 ~~~
 
 ---
