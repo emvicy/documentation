@@ -73,13 +73,15 @@ _You should see this Frontend_
 <a id="ddev"></a>
 ## Using `ddev`
 
-_The following command installs a local development Version of Emvicy 2.x using `ddev`._
+_🛈 This command installs Emvicy2 at the location where it gets called and configures and runs it as a `ddev` project._  
 ~~~bash
-git clone --branch 2.x https://github.com/Emvicy/Emvicy.git Emvicy_2.x; cd Emvicy_2.x; \
-git clone --branch 2.x https://github.com/emvicy/Emvicy_ddev.git .ddev; ddev start; \
-clear; ddev describe; ddev exec "php emvicy;exit;"
+bash <(curl -s https://emvicy.com/Installers/Emvicy_2.x_ddev.sh);
 ~~~
-- https://emvicy2x.ddev.site
+- for more Information about this Installer see <a href="https://github.com/emvicy/Installers?tab=readme-ov-file#emvicy2ddev" target="_blank">github.com/emvicy/Installers?tab=readme-ov-file#emvicy2ddev</a>
+
+**disclaimer**  
+- I do not accept responsibility for any damage, errors or anything whatsoever caused by running or using this script.
+- You use this script at your own risk.
 
 Find out more about <a href="https://ddev.com/" target="_blank">ddev</a> and how to install.
 If you are not yet familiar with this great tool, I highly recommend that you take a look at it. It will make your development much easier.

@@ -57,8 +57,10 @@
   },
   "Modules": {
     "Email": "module_email.md",
+    "Idolon": "module_idolon.md",
     "OpenApi": "module_openapi.md",
     "Paginator": "module_paginator.md",
+    "Phormix": "module_phormix.md",
     "Ws": "module_ws.md"
   }
 }
