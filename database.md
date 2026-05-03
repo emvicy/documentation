@@ -4,6 +4,7 @@
 - [1. Credentials](#1)
 - [2. Creation](#2)
     - [2.1. Create DB Config](#2-1)
+      - [2.1.1. Read / Write Connections](#2-1-1)
     - [2.2. Table Class](#2-2)
     - [2.3. Table Collection](#2-3)
     - [2.4. Let generate an openapi yaml schema file for data type classes](#2-4)
