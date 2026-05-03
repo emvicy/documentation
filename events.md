@@ -343,10 +343,13 @@ _Example: delete *all* Events_
 | mvc.db.model.db.deleteTupel.before         |                                     | `\MVC\DB\Model\Db::deleteTupel`            | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
 | mvc.db.model.db.dropIndices.after          |                                     | `\MVC\DB\Model\Db::dropIndices`            |                                                     |
 | mvc.db.model.db.insert.sql                 | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::synchronizeFields`      | `string $sSql`                                      |
+| mvc.db.model.db.moveColumn.sql             | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::moveColumn`             | `string $sSql`                                      |
+| mvc.db.model.db.reOrder.sql                | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::reOrder`                | `string $sSql`                                      |
 | mvc.db.model.db.retrieve.after             |                                     | `\MVC\DB\Model\Db::retrieve`               | `\MVC\DataType\DTValue $oDTValue`                   |
 | mvc.db.model.db.retrieve.before            |                                     | `\MVC\DB\Model\Db::retrieve`               | `\MVC\DataType\DTValue $oDTValue`                   |
 | mvc.db.model.db.retrieve.sql               | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::retrieve`               | `string $sSql`                                      |
 | mvc.db.model.db.retrieveTupel.before       |                                     | `\MVC\DB\Model\Db::retrieveTupel`          | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
+| mvc.db.model.db.setForeignKey.sql          | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::setForeignKey`          | `string $sSql`                                      |
 | mvc.db.model.db.updateTupel.after          |                                     | `\MVC\DB\Model\Db::updateTupel`            | `\MVC\DataType\DTValue $oDTValue`                   |
 | mvc.db.model.db.updateTupel.before         |                                     | `\MVC\DB\Model\Db::updateTupel`            | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
 | mvc.db.model.db.updateTupel.fail           |                                     | `\MVC\DB\Model\Db::updateTupel`            | `\MVC\DataType\DTValue $oDTValue`                   |

@@ -30,16 +30,33 @@
 
 Edit the `db.*` settings in your `/.env` file.
 
+_Example standard setup with 1 Database_  
 ~~~bash
 #-----------------------------------------------------
-# My Application
+# DB
 
-# Environment
-MVC_ENV=develop
+db.type=mysql
+db.host=127.0.0.1
+db.port=3306
+db.dbname=Emvicy2x
+db.username=root
+db.password=
+~~~
 
-
+_Example setup with 2 Databases: 1 Master, 1 Slave; for read/write connections_  
+~~~bash
 #-----------------------------------------------------
 # DB
+
+# write (master)
+dbMaster.type=mysql
+dbMaster.host=10.0.1.0
+dbMaster.port=3306
+dbMaster.dbname=Emvicy2x
+dbMaster.username=root
+dbMaster.password=
+
+# read (slave)
 db.type=mysql
 db.host=127.0.0.1
 db.port=3306
@@ -87,7 +104,6 @@ $aConfig['MODULE']['Foo']['DB']['logging']['general_log'] = 'ON'; // consider to
 // Module DB
 
 $aConfig['MODULE']['Foo']['DB'] = array(
-
     'db' => array(
         'type' => getenv('db.type'),
         'host' => getenv('db.host'),
@@ -99,13 +115,13 @@ $aConfig['MODULE']['Foo']['DB'] = array(
     ),
     'caching' => array(
         'enabled' => true,
-        'lifetime' => '1', # minutes
+        'lifetime' => 1, # minutes
     ),
     'logging' => array(
         'log_output' => 'FILE',
 
         // consider to turn it on for develop and test environments only
-        'general_log' => 'OFF',
+        'general_log' => 0, # MySQL: ("ON"|"OFF"); MariaDB: (1|0)
 
         // 1) make sure write access is given to the folder
         // as long as the db user is going to write and not the webserver user
@@ -114,6 +130,53 @@ $aConfig['MODULE']['Foo']['DB'] = array(
     ),
 );
 ~~~
+
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="2-1-1"></a>
+#### 2.1.1. Read / Write Connections 
+
+~~~php
+<?php
+
+//######################################################################################################################
+// Module DB
+
+$aConfig['MODULE']['Foo']['DB'] = array(
+    // read connection
+    'read' => [
+        'host' => getenv('db.host'),
+    ],
+    // write connection
+    'write' => [
+        'host' => getenv('dbMaster.host'),
+        'username' => getenv('dbMaster.username'),
+        'password' => getenv('dbMaster.password'),
+    ],
+    'db' => array(
+        'type' => getenv('db.type'),
+        'host' => getenv('db.host'),
+        'port' => getenv('db.port'),
+        'username' => getenv('db.username'),
+        'password' => getenv('db.password'),
+        'dbname' => getenv('db.dbname'),
+        'charset' => 'utf8',
+    ),
+    'sticky' => true, # true: use the write connection for subsequent reads    
+    'caching' => array(
+        'enabled' => true,
+        'lifetime' => 1, # minutes
+    ),
+    'logging' => array(
+        'log_output' => 'FILE',
+        'general_log' => 0, # MySQL: ("ON"|"OFF"); MariaDB: (1|0)
+        'general_log_file' => $aConfig['MVC_LOG_FILE_DB_DIR'] . getenv('db.dbname') . '_' . getenv('MVC_ENV') . '.log',
+    ),
+);
+~~~
+- `read`: here you can list same keys as used in the `db` section below.
+- `write`: here you can list same keys as used in the `db` section below.
+- `sticky`: If you set sticky to true, Emvicy will use the write connection for subsequent reads in the same request cycle to ensure data consistency, which is critical even when hosts are identical if you are simulating a replication behavior.
 
 ------------------------------------------------------------------------------------------------------------------------
 
