@@ -341,7 +341,7 @@ _Example: delete *all* Events_
 | mvc.db.model.db.delete.before              |                                     | `\MVC\DB\Model\Db::delete`                 | `\MVC\DataType\DTValue $oDTValue`                   |
 | mvc.db.model.db.delete.sql                 | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::delete`                 | `string $sSql`                                      |
 | mvc.db.model.db.deleteTupel.before         |                                     | `\MVC\DB\Model\Db::deleteTupel`            | `\MVC\DB\DataType\DB\TableDataType $oTableDataType` |
-| mvc.db.model.db.dropIndices.after          |                                     | `\MVC\DB\Model\Db::dropIndices`            |                                                     |
+| mvc.db.model.db.dropIndices.sql            | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::dropIndices`            | `string $sSql`                                      |
 | mvc.db.model.db.insert.sql                 | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::synchronizeFields`      | `string $sSql`                                      |
 | mvc.db.model.db.moveColumn.sql             | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::moveColumn`             | `string $sSql`                                      |
 | mvc.db.model.db.reOrder.sql                | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::reOrder`                | `string $sSql`                                      |
@@ -359,8 +359,8 @@ _Example: delete *all* Events_
 | mvc.db.model.db.{tableName}.update.sql     | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::update`                 | `string $sSql`                                      |
 | mvc.db.model.db.{tableName}.update.success |                                     | `\MVC\DB\Model\Db::update`                 | `\MVC\DataType\DTValue $oDTValue`                   |
 | mvc.db.model.db.setForeignKey.before       |                                     | `\MVC\DB\Model\Db::setForeignKey`          |                                                     |
+| mvc.db.model.db.setForeignKey.sql          | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\Db::setForeignKey`          | `string $sSql`                                      |
 | mvc.db.model.db.setForeignKey.after        |                                     | `\MVC\DB\Model\Db::setForeignKey`          |                                                     |
-| mvc.db.model.db.synchronizeFields.after    |                                     | `\MVC\DB\Model\Db::synchronizeFields`      |                                                     |
 | mvc.db.model.dbpdo.fetchRow.sql            | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\DbPDO::fetchRow`            | `string $sSql`                                      |
 | mvc.db.model.dbpdo.fetchAll.sql            | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\DbPDO::fetchAll`            | `string $sSql`                                      |
 | mvc.db.model.dbpdo.query.sql               | `modules/{module}/etc/event/db.php` | `\MVC\DB\Model\DbPDO::query`               | `string $sSql`                                      |
