@@ -53,12 +53,12 @@ _CLI_
 dumps Data. The source file, line and class/method infos from where the info command was called are shown.
 
 ~~~
-Debug::info(mixed $mData = '', array $aDebugBacktrace = array()) : void
+Debug::info(mixed $mData = '', array $aDebugBacktrace = array(), string $sTitle = '') : void
 ~~~
 
 _available shorthand function_
 ~~~
-info(mixed $mData = '', array $aDebugBacktrace = array()) : void
+info(mixed $mData = '', string $sTitle = '')
 ~~~
 
 _Example_  

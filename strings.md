@@ -3,12 +3,16 @@
 
 - [~~createPassword~~](#createPassword)
 - [cutOff](#cutOff)
+- [getFloat](#getFloat)
+- [getInt](#getInt)
+- [getNumeric](#getNumeric)
 - [getJson](#getJson)
 - [highlight_html](#highlight_html)
 - [isJson](#isJson)
 - [isMarkup](#isMarkup)
 - [isUtf8](#isUtf8)
 - [isUuid4](#isUuid4)
+- [isXml](#isXml)
 - [~~markdown~~](#markdown)
 - [parsedown](#parsedown)
 - [random](#random)
@@ -49,6 +53,81 @@ _Result of `$sString`_
 ~~~html
 // type: string
 '<p><strong>Lorem ipsum dolor sit <i>amet</i>, cons</strong></p>'
+~~~
+
+---
+
+## `getFloat` <a id="getFloat"></a>
+
+returns an array of individual integer values (which are found at the start or end of the string, or are surrounded by spaces).
+
+~~~
+Strings::getFloat(string $sString = '') : array
+~~~
+
+_Example_
+~~~php
+$aFloat = Strings::getFloat('aaa 123 bbb 456 ccc 1.0 ddd 2.1');
+~~~
+
+_Result of `$aFloat`_
+~~~html
+// type: array, items: 2
+[
+    0 => 1.0,
+    1 => 2.1,
+]
+~~~
+
+---
+
+## `getInt` <a id="getInt"></a>
+
+returns an array of individual integer values (which are found at the start or end of the string, or are surrounded by spaces).
+
+~~~
+Strings::getInt(string $sString = '') : array
+~~~
+
+_Example_  
+~~~php
+$aInteger = Strings::getInt('aaa 123 bbb 456 ccc 1.0 ddd 2.1');
+~~~
+
+_Result of `$aInteger`_
+~~~html
+// type: array, items: 2
+[
+    0 => 123,
+    1 => 456,
+]
+~~~
+
+---
+
+## `getNumeric` <a id="getNumeric"></a>
+
+returns an array of individual numeric values (which are found at the start or end of the string, or are surrounded by spaces).
+
+~~~
+Strings::getNumeric(string $sString = '', bool $bCast = true) : array
+~~~
+- if `$bCast` is set to `false`, the result values are of type `string`
+
+_Example_
+~~~php
+$aNumeric = Strings::getNumeric('aaa 123 bbb 456 ccc 1.0 ddd 2.1');
+~~~
+
+_Result of `$aNumeric`_
+~~~html
+// type: array, items: 4
+[
+    0 => 123,
+    1 => 456,
+    2 => 1.0,
+    3 => 2.1,
+]
 ~~~
 
 ---
@@ -169,7 +248,23 @@ _Example_
 // true
 $bIsUuid4 = Strings::isUuid4('6c07e320-b33d-4ce0-9fae-96c59861d51f');
 ~~~
-   
+
+---
+
+## `isXml` <a id="isXml"></a>
+
+checks whether a param is a valid XML string.
+
+~~~
+Strings::isXml(string $sString): bool
+~~~
+
+_Example_  
+~~~php
+// true
+$bIsUuid4 = Strings::isXml('<xml></xml>');
+~~~
+
 ---
 
 ## ~~`markdown`~~ <a id="markdown"></a>

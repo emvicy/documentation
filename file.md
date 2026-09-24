@@ -3,6 +3,7 @@
 
 - [getMimeType](#getMimeType)
 - [info](#info)
+- [isAvailable](#isAvailable)
 - [saveIntoTemp](#saveIntoTemp)
 - [secureFilePath](#secureFilePath)
 - [temp](#temp)
@@ -26,6 +27,25 @@ _Result_
 ~~~
 // type: string
 'text/x-php'
+~~~
+
+---
+
+## `isAvailable` <a id="isAvailable"></a>
+
+Checks whether an URL or file exists and is therefore available.
+
+~~~
+Strings::isAvailable(string $sLocation = '', bool $bFollowRedirect = true) : bool
+~~~
+
+_Example_  
+~~~php
+// check Availability of a file
+$bIsAvailable = File::isAvailable('Foo.txt');
+
+// check Availability of an URL resource
+$bIsAvailable = File::isAvailable('https://emvicy.com/');
 ~~~
 
 ---

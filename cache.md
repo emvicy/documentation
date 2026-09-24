@@ -58,7 +58,7 @@ Cache::autoDeleteCache(string $sToken = '', string $sMinutes = null) : bool
 flushes cache (deletes all cachefiles immediatly).
 
 ~~~
-Cache::flushCache() : bool
+Cache::flushCache(bool $bForce = true) : bool
 ~~~
 
 ---

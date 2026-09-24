@@ -102,30 +102,21 @@ If you are not yet familiar with this great tool, I highly recommend that you ta
 
 You also need some PHP-Extensions installed and PHP-functions enabled as listed below.
 
-_Required PHP Extensions_  
-~~~
-Core
-ctype
-curl
-date
-dom
-fileinfo
-filter
-iconv
-json
-mbstring
-Phar
-posix
-Reflection
-session
-SimpleXML
-standard
-SPL
-zip
+_Example: how to install `PHP 8.5` with all required PHP Extensions on Ubuntu Linux_
+~~~bash
+sudo apt update
+sudo apt install php8.5
+sudo apt install php8.5-common php8.5-curl php8.5-mbstring php8.5-xml php8.5-zip php8.5-intl
 ~~~
 
-_Required PHP Functions_  
-~~~
-mb_strlen
-iconv
-~~~
+_Required PHP Extensions_  
+
+| Required Extension                                                                                      | Package           |
+|--------------------------------------------------------------------------------------------------------|-------------------|
+| Core, ctype, date, fileinfo, filter, iconv, json, Phar, posix, Reflection, session, SPL, standard, PDO | `php8.5-common`   |
+| curl                                                                                                   | `php8.5-curl`     |
+| mbstring                                                                                               | `php8.5-mbstring` |
+| dom, SimpleXML                                                                                         | `php8.5-xml`      |
+| zip                                                                                                    | `php8.5-zip`      |
+| intl                                                                                                   | `php8.5-intl`     |
+

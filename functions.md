@@ -58,6 +58,10 @@ $mValue = get($aData['foo']['bar']);
 
 shorthand for `Debug::info()` on userland.
 
+~~~
+info(mixed $mData = '', string $sTitle = '')
+~~~
+
 see [Debug::info()](/2.x/debug#info)
 
 

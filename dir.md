@@ -81,7 +81,7 @@ true
 copies a directory recursively.
 
 ~~~
-Dir::recursiveCopy(string $sSource = '', string $sDestination = '') : void
+Dir::recursiveCopy(string $sSource = '', string $sDestination = '') : bool
 ~~~
 
 _Example_

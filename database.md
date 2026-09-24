@@ -1,32 +1,33 @@
 
 # Database ⛁
 
-- [1. Credentials](#1)
-- [2. Creation](#2)
-    - [2.1. Create DB Config](#2-1)
-      - [2.1.1. Read / Write Connections](#2-1-1)
-    - [2.2. Table Class](#2-2)
-    - [2.3. Table Collection](#2-3)
-    - [2.4. Let generate an openapi yaml schema file for data type classes](#2-4)
-- [3. Usage](#3)
-    - [3.1. create](#3-1)
-    - [3.2. retrieve](#3-2)
-    - [3.3. update](#3-3)
-    - [3.4. delete](#3-4)
-    - [3.5. count](#3-5)
-    - [3.6. checksum](#3-6)
-    - [3.7. getFieldInfo](#3-7)
-    - [3.8. PDO](#3-8)
-      - [3.8.1 prepared Statements](#3-8-1)
-    - [3.9. SQL](#3-9)
-    - [3.10. Comment](#3-10)
-    - [3.11. multiple Databases](#3-11)
-- [4. Events](#4)
-    - [4.1. Logging SQL](#4-1)
+- [Credentials](#Credentials)
+- [Creation](#Creation)
+    - [Create DB Config](#Create_DB_Config)
+      - [Read / Write Connections](#Connections)
+    - [Table Class](#Table_Class)
+    - [Table Collection](#Table_Collection)
+    - [Let generate an openapi yaml schema file for data type classes](#openapi)
+- [Usage](#Usage)
+    - [create](#create)
+    - [retrieve](#retrieve)
+    - [update](#update)
+    - [delete](#delete)
+    - [count](#count)
+    - [checksum](#checksum)
+    - [getFieldInfo](#getFieldInfo)
+    - [getOnFieldValue](#getOnFieldValue)
+    - [PDO](#PDO)
+      - [prepared Statements](#prepared_Statements)
+    - [SQL](#SQL)
+    - [Comment](#Comment)
+    - [multiple Databases](#multiple_Databases)
+- [Events](#Events)
+    - [Logging SQL](#Logging_SQL)
 
 ---
 
-<a id="1"></a>
+<a id="Credentials"></a>
 ## Credentials
 
 Edit the `db.*` settings in your `/.env` file.
@@ -68,12 +69,11 @@ db.password=
 
 ------------------------------------------------------------------------------------------------------------------------
 
-<a id="2"></a>
+<a id="Creation"></a>
 ## Creation
 
-<a id="2-1"></a>
-### 2.1. Create DB Config
-
+<a id="Create_DB_Config"></a>
+### Create DB Config
 
 In your main module's config environment folder edit your DB Config.
 (@see [/2.x/configuration#Modules-environment-config-file](/2.x/configuration#Modules-environment-config-file))
@@ -134,8 +134,8 @@ $aConfig['MODULE']['Foo']['DB'] = array(
 
 ------------------------------------------------------------------------------------------------------------------------
 
-<a id="2-1-1"></a>
-#### 2.1.1. Read / Write Connections 
+<a id="Connections"></a>
+#### Read / Write Connections 
 
 ~~~php
 <?php
@@ -181,8 +181,8 @@ $aConfig['MODULE']['Foo']['DB'] = array(
 
 ------------------------------------------------------------------------------------------------------------------------
 
-<a id="2-2"></a> 
-### 2.2. Table Class
+<a id="Table_Class"></a> 
+### Table Class
 
 _creates DB Table `Bar` in the given module `Foo`._  
 ~~~bash
@@ -267,8 +267,8 @@ public function __construct(array $aDbConfig = array())
 
 ------------------------------------------------------------------------------------------------------------------------
 
-<a id="2-3"></a>
-### 2.3. Table Collection
+<a id="Table_Collection"></a>
+### Table Collection
 
 Combining table classes in a table collection class.
 
@@ -350,8 +350,8 @@ DBAccount::use()
 ------------------------------------------------------------------------------------------------------------------------
 
 
-<a id="2-4"></a>
-### 2.4. Let generate an openapi yaml schema file for data type classes
+<a id="openapi"></a>
+### Let generate an openapi yaml schema file for data type classes
 
 This builds an openapi.yaml `DTTables.yaml` in the primary module's DataType folder based
 on data type classes of the DB tables.
@@ -386,8 +386,8 @@ _example: `/modules/Foo/etc/event/db.php`_
 
 ------------------------------------------------------------------------------------------------------------------------
 
-<a id="3"></a>
-## 3. Usage
+<a id="Usage"></a>
+## Usage
 
 access your table classes and table collection classes from everywhere - even from frontend templates:
 
@@ -402,8 +402,8 @@ _Example: access a table class via table collection_
 ~~~
 
 
-<a id="3-1"></a>  
-### 3.1. create
+<a id="create"></a>  
+### create
 
 therefore an object of its related Datatype must be instanciated and given to the method `create`.
 Here e.g. with Datatype "DTAppTableUser" to TableClass "modules/Foo/Model/Table/User":
@@ -435,8 +435,8 @@ $iId = $oDTAppTableUser->get_id();
 
 ---
 
-<a id="3-2"></a>  
-### 3.2. retrieve
+<a id="retrieve"></a>  
+### retrieve
 
 `getOnId`: returns tupel object or field of tupel by id
 
@@ -520,8 +520,8 @@ $aDTAppTableUser = DB::use()->oAppTableUser->retrieve(aDTDBOption: [
 - here the named Parameter `aDTDBOption` is used to address the right parameter correctly
 
 
-<a id="3-3"></a>  
-### 3.3. update
+<a id="update"></a>  
+### update
 
 _example `updateTupel`: update Object in table where `id=2`_
 ~~~php
@@ -566,12 +566,12 @@ _update via SQL Statement_
 ~~~php
 DB::use()->oDbPDO->query("UPDATE `AppTableUser` SET `active` = '0' WHERE `email` = 'foo@example.com'");
 ~~~
-- see also: [Database Events](/2.x/events#database_events), and [Database - 3.8. SQL](#3-8)
+- see also: [Database Events](/2.x/events#database_events), and [Database - 3.8. SQL](#SQL)
 
 ---
 
-<a id="3-4"></a>  
-### 3.4. delete
+<a id="delete"></a>  
+### delete
 
 _`deleteTupel`: delete this **one** specific Tupel - identified **only** by **`id`** (id is required; other values do not have an effect)_
 ~~~php
@@ -609,8 +609,8 @@ $bSuccess = DB::use()->oAppTableUser->delete([ // array of where clauses
 
 ------------------------------------------------------------------------------------------------------------------------
 
-<a id="3-5"></a>  
-### 3.5. count
+<a id="count"></a>  
+### count
 
 ~~~php
 // Amount of all Datasets
@@ -624,8 +624,8 @@ $iAmount = DB::use()->oAppTableUser->count([
 
 ------------------------------------------------------------------------------------------------------------------------
 
-<a id="3-6"></a>  
-### 3.6. checksum
+<a id="checksum"></a>  
+### checksum
 
 ~~~php
 // Returns a checksum of the table
@@ -637,8 +637,8 @@ $iChecksum = DB::use()->oAppTableUser->checksum();
 ~~~
 
 
-<a id="3-7"></a>  
-### 3.7. getFieldInfo
+<a id="getFieldInfo"></a>  
+### getFieldInfo
 
 returns array with table fields info
 
@@ -707,11 +707,27 @@ _example return (shortened)_
 ]
 ~~~
 
+
+<a id="getOnFieldValue"></a>
+### getOnFieldValue
+
+returns value of a given field.   
+works for any except `id` field; therefore you would use [`getOnId()`](#getOnId). 
+
+_Example_  
+~~~php
+// when using collection "DB"
+DB::use()->oAppTableUser->getOnFieldValue('email', 'emvicy@example.com');
+
+// when addressing User Class directly
+User::use()->getOnFieldValue('email', 'emvicy@example.com');
+~~~
+
 ------------------------------------------------------------------------------------------------------------------------
 
 
-<a id="3-8"></a>
-#### 3.8. PDO
+<a id="PDO"></a>
+#### PDO
 
 _using a table collection class_  
 ~~~php
@@ -726,8 +742,8 @@ DB::use()->oDbPDO
 
 [//]: # (~~~)
 
-<a id="3-8-1"></a>
-##### 3.8.1 prepared Statements
+<a id="prepared Statements"></a>
+##### prepared Statements
 
 _sql_  
 ~~~php
@@ -759,8 +775,8 @@ $oDTAppTableUser = DTAppTableUser::create($aAppTableUser);
 
 ------------------------------------------------------------------------------------------------------------------------
 
-<a id="3-9"></a>  
-#### 3.9. SQL
+<a id="SQL"></a>  
+#### SQL
 
 **fetchRow**
 
@@ -816,8 +832,8 @@ DB::use()->oDbPDO->query("UPDATE `AppTableUser` SET `active` = '0' WHERE `email`
 
 ------------------------------------------------------------------------------------------------------------------------
 
-<a id="3-10"></a>
-#### 3.10. Comment
+<a id="Comment"></a>
+#### Comment
 
 **read comment from a DB Table Field**
 
@@ -843,7 +859,8 @@ DB::use()->getDocCommentValueOfProperty('oAppTableUser', '@var')
 
 ------------------------------------------------------------------------------------------------------------------------
 
-#### 3.11. multiple Databases <a id="3-11"></a>
+<a id="multiple_Databases"></a>
+#### multiple Databases 
 
 1. create a config for the database you want to add
 2. create a separate DB Collection Class e.g. `DB2` for the DB (see [2.3. Table Collection](/2.x/database#2-3))
@@ -900,14 +917,14 @@ $aResult = DB2::use(Config::MODULE()['DB2'])
 
 ------------------------------------------------------------------------------------------------------------------------
 
-<a id="4"></a> 
-## 4. Events
+<a id="Events"></a> 
+## Events
 
 see [Database Events](/2.x/events#database_events)
 
-<a id="4-1"></a>
+<a id="Logging_SQL"></a>
 
-### 4.1. Logging SQL
+### Logging SQL
 
 **logging at application side** 
 

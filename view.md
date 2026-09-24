@@ -114,8 +114,6 @@ view()
 
 which is defined in `modules/Foo/etc/config/Foo/config/_function.php`
 
-
-
 ------------------------------------------------------------------------------------------------------------------------
 
 <a id="Assigning-Vars"></a>
@@ -144,6 +142,17 @@ _autoAssign variables to template (assuming module is `Foo`)_
 view()->autoAssign(
     Route::getCurrent()
 );
+~~~
+
+------------------------------------------------------------------------------------------------------------------------
+
+<a id="Assigning_path_to_template_dir"></a>
+## Assigning path to template dir
+
+If you want to make use of templates of a directory other than the default template one.
+
+~~~php
+view()->addAbsolutePathToTemplateDir('/abs/path/to/template/dir');
 ~~~
 
 ------------------------------------------------------------------------------------------------------------------------
